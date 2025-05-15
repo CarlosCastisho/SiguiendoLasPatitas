@@ -1,0 +1,61 @@
+<h2 class="colorGreen">Listado de Usuarios</h2> 
+
+<div style="position: relative; width: 100%; max-width: 400px;">
+    <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar por nombre, correo o teléfono"
+        style="width: 100%; padding-right: 40px;"
+        class="form-control fondoGradiente3"
+    />
+    <i class="fas fa-search" 
+       style="
+            position: absolute; 
+            right: 10px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: #6c757d; 
+            font-size: 1.2rem; 
+            cursor: pointer;">
+    </i>
+</div>
+<br>
+<table class="table table table-bordered table-header">
+    <thead class="thead-dark">
+        <tr>
+            <th class="fondoGradiente2">ID</th>
+            <th class="fondoGradiente2">Nombre</th>
+            <th class="fondoGradiente2">Apellido</th>
+            <th class="fondoGradiente2">Correo</th>
+            <th class="fondoGradiente2">Teléfono</th>
+            <th class="fondoGradiente2">Acción</th>
+        </tr>
+    </thead>
+    <tbody id="tabla-usuarios">
+        {{#each adminuser}}
+        <tr>
+            <td>{{this.ID_USER}}</td>
+            <td>{{this.USER_NOMBRE}}</td>
+            <td>{{this.USER_APELLIDO}}</td>
+            <td>{{this.USER_CORREO}}</td>
+            <td>{{this.USER_TELEFONO}}</td>
+            <td>
+                <a href="/admin/eliminar/{{this.ID_USER}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</a>
+                <a href="/admin/editarAdminUser/{{this.ID_USER}}" class="btn btn-success btn-sm">Restablecer contraseña</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('buscador').addEventListener('input', function () {
+        const filtro = this.value.toLowerCase();
+        const filas = document.querySelectorAll('#tabla-usuarios tr');
+
+        filas.forEach((fila) => {
+            const textoFila = fila.textContent.toLowerCase();
+            fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+        });
+    });
+</script> 

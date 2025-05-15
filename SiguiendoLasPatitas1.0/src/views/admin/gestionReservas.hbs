@@ -1,0 +1,73 @@
+<h1 class="colorGreen table-header">Reservas</h1>
+<div style="position: relative; width: 100%; max-width: 400px;">
+    <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar por usuario o n° de reserva"
+        style="width: 100%; padding-right: 40px;"
+        class="form-control fondoGradiente3"
+    />
+    <i class="fas fa-search" 
+       style="
+            position: absolute; 
+            right: 10px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: #6c757d; 
+            font-size: 1.2rem; 
+            cursor: pointer;">
+    </i>
+</div>
+<br>
+{{#if reservas.length}}
+<table id="tabla-reservas" class="table table-bordered table-header">
+    <thead>
+        <tr>
+            <th class="fondoGradiente2 table-header">N° de Reserva</th>
+            <th class="fondoGradiente2 table-header">Usuario</th>
+            <th class="fondoGradiente2 table-header">Fecha</th>
+            <th class="fondoGradiente2 table-header">Hora inicio</th>
+            <th class="fondoGradiente2 table-header">Hora fin</th>
+            <th class="fondoGradiente2 table-header">Importe</th>
+            <th class="fondoGradiente2 table-header">Estación</th>
+            <th class="fondoGradiente2 table-header">Dirección</th>
+            <th class="fondoGradiente2 table-header">Localidad</th>
+            <th class="fondoGradiente2 table-header">Estado</th>
+            <th scope="col" class="fondoGradiente2 table-header">Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each reservas}}
+        <tr>
+            <td>{{ID_RESERVA}}</td>
+            <td>{{USER_CORREO}}</td>
+            <td>{{RESERVA_FECHA}}</td>
+            <td>{{RESERVA_HORA_INI}}</td>
+            <td>{{RESERVA_HORA_FIN}}</td>
+            <td>{{RESERVA_IMPORTE}}</td>
+            <td>{{ESTC_NOMBRE}}</td>
+            <td>{{ESTC_DIRECCION}}</td>
+            <td>{{ESTC_LOCALIDAD}}</td>
+            <td>{{EST_RES_DESCRIP}}</td>
+            <td>
+                <a href="/admin/gestionReservas/cancelar/{{ID_RESERVA}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta estación?');">Cancelar reserva</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p>No se encontraron reservas registradas.</p>
+{{/if}}
+
+<script>
+    document.getElementById('buscador').addEventListener('input', function () {
+        const filtro = this.value.toLowerCase();
+        const filas = document.querySelectorAll('#tabla-reservas tbody tr'); 
+
+        filas.forEach((fila) => {
+            const textoFila = fila.textContent.toLowerCase();
+            fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+        });
+    });
+</script>

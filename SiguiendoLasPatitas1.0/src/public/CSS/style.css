@@ -1,0 +1,63 @@
+body {
+    background-image: linear-gradient(#fafcff, #aaccf7, #98f6a0);
+    background-attachment: fixed;
+}
+
+.barUser {
+    background-color: #8ccddf !important;
+}
+
+.barUser a {
+    color: #09298b;
+}
+
+.colorGreen {
+    color:#008037;
+}
+
+.colorBlue {    
+    color:#004aad;
+}
+
+.fondoGradiente {
+    background-image: linear-gradient(#fafcff, #aaccf7, #98f6a0);
+    color:#004aad !important;
+}
+
+.fondoGradiente2 {
+    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0);
+    color:#004aad !important;
+}
+
+.fondoGradiente3 {
+    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0);
+}
+
+.fondoGradiente4 {
+    background-image: radial-gradient(#aaccf7,#fafcff, #98f6a0);
+}
+
+.letraBold{
+    font-weight: bold;
+}
+
+.table-header {
+    text-align: center; 
+    vertical-align: middle;
+}
+
+.leaflet-popup-content-wrapper {
+    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0); 
+    border-radius: 10px;     
+    padding: 10px;            
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    width: 245px;
+    height: auto; 
+    color:#004aad
+}
+
+.leaflet-popup-tip {
+    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0); 
+}
+

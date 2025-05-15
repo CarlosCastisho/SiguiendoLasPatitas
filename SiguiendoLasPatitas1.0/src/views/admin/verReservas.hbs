@@ -1,0 +1,69 @@
+<h1 class="colorGreen table-header">Indicadores de Reservas</h1>
+<div class="">
+    <!-- Reservas por Día -->
+    <div class="card-body">
+        <h3 class="card-title my-3 colorGreen">Reservas por día</h3>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th class="fondoGradiente2">Día</th>
+                    <th class="fondoGradiente2">Cantidad de reservas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each reservasPorDia}}
+                <tr>
+                    <td>{{this.dia}}</td>
+                    <td>{{this.cantidad_reservas}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Reservas por Mes -->
+    <div class="">
+        <h3 class="card-title my-3 colorGreen">Reservas por mes</h3>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th class="fondoGradiente2">Mes</th>
+                    <th class="fondoGradiente2">Cantidad de reservas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each reservasPorMes}}
+                <tr>
+                    <td>{{this.mes}}</td>
+                    <td>{{this.cantidad_reservas}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Reservas por Año -->
+    <div class="">
+        <h3 class="card-title my-3 colorGreen">Reservas por año</h3>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th class="fondoGradiente2">Año</th>
+                    <th class="fondoGradiente2">Cantidad de reservas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each reservasPorAno}}
+                <tr>
+                    <td>{{this.anio}}</td>
+                    <td>{{this.cantidad_reservas}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div 
+    class="form-group text-center">
+    <a href="/admin/gestiontransacciones" class="btn btn-success btn-block">Volver</a>
+</div>

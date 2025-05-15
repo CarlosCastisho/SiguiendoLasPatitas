@@ -1,0 +1,101 @@
+<h2 class="colorGreen">Usuarios Registrados</h2>
+
+<div style="display: flex; gap: 10px; margin-bottom: 15px;">
+    <input
+        type="text"
+        id="buscadorAnio"
+        placeholder="Buscar por año"
+        class="form-control"
+        style="flex: 1;"
+    />
+    <input
+        type="text"
+        id="buscadorMes"
+        placeholder="Buscar por mes"
+        class="form-control"
+        style="flex: 1;"
+    />
+    <input
+        type="text"
+        id="buscadorDia"
+        placeholder="Buscar por día"
+        class="form-control"
+        style="flex: 1;"
+    />
+</div>
+
+<!-- Tabla de resultados -->
+<table class="table table-bordered table-header" id="tablaUsuarios">
+    <thead class="thead-dark">
+        <tr>
+            <th class="fondoGradiente2">Año</th>
+            <th class="fondoGradiente2">Mes</th>
+            <th class="fondoGradiente2">Día</th>
+            <th class="fondoGradiente2">Nombre</th>
+            <th class="fondoGradiente2">Apellido</th>
+            <th class="fondoGradiente2">Correo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each usuarios}}
+        <tr>
+            <td>{{this.anio}}</td>
+            <td>{{this.mes}}</td>
+            <td>{{this.dia}}</td>
+            <td>{{this.USER_NOMBRE}}</td>
+            <td>{{this.USER_APELLIDO}}</td>
+            <td>{{this.USER_CORREO}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h3 id="totalRegistros" class="colorGreen">
+    Total de registros: {{totalRegistros}}
+</h3>
+<script>
+        function filtrarTabla() {
+        const filtroAnio = document.getElementById('buscadorAnio').value.toLowerCase();
+        const filtroMes = document.getElementById('buscadorMes').value.toLowerCase();
+        const filtroDia = document.getElementById('buscadorDia').value.toLowerCase();
+        const filas = document.querySelectorAll('#tablaUsuarios tbody tr');
+        let totalVisibles = 0;
+
+        filas.forEach((fila) => {
+            const textoAnio = fila.children[0].textContent.toLowerCase();
+            const textoMes = fila.children[1].textContent.toLowerCase();
+            const textoDia = fila.children[2].textContent.toLowerCase();
+
+            const coincideAnio = !filtroAnio || textoAnio.includes(filtroAnio);
+            const coincideMes = !filtroMes || textoMes.includes(filtroMes);
+            const coincideDia = !filtroDia || textoDia.includes(filtroDia);
+
+            if (coincideAnio && coincideMes && coincideDia) {
+                fila.style.display = '';
+                totalVisibles++;
+            } else {
+                fila.style.display = 'none';
+            }
+        });
+
+        // Actualizar el contador de registros
+        document.getElementById('totalRegistros').textContent = `Total de registros: ${totalVisibles}`;
+    }
+
+    // Añadir event listeners a los inputs
+    document.getElementById('buscadorAnio').addEventListener('input', filtrarTabla);
+    document.getElementById('buscadorMes').addEventListener('input', filtrarTabla);
+    document.getElementById('buscadorDia').addEventListener('input', filtrarTabla);
+</script>
+<div 
+    class="form-group text-center">
+    <a href="/admin/gestiontransacciones" class="btn btn-success btn-block">Volver</a>
+</div>
+
+
+
+
+
+
+
+
