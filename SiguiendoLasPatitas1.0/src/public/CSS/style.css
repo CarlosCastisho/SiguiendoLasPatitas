@@ -1,16 +1,19 @@
 body {
-    background-image: linear-gradient(#fafcff, #aaccf7, #98f6a0);
+    background-image: linear-gradient(#fafcff, #98f6a0);
     background-attachment: fixed;
 }
 
 .barUser {
-    background-color: #8ccddf !important;
+    background-color: #ffffff !important;
 }
 
 .barUser a {
-    color: #09298b;
+    color: #03989e;
 }
 
+.colorLogo {
+    color: #03989e;
+}
 .colorGreen {
     color:#008037;
 }
