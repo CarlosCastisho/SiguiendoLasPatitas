@@ -237,7 +237,6 @@ router.get('/gestionEstaciones/eliminar/:ID_ESTC', isLoggedIn, async (req,res) =
     res.redirect('/admin/gestionEstaciones');
 });
 
-
 //Ruta para gestionar transacciones
 router.get('/gestiontransacciones', async(req, res)=>{
     res.render('admin/gestiontransacciones');
