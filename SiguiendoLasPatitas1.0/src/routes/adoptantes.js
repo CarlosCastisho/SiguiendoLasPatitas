@@ -21,7 +21,7 @@ router.post('/registro', isnoLoggedIn, passport.authenticate('local.registro', {
 
 //ACCESO
 router.get('/acceso', isnoLoggedIn, (req, res) => {
-    res.render('auth/acceso')
+    res.render('adoptantes/acceso')
 })
 
 router.post('/acceso', isnoLoggedIn, (req, res, next) => {
@@ -47,7 +47,7 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
 });
 
 // //PAGINA DE ESTACIONES DE CARGA
-// router.get('/listarestaciones', isLoggedIn, async (req, res) => {
+router.get('/listaradoptantes', isLoggedIn, async (req, res) => {
 //     const estacionesCarga = await pool.query(`
 //         SELECT
 //             estaciones_carga.ID_ESTC,
@@ -63,8 +63,8 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
 //         JOIN
 //             provincias ON estaciones_carga.ID_PROVINCIA = provincias.ID_PROVINCIA
 //     `)
-//     res.render('auth/listarestaciones', { estacionesCarga })
-// })
+    res.render('adoptantes/listaradoptantes', /* { estacionesCarga } */)
+})
 
 // router.get('/buscar', isLoggedIn, async (req, res) => {
 //     const buscar = req.query.buscar;
@@ -72,10 +72,10 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
 //     res.render('auth/listarestaciones', { rows });
 // });
 
-// //PAGINA DEL MAPA
-// router.get('/mapa', isLoggedIn, async (req, res) => {
-//     res.render('auth/mapa');
-// });
+//PAGINA DEL MAPA
+router.get('/mapa', isLoggedIn, async (req, res) => {
+    res.render('adoptantes/mapa');
+});
 
 // router.get('/estaciones', isLoggedIn, async (req, res) => {
 //     const estacionesMapa = await pool.query(`
@@ -226,9 +226,9 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
 //     }
 // });
 
-// router.get('/perfil', isLoggedIn, (req, res) => {
-//     res.render('auth/perfil');
-// });
+router.get('/perfil', isLoggedIn, (req, res) => {
+    res.render('adoptantes/perfil');
+});
 
 // router.get('/editarUser/:ID_USER', isLoggedIn, async (req, res) => {
 //     const { ID_USER } = req.params;

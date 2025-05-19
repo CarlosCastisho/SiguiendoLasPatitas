@@ -63,9 +63,9 @@ app.use((req, res, next) => {
 
 //Routes
 app.use(require('./routes'));
-app.use('/',require('./routes/authentication'));
-app.use('/auth',require('./routes/authentication'));
-app.use('/autos', require('./routes/autos'));
+app.use('/',require('./routes/adoptantes'));
+app.use('/adoptantes',require('./routes/adoptantes'));
+app.use('/mascotas', require('./routes/mascotas'));
 app.use('/admin', require('./routes/admin'));
 app.use('/negocio', require('./routes/negocio'));
 

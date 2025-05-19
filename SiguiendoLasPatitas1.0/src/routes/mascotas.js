@@ -4,7 +4,7 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth')
 
-// router.get('/agregar', isLoggedIn, async (req, res) => {
+router.get('/agregar', isLoggedIn, async (req, res) => {
 //     const anio = await pool.query('SELECT * FROM anio');
 //     const marca_modelo = await pool.query(`
 //         SELECT
@@ -20,11 +20,11 @@ const { isLoggedIn } = require('../lib/auth')
 //         JOIN
 //             modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO        
 //         `)
-//     res.render('autos/agregar', { marca_modelo, anio });
-// });
+    res.render('mascotas/agregar', /* { marca_modelo, anio } */);
+});
 
 
-// router.post('/agregar', isLoggedIn, async (req, res) => {
+router.post('/agregar', isLoggedIn, async (req, res) => {
 //     const { ID_USER } = req.user;
 //     const { veh_marca, veh_modelo, veh_anio, veh_patente } = req.body;
 //     const marca_modelo_result = await pool.query(`
@@ -41,8 +41,8 @@ const { isLoggedIn } = require('../lib/auth')
 //         VALUES (?, ?, ?, ?);
 //     `, [marca_modelo, veh_anio, veh_patente, ID_USER]);
 //     req.flash('auto_success', 'AUTO AGREGADO CORRECTAMENTE');
-//     res.redirect('/autos');
-// });
+    res.redirect('/mascotas');
+});
 
 // router.get('/modelos/:marcaId', isLoggedIn, async (req, res) => {
 //     const { marcaId } = req.params;
@@ -60,7 +60,7 @@ const { isLoggedIn } = require('../lib/auth')
 //     res.json(modelos);
 // });
 
-// router.get('/', isLoggedIn, async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
 //     const {ID_USER} = req.user;
 //     const vehiculos = await pool.query(`
 //         SELECT
@@ -83,8 +83,8 @@ const { isLoggedIn } = require('../lib/auth')
 //         WHERE
 //             vehiculos.ID_USER = ?
 //         `, [ID_USER]);
-//     res.render('autos/listar', { vehiculos });
-// });
+    res.render('mascotas/listar', /* { vehiculos } */);
+});
 
 // router.get('/eliminar/:ID_VEHICULO', isLoggedIn, async (req, res) => {
 //     const { ID_VEHICULO } = req.params;
