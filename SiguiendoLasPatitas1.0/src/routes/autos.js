@@ -4,7 +4,7 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth')
 
-router.get('/agregar', isLoggedIn, async (req, res) => {
+/* router.get('/agregar', isLoggedIn, async (req, res) => {
     const anio = await pool.query('SELECT * FROM anio');
     const marca_modelo = await pool.query(`
         SELECT
@@ -131,7 +131,7 @@ router.post('/editar/:ID_VEHICULO', isLoggedIn, async (req, res) => {
     await pool.query('UPDATE vehiculos set ? WHERE ID_VEHICULO = ?', [editarAutos, ID_VEHICULO]);
     req.flash('auto_success', 'CAMBIO EXITOSO');
     res.redirect('/autos');
-})
+}) */
 
 module.exports = router;
 

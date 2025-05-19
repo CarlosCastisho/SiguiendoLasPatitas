@@ -45,7 +45,7 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
         })
     })(req, res, next);
 });
-
+/* 
 //PAGINA DE ESTACIONES DE CARGA
 router.get('/listarestaciones', isLoggedIn, async (req, res) => {
     const estacionesCarga = await pool.query(`
@@ -250,7 +250,7 @@ router.post('/editarUser/:ID_USER', isLoggedIn, async (req, res) => {
     req.flash('auto_success', 'Usuario actualizado con éxito');
     res.redirect('/perfil');
 })
-
+ */
 router.get('/cerrar', (req, res, next) => {
     req.logout((err) => {
         if (err) {

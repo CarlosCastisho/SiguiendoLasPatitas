@@ -45,7 +45,6 @@ async function elegirSurtidor(ID_ESTC) {
     return surtidorAleatorio.ID_SURTIDOR; 
 }
 
-
 // Función para cancelar una reserva
 async function cancelarReserva(ID_EST_RES, ID_RESERVA) {
     try {

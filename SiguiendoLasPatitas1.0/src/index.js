@@ -16,7 +16,7 @@ const app = express();
 require('./lib/passport'); // PARA QUE LA APLICACION SE ENTERE DE LA AUTENTIFICACION DE CREACION
 
 //settings
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 4002);
 app.set('views', path.join(__dirname, 'views'))
 app.engine('.hbs', engine({
     defaultLayout: 'main',

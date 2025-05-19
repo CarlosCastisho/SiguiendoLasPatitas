@@ -5,7 +5,7 @@ const pool =  require('../database');
 const {isLoggedIn} = require('../lib/auth');
 const helpers = require('../lib/helpers');
 
-
+/* 
 router.get('/', isLoggedIn, async (req, res) => {
     const adminuser = await pool.query('SELECT * FROM usuario WHERE ID_USER > 1 ');
     res.render('admin/gestionUser', { adminuser });
@@ -37,7 +37,7 @@ router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
 });
 
 
-router.get('/gestionReservas', isLoggedIn, async (req, res) => {
+router.get('/gestionAdopciones', isLoggedIn, async (req, res) => {
     try {
         const reservas = await pool.query(`
             SELECT 
@@ -63,21 +63,21 @@ router.get('/gestionReservas', isLoggedIn, async (req, res) => {
                 usuario usuarios ON reservas.ID_USER = usuarios.ID_USER
         `);
 
-        res.render('admin/gestionReservas', { reservas });
+        res.render('admin/gestionAdopciones', { reservas });
     } catch (error) {
         console.error('Error al obtener las reservas:', error);
         res.status(500).send('Error al obtener las reservas.');
     }
 });
 
-router.get('/gestionReservas/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) =>{
+router.get('/gestionAdopciones/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) =>{
     const {ID_RESERVA} = req.params;
     await pool.query(`UPDATE reservas SET ID_EST_RES = 3 WHERE ID_RESERVA = ?`,[ID_RESERVA]);
-    res.redirect('/admin/gestionReservas');
+    res.redirect('/admin/gestionAdopciones');
 });
 
 
-router.get('/vermarcas', isLoggedIn, async (req, res) => {
+router.get('/vermascotas', isLoggedIn, async (req, res) => {
     const vehiculos = await pool.query('SELECT * FROM vehiculos');
     const marcas = await pool.query('SELECT * FROM marcas');
     const modelos = await pool.query('SELECT * FROM modelos');
@@ -93,18 +93,18 @@ router.get('/vermarcas', isLoggedIn, async (req, res) => {
                 JOIN modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO
                 JOIN tipos_conectores ON marca_modelo.ID_TC = tipos_conectores.ID_TC ;
                 `);
-    res.render('admin/vermarcas', { marcas, modelos, tipos_conectores, marca_modelo, vehiculos });
+    res.render('admin/vermascotas', { marcas, modelos, tipos_conectores, marca_modelo, vehiculos });
 });
             
 //Ruta para agregar relación entre marca, modelo y tipo de conector
-router.post('/vermarcas', isLoggedIn, async (req, res) => {
+router.post('/vermascotas', isLoggedIn, async (req, res) => {
     const { id_marca, id_modelo, id_tc } = req.body;
     try {
         if (id_marca && id_modelo && id_tc) {
             await pool.query('INSERT INTO marca_modelo (ID_MARCA, ID_MODELO, ID_TC) VALUES (?, ?, ?)', [id_marca, id_modelo, id_tc]);
             req.flash('auto_success', 'Relación agregada con éxito');
         }
-        res.redirect('/admin/vermarcas');
+        res.redirect('/admin/vermascotas');
     } catch (error) {
         console.error('Error al agregar relación marca-modelo-tipo de conector:', error);
         res.status(500).send('Error al agregar la relación');
@@ -112,50 +112,50 @@ router.post('/vermarcas', isLoggedIn, async (req, res) => {
 });
 
 // Ruta para agregar nueva marca
-router.post('/vermarcas/marca', isLoggedIn, async (req, res) => {
+router.post('/vermascotas/marca', isLoggedIn, async (req, res) => {
     const { marc_nombre } = req.body;
     const nueva_marc_nombre = {marc_nombre}
     await pool.query('INSERT INTO marcas set ?', [nueva_marc_nombre]);
     req.flash('auto_success', 'MARCA AGREGADA CORRECTAMENTE');
-    res.redirect('/admin/vermarcas');
+    res.redirect('/admin/vermascotas');
 
 });
 
 // Ruta para agregar nuevo modelo
-router.post('/vermarcas/modelo', isLoggedIn, async (req, res) => {
+router.post('/vermascotas/modelo', isLoggedIn, async (req, res) => {
     const { mod_nombre} = req.body;
     if (mod_nombre) {
         await pool.query('INSERT INTO modelos (mod_nombre) VALUES (?)', [mod_nombre]);
     }
     req.flash('auto_success', 'MODELO AGREGADO CORRECTAMENTE');
-    res.redirect('/admin/vermarcas');
+    res.redirect('/admin/vermascotas');
 });
 
 // Ruta para agregar nuevo año
-router.post('/vermarcas/anio', isLoggedIn, async (req, res) => {
+router.post('/vermascotas/anio', isLoggedIn, async (req, res) => {
     const { n_anio } = req.body;
     if (n_anio) {
         await pool.query('INSERT INTO anio (anio) VALUES (?)', [n_anio]);
     }
     req.flash('auto_success', 'AÑO AGREGADO CORRECTAMENTE');
-    res.redirect('/admin/vermarcas');
+    res.redirect('/admin/vermascotas');
 });
 
 // Ruta para agregar nuevo tipo de conector
-router.post('/vermarcas/conector', isLoggedIn, async (req, res) => {
+router.post('/vermascotas/conector', isLoggedIn, async (req, res) => {
     const { tc_nombre } = req.body;
     if (tc_nombre) {
         await pool.query('INSERT INTO tipos_conectores (tc_nombre) VALUES (?)', [tc_nombre]);
     }
     req.flash('auto_success', 'CONECTOR AGREGADO CORRECTAMENTE');
-    res.redirect('/admin/vermarcas');
+    res.redirect('/admin/vermascotas');
 });
 
-router.post('/vermarcas/eliminar', isLoggedIn, async (req, res) => {
+router.post('/vermascotas/eliminar', isLoggedIn, async (req, res) => {
     const ID_MARCA_MODELO = req.body.id_marca_modelo;
     await pool.query('DELETE FROM marca_modelo WHERE ID_MARCA_MODELO = ?', [ID_MARCA_MODELO]);
     req.flash('auto_success', 'RESGISTRO ELIMINADO')
-    res.redirect('/admin/vermarcas');
+    res.redirect('/admin/vermascotas');
 });
 
 router.get('/gestionEstaciones', async (req, res) => {
@@ -382,5 +382,5 @@ router.get('/verEstaciones', isLoggedIn, async(req, res) => {
     res.render('admin/gestiontransacciones');
 });
 
-
+ */
 module.exports = router;
