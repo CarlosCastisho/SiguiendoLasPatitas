@@ -21,7 +21,7 @@ router.post('/registro', isnoLoggedIn, passport.authenticate('local.registro', {
 
 //ACCESO
 router.get('/acceso', isnoLoggedIn, (req, res) => {
-    res.render('auth/acceso')
+    res.render('adoptantes/acceso')
 })
 
 router.post('/acceso', isnoLoggedIn, (req, res, next) => {
