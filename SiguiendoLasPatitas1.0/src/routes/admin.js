@@ -17,35 +17,14 @@ router.get('/eliminar/:ID_USER', isLoggedIn, async (req,res) => {
     req.flash('auto_success', 'USUARIO ELIMINADO')
     res.redirect('/admin');
 });
-router.get('/eliminar/:ID_USER', isLoggedIn, async (req,res) => {
-    const {ID_USER} = req.params;
-    await pool.query('DELETE FROM usuario WHERE ID_USER = ?', [ID_USER]);
-    req.flash('auto_success', 'USUARIO ELIMINADO')
-    res.redirect('/admin');
-});
 
 router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
     const {ID_USER} = req.params;
     const editarAdminUser = await pool.query('SELECT * FROM usuario WHERE ID_USER = ?', [ID_USER]);
     res.render('admin/editarAdminUser', {editarAdminUser: editarAdminUser[0]});
 });
-router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
-    const {ID_USER} = req.params;
-    const editarAdminUser = await pool.query('SELECT * FROM usuario WHERE ID_USER = ?', [ID_USER]);
-    res.render('admin/editarAdminUser', {editarAdminUser: editarAdminUser[0]});
-});
 
 
-router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
-    const { ID_USER } = req.params;
-    const { user_contrasenia } = req.body;
-    const editarAdminUser = {
-        user_contrasenia: await helpers.encryptContrasenia(user_contrasenia)
-    };
-    await pool.query('UPDATE usuario set ? WHERE ID_USER = ?', [editarAdminUser, ID_USER]);
-    req.flash('auto_success', 'Contraseña restablecida');
-    res.redirect('/admin');
-});
 router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
     const { ID_USER } = req.params;
     const { user_contrasenia } = req.body;
@@ -91,11 +70,11 @@ router.get('/gestionReservas', isLoggedIn, async (req, res) => {
     // }
 });
 
-router.get('/gestionAdopciones/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) =>{
-    const {ID_RESERVA} = req.params;
-    await pool.query(`UPDATE reservas SET ID_EST_RES = 3 WHERE ID_RESERVA = ?`,[ID_RESERVA]);
-    res.redirect('/admin/gestionAdopciones');
-});
+// router.get('/gestionReservas/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) =>{
+//     const {ID_RESERVA} = req.params;
+//     await pool.query(`UPDATE reservas SET ID_EST_RES = 3 WHERE ID_RESERVA = ?`,[ID_RESERVA]);
+//     res.redirect('/admin/gestionReservas');
+// });
 
 
 router.get('/vermarcas', isLoggedIn, async (req, res) => {
@@ -132,52 +111,52 @@ router.post('/vermarcas', isLoggedIn, async (req, res) => {
 //     }
 });
 
-// Ruta para agregar nueva marca
-router.post('/vermascotas/marca', isLoggedIn, async (req, res) => {
-    const { marc_nombre } = req.body;
-    const nueva_marc_nombre = {marc_nombre}
-    await pool.query('INSERT INTO marcas set ?', [nueva_marc_nombre]);
-    req.flash('auto_success', 'MARCA AGREGADA CORRECTAMENTE');
-    res.redirect('/admin/vermascotas');
+// // Ruta para agregar nueva marca
+// router.post('/vermarcas/marca', isLoggedIn, async (req, res) => {
+//     const { marc_nombre } = req.body;
+//     const nueva_marc_nombre = {marc_nombre}
+//     await pool.query('INSERT INTO marcas set ?', [nueva_marc_nombre]);
+//     req.flash('auto_success', 'MARCA AGREGADA CORRECTAMENTE');
+//     res.redirect('/admin/vermarcas');
 
-});
+// });
 
-// Ruta para agregar nuevo modelo
-router.post('/vermascotas/modelo', isLoggedIn, async (req, res) => {
-    const { mod_nombre} = req.body;
-    if (mod_nombre) {
-        await pool.query('INSERT INTO modelos (mod_nombre) VALUES (?)', [mod_nombre]);
-    }
-    req.flash('auto_success', 'MODELO AGREGADO CORRECTAMENTE');
-    res.redirect('/admin/vermascotas');
-});
+// // Ruta para agregar nuevo modelo
+// router.post('/vermarcas/modelo', isLoggedIn, async (req, res) => {
+//     const { mod_nombre} = req.body;
+//     if (mod_nombre) {
+//         await pool.query('INSERT INTO modelos (mod_nombre) VALUES (?)', [mod_nombre]);
+//     }
+//     req.flash('auto_success', 'MODELO AGREGADO CORRECTAMENTE');
+//     res.redirect('/admin/vermarcas');
+// });
 
-// Ruta para agregar nuevo año
-router.post('/vermascotas/anio', isLoggedIn, async (req, res) => {
-    const { n_anio } = req.body;
-    if (n_anio) {
-        await pool.query('INSERT INTO anio (anio) VALUES (?)', [n_anio]);
-    }
-    req.flash('auto_success', 'AÑO AGREGADO CORRECTAMENTE');
-    res.redirect('/admin/vermascotas');
-});
+// // Ruta para agregar nuevo año
+// router.post('/vermarcas/anio', isLoggedIn, async (req, res) => {
+//     const { n_anio } = req.body;
+//     if (n_anio) {
+//         await pool.query('INSERT INTO anio (anio) VALUES (?)', [n_anio]);
+//     }
+//     req.flash('auto_success', 'AÑO AGREGADO CORRECTAMENTE');
+//     res.redirect('/admin/vermarcas');
+// });
 
-// Ruta para agregar nuevo tipo de conector
-router.post('/vermascotas/conector', isLoggedIn, async (req, res) => {
-    const { tc_nombre } = req.body;
-    if (tc_nombre) {
-        await pool.query('INSERT INTO tipos_conectores (tc_nombre) VALUES (?)', [tc_nombre]);
-    }
-    req.flash('auto_success', 'CONECTOR AGREGADO CORRECTAMENTE');
-    res.redirect('/admin/vermascotas');
-});
+// // Ruta para agregar nuevo tipo de conector
+// router.post('/vermarcas/conector', isLoggedIn, async (req, res) => {
+//     const { tc_nombre } = req.body;
+//     if (tc_nombre) {
+//         await pool.query('INSERT INTO tipos_conectores (tc_nombre) VALUES (?)', [tc_nombre]);
+//     }
+//     req.flash('auto_success', 'CONECTOR AGREGADO CORRECTAMENTE');
+//     res.redirect('/admin/vermarcas');
+// });
 
-router.post('/vermascotas/eliminar', isLoggedIn, async (req, res) => {
-    const ID_MARCA_MODELO = req.body.id_marca_modelo;
-    await pool.query('DELETE FROM marca_modelo WHERE ID_MARCA_MODELO = ?', [ID_MARCA_MODELO]);
-    req.flash('auto_success', 'RESGISTRO ELIMINADO')
-    res.redirect('/admin/vermascotas');
-});
+// router.post('/vermarcas/eliminar', isLoggedIn, async (req, res) => {
+//     const ID_MARCA_MODELO = req.body.id_marca_modelo;
+//     await pool.query('DELETE FROM marca_modelo WHERE ID_MARCA_MODELO = ?', [ID_MARCA_MODELO]);
+//     req.flash('auto_success', 'RESGISTRO ELIMINADO')
+//     res.redirect('/admin/vermarcas');
+// });
 
 router.get('/gestionEstaciones', async (req, res) => {
 //     try {
@@ -204,59 +183,59 @@ router.get('/gestionEstaciones', async (req, res) => {
 //     }
 });
 
-// Ruta para crear una estación de carga
-router.post('/gestionEstaciones', async (req, res) => {
-    console.log(req.body);
-    const {
-        estc_nombre,
-        estc_direccion,
-        estc_localidad,
-        estc_cant_surtidores,
-        id_provincia,
-        estc_latitud,
-        estc_longitud
-    } = req.body;
+// // Ruta para crear una estación de carga
+// router.post('/gestionEstaciones', async (req, res) => {
+//     console.log(req.body);
+//     const {
+//         estc_nombre,
+//         estc_direccion,
+//         estc_localidad,
+//         estc_cant_surtidores,
+//         id_provincia,
+//         estc_latitud,
+//         estc_longitud
+//     } = req.body;
 
-    try {
-        // Validar que todos los campos requeridos están presentes
-        if (!estc_nombre || !estc_direccion || !estc_localidad || !estc_cant_surtidores || !id_provincia || !estc_latitud || !estc_longitud) {
-            req.flash('error', 'Por favor, completa todos los campos.');
-            return res.redirect('/admin/gestionEstaciones');
-        }
+//     try {
+//         // Validar que todos los campos requeridos están presentes
+//         if (!estc_nombre || !estc_direccion || !estc_localidad || !estc_cant_surtidores || !id_provincia || !estc_latitud || !estc_longitud) {
+//             req.flash('error', 'Por favor, completa todos los campos.');
+//             return res.redirect('/admin/gestionEstaciones');
+//         }
 
-        // Insertar la estación en la base de datos
-        const result = await pool.query(
-            'INSERT INTO estaciones_carga (ESTC_NOMBRE, ESTC_DIRECCION, ESTC_LOCALIDAD, ESTC_CANT_SURTIDORES, ID_PROVINCIA, ESTC_LATITUD, ESTC_LONGITUD) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-            [estc_nombre, estc_direccion, estc_localidad, estc_cant_surtidores, id_provincia, estc_latitud, estc_longitud]
-        );
+//         // Insertar la estación en la base de datos
+//         const result = await pool.query(
+//             'INSERT INTO estaciones_carga (ESTC_NOMBRE, ESTC_DIRECCION, ESTC_LOCALIDAD, ESTC_CANT_SURTIDORES, ID_PROVINCIA, ESTC_LATITUD, ESTC_LONGITUD) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+//             [estc_nombre, estc_direccion, estc_localidad, estc_cant_surtidores, id_provincia, estc_latitud, estc_longitud]
+//         );
 
-        // Obtener el ID de la estación recién creada
-        const idEstacion = result.insertId;
+//         // Obtener el ID de la estación recién creada
+//         const idEstacion = result.insertId;
 
-        // Insertar los surtidores en la tabla surtidores
-        for (let i = 0; i < estc_cant_surtidores; i++) {
-            await pool.query(
-                'INSERT INTO surtidores (SURT_ESTADO, ID_ESTC) VALUES (?, ?)', 
-                [1, idEstacion]  
-            );
-        }
+//         // Insertar los surtidores en la tabla surtidores
+//         for (let i = 0; i < estc_cant_surtidores; i++) {
+//             await pool.query(
+//                 'INSERT INTO surtidores (SURT_ESTADO, ID_ESTC) VALUES (?, ?)', 
+//                 [1, idEstacion]  
+//             );
+//         }
 
-        req.flash('success', 'Estación de carga y surtidores creados exitosamente.');
-        res.redirect('/admin/gestionEstaciones');
-    } catch (error) {
-        console.error('Error al crear estación de carga o surtidores:', error);
-        req.flash('error', 'Ocurrió un error al crear la estación de carga y los surtidores.');
-        res.redirect('/admin/gestionEstaciones');
-    }
-});
+//         req.flash('success', 'Estación de carga y surtidores creados exitosamente.');
+//         res.redirect('/admin/gestionEstaciones');
+//     } catch (error) {
+//         console.error('Error al crear estación de carga o surtidores:', error);
+//         req.flash('error', 'Ocurrió un error al crear la estación de carga y los surtidores.');
+//         res.redirect('/admin/gestionEstaciones');
+//     }
+// });
 
-router.get('/gestionEstaciones/eliminar/:ID_ESTC', isLoggedIn, async (req,res) => {
-    const {ID_ESTC} = req.params;
-    await pool.query('DELETE FROM surtidores WHERE ID_ESTC = ?', [ID_ESTC]);
-    await pool.query('DELETE FROM estaciones_carga WHERE ID_ESTC = ?', [ID_ESTC]);
-    req.flash('auto_success', 'ESTACION ELIMINADA')
-    res.redirect('/admin/gestionEstaciones');
-});
+// router.get('/gestionEstaciones/eliminar/:ID_ESTC', isLoggedIn, async (req,res) => {
+//     const {ID_ESTC} = req.params;
+//     await pool.query('DELETE FROM surtidores WHERE ID_ESTC = ?', [ID_ESTC]);
+//     await pool.query('DELETE FROM estaciones_carga WHERE ID_ESTC = ?', [ID_ESTC]);
+//     req.flash('auto_success', 'ESTACION ELIMINADA')
+//     res.redirect('/admin/gestionEstaciones');
+// });
 
 //Ruta para gestionar transacciones
 router.get('/gestiontransacciones', async(req, res)=>{
@@ -267,40 +246,40 @@ router.get('/gestiontransacciones', async(req, res)=>{
 router.get('/verusuarios', isLoggedIn, async (req, res) => {
 //     const { nombre, apellido, correo } = req.query;
     
-    let query = `
-        SELECT 
-            YEAR(USER_FECHA_REGISTRO) AS anio,
-            MONTH(USER_FECHA_REGISTRO) AS mes,
-            DAY(USER_FECHA_REGISTRO) AS dia,
-            USER_NOMBRE,
-            USER_APELLIDO,
-            USER_CORREO
-        FROM usuario
-        WHERE USER_CORREO <> 'admin@gmail.com'
-    `;
+//     let query = `
+//         SELECT 
+//             YEAR(USER_FECHA_REGISTRO) AS anio,
+//             MONTH(USER_FECHA_REGISTRO) AS mes,
+//             DAY(USER_FECHA_REGISTRO) AS dia,
+//             USER_NOMBRE,
+//             USER_APELLIDO,
+//             USER_CORREO
+//         FROM usuario
+//         WHERE USER_CORREO <> 'admin@gmail.com'
+//     `;
 
-    const params = [];
+//     const params = [];
 
-    if (nombre) {
-        query += ` AND USER_NOMBRE LIKE ?`;
-        params.push(`%${nombre}%`);
-    }
-    if (apellido) {
-        query += ` AND USER_APELLIDO LIKE ?`;
-        params.push(`%${apellido}%`);
-    }
-    if (correo) {
-        query += ` AND USER_CORREO LIKE ?`;
-        params.push(`%${correo}%`);
-    }
+//     if (nombre) {
+//         query += ` AND USER_NOMBRE LIKE ?`;
+//         params.push(`%${nombre}%`);
+//     }
+//     if (apellido) {
+//         query += ` AND USER_APELLIDO LIKE ?`;
+//         params.push(`%${apellido}%`);
+//     }
+//     if (correo) {
+//         query += ` AND USER_CORREO LIKE ?`;
+//         params.push(`%${correo}%`);
+//     }
 
-    const usuarios = await pool.query(query, params);
+//     const usuarios = await pool.query(query, params);
 
-    const totalRegistros = usuarios.length;
+//     const totalRegistros = usuarios.length;
 
-    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-        return res.json({ usuarios, totalRegistros });
-    }
+//     if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+//         return res.json({ usuarios, totalRegistros });
+//     }
 
     res.render('admin/verusuarios',/*  {
         usuarios,
@@ -318,19 +297,19 @@ router.get('/verReservas', async (req, res) => {
 //         ORDER BY dia
 //     `);
 
-    const reservasPorMes = await pool.query(`
-        SELECT DATE_FORMAT(RESERVA_FECHA, '%Y-%m') AS mes, COUNT(*) AS cantidad_reservas
-        FROM reservas
-        GROUP BY mes
-        ORDER BY mes
-    `);
+//     const reservasPorMes = await pool.query(`
+//         SELECT DATE_FORMAT(RESERVA_FECHA, '%Y-%m') AS mes, COUNT(*) AS cantidad_reservas
+//         FROM reservas
+//         GROUP BY mes
+//         ORDER BY mes
+//     `);
 
-    const reservasPorAno = await pool.query(`
-        SELECT YEAR(RESERVA_FECHA) AS anio, COUNT(*) AS cantidad_reservas
-        FROM reservas
-        GROUP BY anio
-        ORDER BY anio
-    `);
+//     const reservasPorAno = await pool.query(`
+//         SELECT YEAR(RESERVA_FECHA) AS anio, COUNT(*) AS cantidad_reservas
+//         FROM reservas
+//         GROUP BY anio
+//         ORDER BY anio
+//     `);
 
     res.render('admin/verReservas', /* {
         reservasPorDia,
@@ -343,48 +322,48 @@ router.get('/verReservas', async (req, res) => {
 router.get('/verEstaciones', async (req, res) => {
 //     const { estacion } = req.query;
 
-    let filtroEstacion = estacion ? `WHERE EC.ESTC_NOMBRE LIKE ${pool.escape(`%${estacion}%`)}` : '';
-    let indicadores = {};
+//     let filtroEstacion = estacion ? `WHERE EC.ESTC_NOMBRE LIKE ${pool.escape(`%${estacion}%`)}` : '';
+//     let indicadores = {};
 
-    // Consultas para los diferentes indicadores
-    indicadores.reservasPorDia = await pool.query(`
-        SELECT 
-            EC.ESTC_NOMBRE AS estacion,
-            R.RESERVA_FECHA AS dia,
-            COUNT(*) AS total_reservas
-        FROM reservas R
-        JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
-        JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
-        ${filtroEstacion}
-        GROUP BY EC.ESTC_NOMBRE, R.RESERVA_FECHA
-        ORDER BY EC.ESTC_NOMBRE, R.RESERVA_FECHA;
-    `);
+//     // Consultas para los diferentes indicadores
+//     indicadores.reservasPorDia = await pool.query(`
+//         SELECT 
+//             EC.ESTC_NOMBRE AS estacion,
+//             R.RESERVA_FECHA AS dia,
+//             COUNT(*) AS total_reservas
+//         FROM reservas R
+//         JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
+//         JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
+//         ${filtroEstacion}
+//         GROUP BY EC.ESTC_NOMBRE, R.RESERVA_FECHA
+//         ORDER BY EC.ESTC_NOMBRE, R.RESERVA_FECHA;
+//     `);
 
-    indicadores.reservasPorMes = await pool.query(`
-        SELECT 
-            EC.ESTC_NOMBRE AS estacion,
-            DATE_FORMAT(R.RESERVA_FECHA, '%Y-%m') AS mes,
-            COUNT(*) AS total_reservas
-        FROM reservas R
-        JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
-        JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
-        ${filtroEstacion}
-        GROUP BY EC.ESTC_NOMBRE, mes
-        ORDER BY EC.ESTC_NOMBRE, mes;
-    `);
+//     indicadores.reservasPorMes = await pool.query(`
+//         SELECT 
+//             EC.ESTC_NOMBRE AS estacion,
+//             DATE_FORMAT(R.RESERVA_FECHA, '%Y-%m') AS mes,
+//             COUNT(*) AS total_reservas
+//         FROM reservas R
+//         JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
+//         JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
+//         ${filtroEstacion}
+//         GROUP BY EC.ESTC_NOMBRE, mes
+//         ORDER BY EC.ESTC_NOMBRE, mes;
+//     `);
 
-    indicadores.reservasPorAno = await pool.query(`
-        SELECT 
-            EC.ESTC_NOMBRE AS estacion,
-            YEAR(R.RESERVA_FECHA) AS anio,
-            COUNT(*) AS total_reservas
-        FROM reservas R
-        JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
-        JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
-        ${filtroEstacion}
-        GROUP BY EC.ESTC_NOMBRE, anio
-        ORDER BY EC.ESTC_NOMBRE, anio;
-    `);
+//     indicadores.reservasPorAno = await pool.query(`
+//         SELECT 
+//             EC.ESTC_NOMBRE AS estacion,
+//             YEAR(R.RESERVA_FECHA) AS anio,
+//             COUNT(*) AS total_reservas
+//         FROM reservas R
+//         JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
+//         JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
+//         ${filtroEstacion}
+//         GROUP BY EC.ESTC_NOMBRE, anio
+//         ORDER BY EC.ESTC_NOMBRE, anio;
+//     `);
 
     res.render('admin/verEstaciones', /* { indicadores, estacion } */);
 });
@@ -393,14 +372,7 @@ router.get('/verEstaciones', async (req, res) => {
 router.get('/verusuarios', isLoggedIn, async(req, res) => {
     res.render('admin/gestiontransacciones');
 });
-//Botónes Volver 
-router.get('/verusuarios', isLoggedIn, async(req, res) => {
-    res.render('admin/gestiontransacciones');
-});
 
-router.get('/verReservas', isLoggedIn, async(req, res) => {
-    res.render('admin/gestiontransacciones');
-});
 router.get('/verReservas', isLoggedIn, async(req, res) => {
     res.render('admin/gestiontransacciones');
 });
@@ -408,9 +380,6 @@ router.get('/verReservas', isLoggedIn, async(req, res) => {
 router.get('/verEstaciones', isLoggedIn, async(req, res) => {
     res.render('admin/gestiontransacciones');
 });
-router.get('/verEstaciones', isLoggedIn, async(req, res) => {
-    res.render('admin/gestiontransacciones');
-});
 
- */
+
 module.exports = router;

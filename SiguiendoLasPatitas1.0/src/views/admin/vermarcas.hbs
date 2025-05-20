@@ -1,12 +1,12 @@
 <div class="card p-4 fondoGradiente2">
-    <h3 class="text-center colorGreen">Agregar mascota</h3>
+    <h3 class="text-center colorGreen">Agrega nuevos vehículos eléctricos</h3>
     <div class="row">
         <div class="col-sm-3">
             <div class="card fondoGradiente2">
                 <div class="card-body">
                     <!-- Formulario para agregar una nueva marca -->
-                    <form action="/admin/vermascotas/marca" method="POST" style="text-align: center;">
-                        <label for="marc_nombre" class="form-label letraBold">Ingresa la raza</label>
+                    <form action="/admin/vermarcas/marca" method="POST" style="text-align: center;">
+                        <label for="marc_nombre" class="form-label letraBold">Ingresa la marca</label>
                         <input type="text" class="form-control fondoGradiente3" name="marc_nombre" placeholder="Nombre de marca" required>
                         <button class="btn btn-success m-1">Agregar</button>
                     </form>
@@ -17,7 +17,7 @@
             <div class="card fondoGradiente2">
                 <div class="card-body">
                     <!-- Formulario para agregar un nuevo modelo -->
-                    <form action="/admin/vermascotas/modelo" method="POST" style="text-align: center;">
+                    <form action="/admin/vermarcas/modelo" method="POST" style="text-align: center;">
                         <label for="mod_nombre" class="form-label letraBold">Ingresa el modelo</label>
                         <input type="text" class="form-control fondoGradiente3" name="mod_nombre" placeholder="Nombre del modelo" required>
                         <button class="btn btn-success m-1">Agregar</button>
@@ -29,7 +29,7 @@
             <div class="card fondoGradiente2">
                 <div class="card-body">
                     <!-- Formulario para agregar un nuevo tipo de conector -->
-                    <form action="/admin/vermascotas/conector" method="POST" style="text-align: center;">
+                    <form action="/admin/vermarcas/conector" method="POST" style="text-align: center;">
                         <label for="tc_nombre" class="form-label letraBold">Tipo de conector</label>
                         <input type="text" class="form-control fondoGradiente3" name="tc_nombre" placeholder="Tipo de conector" required>
                         <button class="btn btn-success m-1">Agregar</button>
@@ -41,7 +41,7 @@
             <div class="card fondoGradiente2">
                 <div class="card-body">
                     <!-- Formulario para agregar una nuevo año -->
-                    <form action="/admin/vermascotas/anio" method="POST" style="text-align: center;">
+                    <form action="/admin/vermarcas/anio" method="POST" style="text-align: center;">
                         <label for="n_anio" class="form-label letraBold">Elije el año</label>
                         <input type="number" class="form-control fondoGradiente3" name="n_anio" placeholder="Año" min="2005" max="2025" required>
                         <button class="btn btn-success m-1">Agregar</button>
@@ -52,13 +52,13 @@
     </div>
 </div>
 <div class="card p-4 fondoGradiente2">
-    <h3 class="text-">Mascotas</h3>
+    <h3 class="text-center colorGreen">Relaciona marcas, modelos y tipos de conector</h3>
     <div class="row">
         <div class="col-sm-4 mb-3 mb-sm-0">
             <div class="card fondoGradiente2">
                 <div class="card-body">
                     <!-- Formulario para asociar una marca con un modelo y tipo de conector -->
-                    <form action="/admin/vermascotas" method="POST">
+                    <form action="/admin/vermarcas" method="POST">
                         <!-- Desplegable de Marcas -->
                         <div class="form-group my-3">
                             <label for="id_marca" class="form-label letraBold">Marca</label>
@@ -96,7 +96,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-8 align-self-center mt-5">
+        <div class="col-sm-8">
             <div class="card fondoGradiente2">
                 <div class="card-body">
                     <table class="table table-bordered table-header">
@@ -116,7 +116,7 @@
                                 <td> {{MOD_NOMBRE}} </td>
                                 <td> {{TC_NOMBRE}} </td>
                                 <td>
-                                    <form action="/admin/vermascotas/eliminar" method="post" onclick="return confirm('¿Estás seguro de eliminar esta relacion?')">
+                                    <form action="/admin/vermarcas/eliminar" method="post" onclick="return confirm('¿Estás seguro de eliminar esta relacion?')">
                                         <input type="hidden" name="id_marca_modelo" value="{{ID_MARCA_MODELO}}">
                                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                                     </form>
