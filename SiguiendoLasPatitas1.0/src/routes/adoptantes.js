@@ -9,7 +9,7 @@ const { verificarReserva, hacerReserva, elegirSurtidor, buscarEstacion } = requi
 
 // RENDERIZA EL FORMULRIO
 router.get('/registro', isnoLoggedIn, (req, res) => {
-    res.render('auth/registro')
+    res.render('adoptantes/registro')
 });
 
 //REGISTRO

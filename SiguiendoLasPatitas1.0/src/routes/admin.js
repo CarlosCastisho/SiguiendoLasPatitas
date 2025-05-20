@@ -6,39 +6,39 @@ const {isLoggedIn} = require('../lib/auth');
 const helpers = require('../lib/helpers');
 
 
-// router.get('/', isLoggedIn, async (req, res) => {
-//     const adminuser = await pool.query('SELECT * FROM usuario WHERE ID_USER > 1 ');
-//     res.render('admin/gestionUser', { adminuser });
-// });
+router.get('/', isLoggedIn, async (req, res) => {
+    const adminuser = await pool.query('SELECT * FROM usuario WHERE ID_USER > 1 ');
+    res.render('admin/gestionUser', { adminuser });
+});
 
-// router.get('/eliminar/:ID_USER', isLoggedIn, async (req,res) => {
-//     const {ID_USER} = req.params;
-//     await pool.query('DELETE FROM usuario WHERE ID_USER = ?', [ID_USER]);
-//     req.flash('auto_success', 'USUARIO ELIMINADO')
-//     res.redirect('/admin');
-// });
+router.get('/eliminar/:ID_USER', isLoggedIn, async (req,res) => {
+    const {ID_USER} = req.params;
+    await pool.query('DELETE FROM usuario WHERE ID_USER = ?', [ID_USER]);
+    req.flash('auto_success', 'USUARIO ELIMINADO')
+    res.redirect('/admin');
+});
 
-// router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
-//     const {ID_USER} = req.params;
-//     const editarAdminUser = await pool.query('SELECT * FROM usuario WHERE ID_USER = ?', [ID_USER]);
-//     res.render('admin/editarAdminUser', {editarAdminUser: editarAdminUser[0]});
-// });
-
-
-// router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
-//     const { ID_USER } = req.params;
-//     const { user_contrasenia } = req.body;
-//     const editarAdminUser = {
-//         user_contrasenia: await helpers.encryptContrasenia(user_contrasenia)
-//     };
-//     await pool.query('UPDATE usuario set ? WHERE ID_USER = ?', [editarAdminUser, ID_USER]);
-//     req.flash('auto_success', 'Contraseña restablecida');
-//     res.redirect('/admin');
-// });
+router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
+    const {ID_USER} = req.params;
+    const editarAdminUser = await pool.query('SELECT * FROM usuario WHERE ID_USER = ?', [ID_USER]);
+    res.render('admin/editarAdminUser', {editarAdminUser: editarAdminUser[0]});
+});
 
 
-// router.get('/gestionReservas', isLoggedIn, async (req, res) => {
-//     try {
+router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
+    const { ID_USER } = req.params;
+    const { user_contrasenia } = req.body;
+    const editarAdminUser = {
+        user_contrasenia: await helpers.encryptContrasenia(user_contrasenia)
+    };
+    await pool.query('UPDATE usuario set ? WHERE ID_USER = ?', [editarAdminUser, ID_USER]);
+    req.flash('auto_success', 'Contraseña restablecida');
+    res.redirect('/admin');
+});
+
+
+router.get('/gestionReservas', isLoggedIn, async (req, res) => {
+    /* try { */
 //         const reservas = await pool.query(`
 //             SELECT 
 //                 reservas.ID_RESERVA,
@@ -63,12 +63,12 @@ const helpers = require('../lib/helpers');
 //                 usuario usuarios ON reservas.ID_USER = usuarios.ID_USER
 //         `);
 
-//         res.render('admin/gestionReservas', { reservas });
-//     } catch (error) {
-//         console.error('Error al obtener las reservas:', error);
-//         res.status(500).send('Error al obtener las reservas.');
-//     }
-// });
+        res.render('admin/gestionReservas', /* { reservas } */);
+    // } catch (error) {
+    //     console.error('Error al obtener las reservas:', error);
+    //     res.status(500).send('Error al obtener las reservas.');
+    // }
+});
 
 // router.get('/gestionReservas/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) =>{
 //     const {ID_RESERVA} = req.params;
@@ -77,7 +77,7 @@ const helpers = require('../lib/helpers');
 // });
 
 
-// router.get('/vermarcas', isLoggedIn, async (req, res) => {
+router.get('/vermarcas', isLoggedIn, async (req, res) => {
 //     const vehiculos = await pool.query('SELECT * FROM vehiculos');
 //     const marcas = await pool.query('SELECT * FROM marcas');
 //     const modelos = await pool.query('SELECT * FROM modelos');
@@ -93,23 +93,23 @@ const helpers = require('../lib/helpers');
 //                 JOIN modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO
 //                 JOIN tipos_conectores ON marca_modelo.ID_TC = tipos_conectores.ID_TC ;
 //                 `);
-//     res.render('admin/vermarcas', { marcas, modelos, tipos_conectores, marca_modelo, vehiculos });
-// });
+    res.render('admin/vermarcas', /* { marcas, modelos, tipos_conectores, marca_modelo, vehiculos } */);
+});
             
 // //Ruta para agregar relación entre marca, modelo y tipo de conector
-// router.post('/vermarcas', isLoggedIn, async (req, res) => {
+router.post('/vermarcas', isLoggedIn, async (req, res) => {
 //     const { id_marca, id_modelo, id_tc } = req.body;
 //     try {
 //         if (id_marca && id_modelo && id_tc) {
 //             await pool.query('INSERT INTO marca_modelo (ID_MARCA, ID_MODELO, ID_TC) VALUES (?, ?, ?)', [id_marca, id_modelo, id_tc]);
 //             req.flash('auto_success', 'Relación agregada con éxito');
 //         }
-//         res.redirect('/admin/vermarcas');
+        res.redirect('/admin/vermarcas');
 //     } catch (error) {
 //         console.error('Error al agregar relación marca-modelo-tipo de conector:', error);
 //         res.status(500).send('Error al agregar la relación');
 //     }
-// });
+});
 
 // // Ruta para agregar nueva marca
 // router.post('/vermarcas/marca', isLoggedIn, async (req, res) => {
@@ -158,7 +158,7 @@ const helpers = require('../lib/helpers');
 //     res.redirect('/admin/vermarcas');
 // });
 
-// router.get('/gestionEstaciones', async (req, res) => {
+router.get('/gestionEstaciones', async (req, res) => {
 //     try {
 //         const estaciones = await pool.query(`
 //         SELECT
@@ -176,12 +176,12 @@ const helpers = require('../lib/helpers');
 //             provincias ON estaciones_carga.ID_PROVINCIA = provincias.ID_PROVINCIA
 //         `);
 //         const provincias = await pool.query('SELECT * FROM provincias');
-//         res.render('admin/gestionEstaciones', { estaciones, provincias }); 
+        res.render('admin/gestionEstaciones', /* { estaciones, provincias } */); 
 //     } catch (error) {
 //         console.error('Error al obtener las estaciones o provincias:', error);
 //         res.status(500).send('Error al cargar las estaciones');
 //     }
-// });
+});
 
 // // Ruta para crear una estación de carga
 // router.post('/gestionEstaciones', async (req, res) => {
@@ -237,13 +237,13 @@ const helpers = require('../lib/helpers');
 //     res.redirect('/admin/gestionEstaciones');
 // });
 
-// //Ruta para gestionar transacciones
-// router.get('/gestiontransacciones', async(req, res)=>{
-//     res.render('admin/gestiontransacciones');
-// });
+//Ruta para gestionar transacciones
+router.get('/gestiontransacciones', async(req, res)=>{
+    res.render('admin/gestiontransacciones');
+});
 
 // //Ruta ver usuarios
-// router.get('/verusuarios', isLoggedIn, async (req, res) => {
+router.get('/verusuarios', isLoggedIn, async (req, res) => {
 //     const { nombre, apellido, correo } = req.query;
     
 //     let query = `
@@ -281,15 +281,15 @@ const helpers = require('../lib/helpers');
 //         return res.json({ usuarios, totalRegistros });
 //     }
 
-//     res.render('admin/verusuarios', {
-//         usuarios,
-//         totalRegistros
-//     });
-// });
+    res.render('admin/verusuarios',/*  {
+        usuarios,
+        totalRegistros
+    } */);
+});
 
 
-// //Ver Reservas
-// router.get('/verReservas', async (req, res) => {
+//Ver Reservas
+router.get('/verReservas', async (req, res) => {
 //     const reservasPorDia = await pool.query(`
 //         SELECT RESERVA_FECHA AS dia, COUNT(*) AS cantidad_reservas
 //         FROM reservas
@@ -311,15 +311,15 @@ const helpers = require('../lib/helpers');
 //         ORDER BY anio
 //     `);
 
-//     res.render('admin/verReservas', {
-//         reservasPorDia,
-//         reservasPorMes,
-//         reservasPorAno
-//     });
-// });
+    res.render('admin/verReservas', /* {
+        reservasPorDia,
+        reservasPorMes,
+        reservasPorAno
+    } */);
+});
 
-// // Ver Estaciones
-// router.get('/verEstaciones', async (req, res) => {
+// Ver Estaciones
+router.get('/verEstaciones', async (req, res) => {
 //     const { estacion } = req.query;
 
 //     let filtroEstacion = estacion ? `WHERE EC.ESTC_NOMBRE LIKE ${pool.escape(`%${estacion}%`)}` : '';
@@ -365,21 +365,21 @@ const helpers = require('../lib/helpers');
 //         ORDER BY EC.ESTC_NOMBRE, anio;
 //     `);
 
-//     res.render('admin/verEstaciones', { indicadores, estacion });
-// });
+    res.render('admin/verEstaciones', /* { indicadores, estacion } */);
+});
 
-// //Botónes Volver 
-// router.get('/verusuarios', isLoggedIn, async(req, res) => {
-//     res.render('admin/gestiontransacciones');
-// });
+//Botónes Volver 
+router.get('/verusuarios', isLoggedIn, async(req, res) => {
+    res.render('admin/gestiontransacciones');
+});
 
-// router.get('/verReservas', isLoggedIn, async(req, res) => {
-//     res.render('admin/gestiontransacciones');
-// });
+router.get('/verReservas', isLoggedIn, async(req, res) => {
+    res.render('admin/gestiontransacciones');
+});
 
-// router.get('/verEstaciones', isLoggedIn, async(req, res) => {
-//     res.render('admin/gestiontransacciones');
-// });
+router.get('/verEstaciones', isLoggedIn, async(req, res) => {
+    res.render('admin/gestiontransacciones');
+});
 
 
 module.exports = router;
