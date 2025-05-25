@@ -77,86 +77,75 @@ router.get('/gestionReservas', isLoggedIn, async (req, res) => {
 // });
 
 
-router.get('/vermarcas', isLoggedIn, async (req, res) => {
-//     const vehiculos = await pool.query('SELECT * FROM vehiculos');
-//     const marcas = await pool.query('SELECT * FROM marcas');
-//     const modelos = await pool.query('SELECT * FROM modelos');
-//     const tipos_conectores = await pool.query('SELECT * FROM tipos_conectores');
-//     const marca_modelo = await pool.query(`
-//         SELECT 
-//                 marca_modelo.ID_MARCA_MODELO, 
-//                 marcas.MARC_NOMBRE, 
-//                 modelos.MOD_NOMBRE,
-//                 tipos_conectores.TC_NOMBRE 
-//                 FROM marca_modelo 
-//                 JOIN marcas ON marca_modelo.ID_MARCA = marcas.ID_MARCA
-//                 JOIN modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO
-//                 JOIN tipos_conectores ON marca_modelo.ID_TC = tipos_conectores.ID_TC ;
-//                 `);
-    res.render('admin/vermarcas', /* { marcas, modelos, tipos_conectores, marca_modelo, vehiculos } */);
+router.get('/adminmascotas', isLoggedIn, async (req, res) => {
+    const mascotas = await pool.query('SELECT * FROM mascotas');
+    const tipo = await pool.query('SELECT * FROM tipo');
+    const raza = await pool.query('SELECT * FROM raza');
+    const sexo = await pool.query('SELECT * FROM sexo');
+    const tipo_raza = await pool.query(`
+        SELECT 
+                tipo_raza.ID_TIPO_RAZA, 
+                tipo.TIPO_NOMBRE, 
+                raza.RAZA_NOMBRE,
+                sexo.SEXO_NOMBRE 
+                FROM tipo_raza 
+                JOIN tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
+                JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+                JOIN sexo ON tipo_raza.ID_SEXO = sexo.ID_SEXO ;
+                `);
+    res.render('admin/adminmascotas', { tipo, raza, sexo, tipo_raza, mascotas });
 });
             
 // //Ruta para agregar relación entre marca, modelo y tipo de conector
-router.post('/vermarcas', isLoggedIn, async (req, res) => {
-//     const { id_marca, id_modelo, id_tc } = req.body;
-//     try {
-//         if (id_marca && id_modelo && id_tc) {
-//             await pool.query('INSERT INTO marca_modelo (ID_MARCA, ID_MODELO, ID_TC) VALUES (?, ?, ?)', [id_marca, id_modelo, id_tc]);
-//             req.flash('auto_success', 'Relación agregada con éxito');
-//         }
-        res.redirect('/admin/vermarcas');
-//     } catch (error) {
-//         console.error('Error al agregar relación marca-modelo-tipo de conector:', error);
-//         res.status(500).send('Error al agregar la relación');
-//     }
+router.post('/adminmascotas', isLoggedIn, async (req, res) => {
+    const { id_tipo, id_raza, id_sexo } = req.body;
+    try {
+        if (id_tipo && id_raza && id_sexo) {
+            await pool.query('INSERT INTO tipo_raza (ID_TIPO, ID_RAZA, ID_SEXO) VALUES (?, ?, ?)', [id_tipo, id_raza, id_sexo]);
+            req.flash('auto_success', 'Relación agregada con éxito');
+        }
+        res.redirect('/admin/adminmascotas');
+    } catch (error) {
+        console.error('Error al agregar relación TIPO-RAZA-SEXO:', error);
+        res.status(500).send('Error al agregar la relación');
+    }
 });
 
-// // Ruta para agregar nueva marca
-// router.post('/vermarcas/marca', isLoggedIn, async (req, res) => {
-//     const { marc_nombre } = req.body;
-//     const nueva_marc_nombre = {marc_nombre}
-//     await pool.query('INSERT INTO marcas set ?', [nueva_marc_nombre]);
-//     req.flash('auto_success', 'MARCA AGREGADA CORRECTAMENTE');
-//     res.redirect('/admin/vermarcas');
+// Ruta para agregar un tipo de mascota
+router.post('/adminmascotas/tipo', isLoggedIn, async (req, res) => {
+    const { tipo_nombre } = req.body;
+    const nuevo_tipo_nombre = {tipo_nombre}
+    await pool.query('INSERT INTO tipo set ?', [nuevo_tipo_nombre]);
+    req.flash('auto_success', 'TIPO AGREGADO CORRECTAMENTE');
+    res.redirect('/admin/adminmascotas');
+});
 
-// });
+// Ruta para agregar una raza
+router.post('/adminmascotas/raza', isLoggedIn, async (req, res) => {
+    const { raza_nombre } = req.body;
+    if (raza_nombre) {
+        await pool.query('INSERT INTO raza (raza_nombre) VALUES (?)', [raza_nombre]);
+    }
+    req.flash('auto_success', 'RAZA AGREGADA CORRECTAMENTE');
+    res.redirect('/admin/adminmascotas');
+});
 
-// // Ruta para agregar nuevo modelo
-// router.post('/vermarcas/modelo', isLoggedIn, async (req, res) => {
-//     const { mod_nombre} = req.body;
-//     if (mod_nombre) {
-//         await pool.query('INSERT INTO modelos (mod_nombre) VALUES (?)', [mod_nombre]);
-//     }
-//     req.flash('auto_success', 'MODELO AGREGADO CORRECTAMENTE');
-//     res.redirect('/admin/vermarcas');
-// });
+// Ruta para agregar un sexo
+router.post('/adminmascotas/sexo', isLoggedIn, async (req, res) => {
+    const { sexo_nombre } = req.body;
+    if (sexo_nombre) {
+        await pool.query('INSERT INTO sexo (sexo_nombre) VALUES (?)', [sexo_nombre]);
+    }
+    req.flash('auto_success', 'SEXO AGREGADO CORRECTAMENTE');
+    res.redirect('/admin/adminmascotas');
+});
 
-// // Ruta para agregar nuevo año
-// router.post('/vermarcas/anio', isLoggedIn, async (req, res) => {
-//     const { n_anio } = req.body;
-//     if (n_anio) {
-//         await pool.query('INSERT INTO anio (anio) VALUES (?)', [n_anio]);
-//     }
-//     req.flash('auto_success', 'AÑO AGREGADO CORRECTAMENTE');
-//     res.redirect('/admin/vermarcas');
-// });
-
-// // Ruta para agregar nuevo tipo de conector
-// router.post('/vermarcas/conector', isLoggedIn, async (req, res) => {
-//     const { tc_nombre } = req.body;
-//     if (tc_nombre) {
-//         await pool.query('INSERT INTO tipos_conectores (tc_nombre) VALUES (?)', [tc_nombre]);
-//     }
-//     req.flash('auto_success', 'CONECTOR AGREGADO CORRECTAMENTE');
-//     res.redirect('/admin/vermarcas');
-// });
-
-// router.post('/vermarcas/eliminar', isLoggedIn, async (req, res) => {
-//     const ID_MARCA_MODELO = req.body.id_marca_modelo;
-//     await pool.query('DELETE FROM marca_modelo WHERE ID_MARCA_MODELO = ?', [ID_MARCA_MODELO]);
-//     req.flash('auto_success', 'RESGISTRO ELIMINADO')
-//     res.redirect('/admin/vermarcas');
-// });
+router.post('/adminmascotas/eliminar', isLoggedIn, async (req, res) => {
+    const ID_TIPO_RAZA = req.body.id_tipo_raza;
+    await pool.query('DELETE FROM tipo_raza WHERE ID_TIPO_RAZA = ?', [ID_TIPO_RAZA]);
+    req.flash('auto_success', 'RESGISTRO ELIMINADO')
+    res.redirect('/admin/adminmascotas');
+});
 
 router.get('/gestionEstaciones', async (req, res) => {
 //     try {

@@ -1,0 +1,119 @@
+<div class="card p-4 fondoGradiente2">
+    <h3 class="text-center colorLogo">Agrega nuevas mascotas</h3>
+    <div class="row justify-content-md-center">
+        <div class="col-sm-3">
+            <div class="card fondoGradiente2">
+                <div class="card-body">
+                    <!-- Formulario para agregar un nuevo tipo -->
+                    <form action="/admin/adminmascotas/tipo" method="POST" style="text-align: center;">
+                        <label for="tipo_nombre" class="form-label letraBold">Tipo</label>
+                        <input type="text" class="form-control" name="tipo_nombre" placeholder="Gato, Perro, otros" required>
+                        <button class="btn btn-success m-1">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card fondoGradiente2">
+                <div class="card-body">
+                    <!-- Formulario para agregar un nuevo modelo -->
+                    <form action="/admin/adminmascotas/raza" method="POST" style="text-align: center;">
+                        <label for="raza_nombre" class="form-label letraBold">Raza</label>
+                        <input type="text" class="form-control" name="raza_nombre" placeholder="Nombre de la Raza" required>
+                        <button class="btn btn-success m-1">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card fondoGradiente2">
+                <div class="card-body">
+                    <!-- Formulario para agregar un nuevo tipo de conector -->
+                    <form action="/admin/adminmascotas/sexo" method="POST" style="text-align: center;">
+                        <label for="sexo_nombre" class="form-label letraBold">Sexo</label>
+                        <input type="text" class="form-control" name="sexo_nombre" placeholder="Hembra o Macho" required>
+                        <button class="btn btn-success m-1">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card p-4 fondoGradiente2">
+    <h3 class="text-center colorLogo">Relaciona tipo, raza y sexo.</h3>
+    <div class="row">
+        <div class="col-sm-4 mb-3 mb-sm-0">
+            <div class="card fondoGradiente2">
+                <div class="card-body">
+                    <!-- Formulario para asociar una marca con un modelo y tipo de conector -->
+                    <form action="/admin/adminmascotas" method="POST">
+                        <!-- Desplegable de Marcas -->
+                        <div class="form-group my-3">
+                            <label for="id_tipo" class="form-label letraBold">Tipo:</label>
+                            <select id="id_tipo" class="form-control" name="id_tipo" required>
+                                <option value="" disabled selected>Selecciona un tipo</option>
+                                {{#each tipo}}
+                                <option value="{{ID_TIPO}}">{{TIPO_NOMBRE}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <!-- Desplegable de Modelos -->
+                        <div class="form-group my-3">
+                            <label for="id_raza" class="form-label letraBold">Raza:</label>
+                            <select id="id_raza" class="form-control" name="id_raza" required>
+                                <option value="" disabled selected>Selecciona una raza</option>
+                                {{#each raza}}
+                                <option value="{{ID_RAZA}}">{{RAZA_NOMBRE}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <!-- Desplegable de Tipos de Conector -->
+                        <div class="form-group my-3">
+                            <label for="id_sexo" class="form-label letraBold">Sexo:</label>
+                            <select id="id_sexo" class="form-control" name="id_sexo" required>
+                                <option value="" disabled selected>Selecciona un sexo</option>
+                                {{#each sexo}}
+                                <option value="{{ID_SEXO}}">{{SEXO_NOMBRE}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group d-grid my-3">
+                            <button class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card fondoGradiente2">
+                <div class="card-body">
+                    <table class="table table-bordered table-header">
+                        <h4 class="text-center colorLogo">Mascotas agregadas</h4>
+                        <thead>
+                            <tr>
+                                <th scope="col" class="fondoGradiente2">Tipo</th>
+                                <th scope="col" class="fondoGradiente2">Raza</th>
+                                <th scope="col" class="fondoGradiente2">Sexo</th>
+                                <th scope="col" class="fondoGradiente2">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each tipo_raza}}
+                            <tr>
+                                <td> {{TIPO_NOMBRE}} </td>
+                                <td> {{RAZA_NOMBRE}} </td>
+                                <td> {{SEXO_NOMBRE}} </td>
+                                <td>
+                                    <form action="/admin/adminmascotas/eliminar" method="post" onclick="return confirm('¿Estás seguro de eliminar esta relacion?')">
+                                        <input type="hidden" name="id_tipo_raza" value="{{ID_TIPO_RAZA}}">
+                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {{/each}}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,45 +2,52 @@
     <div class="row">
         <div class="col-md-4 mx-auto">
             <div class="card">
-                <div class="card-body fondoGradiente3">
-                    <h3 class="colorGreen table-header">Editar vehículo</h3>
-                    <form action="/autos/editar/{{editarAutos.ID_VEHICULO}}" method="POST">
+                <div class="card-body">
+                    <h3 class="colorGreen table-header">Editar una Mascota</h3>
+                    <form action="/mascotas/editar/{{editarMascotas.ID_MASCOTAS}}" method="POST">
                         <div class="form-group my-3">
-                            <label for="marc_nombre" class="form-label colorBlue letraBold">Marca:</label>
-                            <select id="marc_nombre" class="form-control fondoGradiente3" name="veh_marca" required>
-                                <option value="" disabled>Seleccione una marca</option>
-                                {{#each marcas }}
-                                <option value="{{ID_MARCA}}" {{#ifCond ID_MARCA ../editarAutos.ID_MARCA}}selected
+                            <label for="tipo_nombre" class="form-label colorLogo letraBold">Tipo:</label>
+                            <select id="tipo_nombre" class="form-control" name="mascota_tipo" required>
+                                <option value="" disabled selected>Mascota</option>
+                                {{#each tipos }}
+                                <option value="{{ID_TIPO}}" {{#ifCond ID_TIPO ../mascotas.ID_TIPO}} selected
                                     {{/ifCond}}>
-                                    {{MARC_NOMBRE}}</option>
+                                    {{TIPO_NOMBRE}}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="mod_nombre" class="form-label colorBlue letraBold">Modelo:</label>
-                            <select id="mod_nombre" class="form-control fondoGradiente3" name="veh_modelo">
-                                <option value="" disabled selected>Selecciona un modelo</option>
+                            <label for="raza_nombre" class="form-label colorLogo letraBold">Raza:</label>
+                            <select id="raza_nombre" class="form-control" name="mascota_raza" required>
+                                <option value="{{editarMascotas.ID_RAZA}}" selected>{{editarMascotas.RAZA_NOMBRE}}</option>
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="veh_anio" class="form-label colorBlue letraBold">Año:</label>
-                            <select type="text" id="veh_anio" class="form-control fondoGradiente3" name="veh_anio">
-                                <option value="" disabled selected>Selecciona un año</option>
-                                {{#each anios}}
-                                <option value="{{this.ID_ANIO}}" {{#ifCond this.ID_ANIO ../editarAutos.ID_ANIO}}selected{{/ifCond}}>
-                                    {{this.ANIO}}
+                            <label for="sexo_nombre" class="form-label colorLogo letraBold">Sexo:</label>
+                            <select id="sexo_nombre" class="form-control" name="mascota_sexo" required>
+                                {{#each sexos}}
+                                <option value="{{ID_SEXO}}" {{#ifCond ID_SEXO ../mascota.ID_SEXO}}selected{{/ifCond}}>
+                                    {{SEXO_NOMBRE}}
                                 </option>
                                 {{/each}}
                             </select>
                         </div>
+
                         <div class="form-group my-3">
-                            <label for="veh_patente" class="form-label colorBlue letraBold">Patente:</label>
-                            <input type="text" value="{{editarAutos.VEH_PATENTE}}" id="veh_patente" class="form-control fondoGradiente3"
-                                name="veh_patente" placeholder="Ej: ABC-123">
+                            <label for="mascota_nombre" class="form-label colorLogo letraBold">Nombre:</label>
+                            <input type="text" id="mascota_nombre" class="form-control" name="mascota_nombre"
+                                value="{{editarMascotas.MASCOTAS_NOMBRE}}" required>
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="mascota_fnac" class="form-label colorLogo letraBold">Fecha de
+                                Nacimiento:</label>
+                            <input type="date" id="mascota_fnac" class="form-control" name="mascota_fnac"
+                                value="{{editarMascotas.MASCOTAS_FNAC}}" required>
                         </div>
                         <div class="form-group row gx-3 my-3">
                             <button class="btn btn-success">Guardar</button>
-                            <a href="/autos" class="btn btn-danger my-2">Cancelar</a>
+                            <a href="/mascotas" class="btn btn-danger my-2">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -50,28 +57,19 @@
 </div>
 
 <script>
-    document.getElementById('marc_nombre').addEventListener('change', async function () {
-        const marcaId = this.value;
-        const modeloSelect = document.getElementById('mod_nombre');
-
-        // Limpiar modelos anteriores
-        modeloSelect.innerHTML = '<option value="" disabled selected>Selecciona un modelo</option>';
-
-        if (marcaId) {
-            try {
-                const response = await fetch(`/autos/modelos/${marcaId}`);
-                const modelos = await response.json();
-
-                // Poblar los modelos en el select
-                modelos.forEach(modelo => {
-                    const option = document.createElement('option');
-                    option.value = modelo.ID_MODELO;
-                    option.textContent = modelo.MOD_NOMBRE;
-                    modeloSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error al cargar los modelos:', error);
-            }
-        }
-    });
+    document.getElementById('tipo_nombre').addEventListener('change', function () {
+    const tipoId = this.value;
+    fetch(`/mascotas/raza/${tipoId}`)
+        .then(res => res.json())
+        .then(razas => {
+            const razaSelect = document.getElementById('raza_nombre');
+            razaSelect.innerHTML = '';
+            razas.forEach(raza => {
+                const option = document.createElement('option');
+                option.value = raza.ID_RAZA;
+                option.textContent = raza.RAZA_NOMBRE;
+                razaSelect.appendChild(option);
+            });
+        });
+});
 </script>

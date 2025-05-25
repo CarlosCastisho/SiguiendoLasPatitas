@@ -1,21 +1,21 @@
 <div class="container p-4">
     <div class="row">
 
-        {{#each vehiculos}}
+        {{#each mascotas}}
             <div class="col-md-3">
                 <div class="card text-center">
-                    <div class="card-body fondoGradiente3">
+                    <div class="card-body">
                         <h3 class="card-title text-uppercase colorGreen">
-                            {{MARC_NOMBRE}}
+                            {{MASCOTAS_NOMBRE}}
                         </h3>
                         <h6 class="card-subtitle mb-2 text-body-secondary">
-                            {{MOD_NOMBRE}} - {{ANIO}}
+                            {{TIPO_NOMBRE}} - {{RAZA_NOMBRE}} - {{SEXO_NOMBRE}}
                         </h6>
                         <p class="card-text">
-                            Patente: {{VEH_PATENTE}}
+                            Fecha de Nacimiento: {{MASCOTAS_FNAC}}
                         </p>
-                        <a href="/autos/eliminar/{{ID_VEHICULO}}" class="btn btn-danger">Eliminar</a>
-                        <a href="/autos/editar/{{ID_VEHICULO}}" class="btn btn-success">Editar</a>
+                        <a href="/mascotas/eliminar/{{ID_MASCOTAS}}" class="btn btn-danger">Eliminar</a>
+                        <a href="/mascotas/editar/{{ID_MASCOTAS}}" class="btn btn-success">Editar</a>
                     </div>
                 </div>
             </div>

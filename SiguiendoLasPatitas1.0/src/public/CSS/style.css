@@ -15,7 +15,7 @@ body {
     color: #03989e;
 }
 .colorGreen {
-    color:#008037;
+    color:#03989e;
 }
 
 .colorBlue {    
@@ -24,12 +24,12 @@ body {
 
 .fondoGradiente {
     background-image: linear-gradient(#fafcff, #aaccf7, #98f6a0);
-    color:#004aad !important;
+    color:#03989e !important;
 }
 
 .fondoGradiente2 {
-    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0);
-    color:#004aad !important;
+    background-image: linear-gradient(#fafcff, #98f6a0);
+    color:#03989e !important;
 }
 
 .fondoGradiente3 {

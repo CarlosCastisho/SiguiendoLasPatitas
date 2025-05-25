@@ -5,133 +5,135 @@ const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth')
 
 router.get('/agregar', isLoggedIn, async (req, res) => {
-//     const anio = await pool.query('SELECT * FROM anio');
-//     const marca_modelo = await pool.query(`
-//         SELECT
-//             marca_modelo.ID_MARCA_MODELO,
-//             marcas.ID_MARCA,
-//             marcas.MARC_NOMBRE,
-//             modelos.ID_MODELO,
-//             modelos.MOD_NOMBRE
-//         FROM
-//             marca_modelo
-//         JOIN
-//             marcas ON marca_modelo.ID_MARCA = marcas.ID_MARCA
-//         JOIN
-//             modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO        
-//         `)
-    res.render('mascotas/agregar', /* { marca_modelo, anio } */);
+    const tipos = await pool.query('SELECT ID_TIPO, TIPO_NOMBRE FROM tipo');
+    const razas = await pool.query('SELECT ID_RAZA, RAZA_NOMBRE FROM raza');
+    const sexos = await pool.query('SELECT ID_SEXO, SEXO_NOMBRE FROM sexo');
+    res.render('mascotas/agregar', { tipos, razas, sexos });
 });
 
-
 router.post('/agregar', isLoggedIn, async (req, res) => {
-//     const { ID_USER } = req.user;
-//     const { veh_marca, veh_modelo, veh_anio, veh_patente } = req.body;
-//     const marca_modelo_result = await pool.query(`
-//         SELECT 
-//             ID_MARCA_MODELO 
-//         FROM 
-//             marca_modelo 
-//         WHERE 
-//             ID_MARCA = ? AND ID_MODELO = ?
-//         `, [veh_marca, veh_modelo]);
-//     const marca_modelo = marca_modelo_result[0].ID_MARCA_MODELO;
-//     await pool.query(`
-//         INSERT INTO vehiculos (ID_MARCA_MODELO, ID_ANIO, VEH_PATENTE, ID_USER) 
-//         VALUES (?, ?, ?, ?);
-//     `, [marca_modelo, veh_anio, veh_patente, ID_USER]);
-//     req.flash('auto_success', 'AUTO AGREGADO CORRECTAMENTE');
+    const { ID_USER } = req.user;
+    const { mascota_tipo, mascota_raza, mascota_sexo, mascota_nombre, mascota_fnac } = req.body;
+    const tipo_raza_result = await pool.query(`
+        SELECT 
+            ID_TIPO_RAZA 
+        FROM 
+            TIPO_RAZA
+        WHERE 
+            ID_TIPO = ? AND ID_RAZA = ? AND ID_SEXO = ?
+        `, [ mascota_tipo, mascota_raza, mascota_sexo]);
+    const tipo_raza = tipo_raza_result[0].ID_TIPO_RAZA;
+    await pool.query(`
+        INSERT INTO mascotas (ID_TIPO_RAZA, MASCOTAS_NOMBRE, MASCOTAS_FNAC, ID_USER) 
+        VALUES (?, ?, ?, ?);
+    `, [tipo_raza, mascota_nombre, mascota_fnac, ID_USER]);
+    req.flash('auto_success', 'MASCOTA AGREGADA CORRECTAMENTE');
     res.redirect('/mascotas');
 });
 
-// router.get('/modelos/:marcaId', isLoggedIn, async (req, res) => {
-//     const { marcaId } = req.params;
-//     const modelos = await pool.query(`
-//         SELECT 
-//             modelos.ID_MODELO, 
-//             modelos.MOD_NOMBRE 
-//         FROM 
-//             marca_modelo 
-//         JOIN 
-//             modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO 
-//         WHERE 
-//             marca_modelo.ID_MARCA = ?
-//     `, [marcaId]);
-//     res.json(modelos);
-// });
-
-router.get('/', isLoggedIn, async (req, res) => {
-//     const {ID_USER} = req.user;
-//     const vehiculos = await pool.query(`
-//         SELECT
-//             vehiculos.ID_VEHICULO,
-//             marcas.MARC_NOMBRE,
-//             modelos.MOD_NOMBRE,
-//             anio.ANIO,
-//             vehiculos.VEH_PATENTE,
-//             vehiculos.ID_USER
-//         FROM
-//             vehiculos
-//         JOIN
-//             marca_modelo ON vehiculos.ID_MARCA_MODELO = marca_modelo.ID_MARCA_MODELO
-//         JOIN
-//             marcas ON marca_modelo.ID_MARCA = marcas.ID_MARCA
-//         JOIN
-//             modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO
-//         JOIN
-//             anio ON vehiculos.ID_ANIO = anio.ID_ANIO
-//         WHERE
-//             vehiculos.ID_USER = ?
-//         `, [ID_USER]);
-    res.render('mascotas/listar', /* { vehiculos } */);
+router.get('/raza/:tipoId', isLoggedIn, async (req, res) => {
+    const { tipoId } = req.params;
+    const razas = await pool.query(`
+        SELECT DISTINCT
+            raza.ID_RAZA, 
+            raza.RAZA_NOMBRE
+        FROM 
+            tipo_raza
+        JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        WHERE tipo_raza.ID_TIPO = ?
+    `, [tipoId]);
+    res.json(razas);
 });
 
-// router.get('/eliminar/:ID_VEHICULO', isLoggedIn, async (req, res) => {
-//     const { ID_VEHICULO } = req.params;
-//     await pool.query('DELETE FROM vehiculos WHERE ID_VEHICULO = ?', [ID_VEHICULO]);
-//     req.flash('auto_success', 'AUTO ELIMINADO')
-//     res.redirect('/autos');
-// });
+router.get('/', isLoggedIn, async (req, res) => {
+    const {ID_USER} = req.user;
+    const mascotas = await pool.query(`
+        SELECT
+            mascotas.ID_MASCOTAS,
+            tipo.TIPO_NOMBRE,
+            raza.RAZA_NOMBRE,
+            sexo.SEXO_NOMBRE,
+            mascotas.MASCOTAS_NOMBRE,
+            mascotas.MASCOTAS_FNAC
+        FROM
+            mascotas
+        JOIN
+            tipo_raza ON mascotas.ID_TIPO_RAZA = tipo_raza.ID_TIPO_RAZA
+        JOIN
+            tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
+        JOIN
+            raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        JOIN
+            sexo ON tipo_raza.ID_SEXO = sexo.ID_SEXO
+        WHERE
+            mascotas.ID_USER = ?
+        `, [ID_USER]);
+    res.render('mascotas/listar', { mascotas });
+});
 
-// router.get('/editar/:ID_VEHICULO', isLoggedIn, async (req, res) => {
-//     const { ID_VEHICULO } = req.params;
-//     const editarAutos = await pool.query(`
-//         SELECT
-//             vehiculos.ID_VEHICULO,
-//             marcas.MARC_NOMBRE,
-//             modelos.MOD_NOMBRE,
-//             anio.ANIO,
-//             vehiculos.VEH_PATENTE
-//         FROM
-//             vehiculos
-//         JOIN
-//             marca_modelo ON vehiculos.ID_MARCA_MODELO = marca_modelo.ID_MARCA_MODELO
-//         JOIN
-//             marcas ON marca_modelo.ID_MARCA = marcas.ID_MARCA
-//         JOIN
-//             modelos ON marca_modelo.ID_MODELO = modelos.ID_MODELO
-//         JOIN
-//             anio ON vehiculos.ID_ANIO = anio.ID_ANIO
-//         WHERE 
-//             vehiculos.ID_VEHICULO = ?`, [ID_VEHICULO]);
-//     const marcas = await pool.query(`SELECT ID_MARCA, MARC_NOMBRE FROM marcas`);
-//     const anios = await pool.query(`SELECT ID_ANIO, ANIO FROM anio`);
-//     res.render('autos/editar', { editarAutos: editarAutos[0], marcas, anios });
-// });
+router.get('/eliminar/:ID_MASCOTAS', isLoggedIn, async (req, res) => {
+    const { ID_MASCOTAS } = req.params;
+    await pool.query('DELETE FROM mascotas WHERE ID_MASCOTAS = ?', [ID_MASCOTAS]);
+    req.flash('auto_success', 'MASCOTA ELIMINADA')
+    res.redirect('/mascotas');
+});
 
-// router.post('/editar/:ID_VEHICULO', isLoggedIn, async (req, res) => {
-//     const { ID_VEHICULO } = req.params;
-//     const { veh_marca, veh_modelo, veh_anio, veh_patente } = req.body;
-//     const editarAutos = {
-//         ID_MARCA_MODELO: veh_modelo, 
-//         ID_ANIO: veh_anio,
-//         VEH_PATENTE: veh_patente,
-//         ID_USER: req.user.ID_USER
-//     };
-//     await pool.query('UPDATE vehiculos set ? WHERE ID_VEHICULO = ?', [editarAutos, ID_VEHICULO]);
-//     req.flash('auto_success', 'CAMBIO EXITOSO');
-//     res.redirect('/autos');
-// })
+router.get('/editar/:ID_MASCOTAS', isLoggedIn, async (req, res) => {
+    const { ID_MASCOTAS } = req.params;
+    const editarMascotas = await pool.query(`
+        SELECT
+            mascotas.ID_MASCOTAS,
+            tipo.TIPO_NOMBRE,
+            raza.RAZA_NOMBRE,
+            sexo.SEXO_NOMBRE,
+            mascotas.MASCOTAS_NOMBRE,
+            mascotas.MASCOTAS_FNAC
+        FROM
+            mascotas
+        JOIN
+            tipo_raza ON mascotas.ID_TIPO_RAZA = tipo_raza.ID_TIPO_RAZA
+        JOIN
+            tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
+        JOIN
+            raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        JOIN
+            sexo ON tipo_raza.ID_SEXO = sexo.ID_SEXO
+        WHERE
+            mascotas.ID_MASCOTAS = ?`, [ID_MASCOTAS]);
+    const tipos = await pool.query('SELECT ID_TIPO, TIPO_NOMBRE FROM tipo');
+    const razas = await pool.query('SELECT ID_RAZA, RAZA_NOMBRE FROM raza');
+    const sexos = await pool.query('SELECT ID_SEXO, SEXO_NOMBRE FROM sexo');
+    res.render('mascotas/editar', { editarMascotas: editarMascotas[0], tipos, razas, sexos });
+});
+
+router.post('/editar/:ID_MASCOTAS', isLoggedIn, async (req, res) => {
+    const { ID_MASCOTAS } = req.params;
+    const { mascota_tipo, mascota_raza, mascota_sexo, mascota_nombre, mascota_fnac } = req.body;
+
+    const tipo_raza_result = await pool.query(`
+        SELECT ID_TIPO_RAZA 
+        FROM tipo_raza 
+        WHERE ID_TIPO = ? AND ID_RAZA = ? AND ID_SEXO = ?
+    `, [mascota_tipo, mascota_raza, mascota_sexo]);
+
+    const tipo_raza = tipo_raza_result[0]?.ID_TIPO_RAZA;
+
+    if (!tipo_raza) {
+        req.flash('error', 'Combinación inválida de tipo, raza y sexo.');
+        return res.redirect('/mascotas');
+    }
+
+    const updatedMascota = {
+        ID_TIPO_RAZA: tipo_raza,
+        MASCOTAS_NOMBRE: mascota_nombre,
+        MASCOTAS_FNAC: mascota_fnac
+    };
+
+    await pool.query('UPDATE mascotas SET ? WHERE ID_MASCOTAS = ?', [updatedMascota, ID_MASCOTAS]);
+
+    req.flash('mascota_success', 'MASCOTA ACTUALIZADA CORRECTAMENTE');
+    res.redirect('/mascotas');
+})
 
 module.exports = router;
 

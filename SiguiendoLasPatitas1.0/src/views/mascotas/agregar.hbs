@@ -2,40 +2,45 @@
     <div class="row">
         <div class="col-md-4 mx-auto">
             <div class="card">                
-                <div class="card-body fondoGradiente3">
-                    <h3 class="colorGreen">Registra tu vehículo</h3>
-                    <form action="/autos/agregar" method="POST">
+                <div class="card-body">
+                    <h3 class="colorGreen">Registra tu mascota</h3>
+                    <form action="/mascotas/agregar" method="POST">
                         <div class="form-group my-3">
-                            <label for="marc_nombre" class="form-label colorBlue letraBold">Marca:</label>
-                            <select id="marc_nombre" class="form-control fondoGradiente3" name="veh_marca" required>
-                                <option value="" disabled selected>Selecciona una marca</option>
-                                {{#each marca_modelo}}
-                                <option value="{{ID_MARCA}}">{{MARC_NOMBRE}}</option>
+                            <label for="tipo_nombre" class="form-label colorLogo letraBold">Tipo:</label>
+                            <select id="tipo_nombre" class="form-control" name="mascota_tipo" required>
+                                <option value="" disabled selected>Mascota</option>
+                                {{#each tipos}}
+                                <option value="{{ID_TIPO}}">{{TIPO_NOMBRE}}</option>
                                 {{/each}}
                             </select>
                         </div>
 
                         <div class="form-group my-3">
-                            <label for="mod_nombre" class="form-label colorBlue letraBold">Modelo:</label>
-                            <select id="mod_nombre" class="form-control fondoGradiente3" name="veh_modelo">
-                                <option value="" disabled selected>Selecciona un modelo</option>
-                                {{#each marca_modelo}}
-                                <option value="{{ID_MODELO}}">{{MOD_NOMBRE}}</option>
+                            <label for="raza_nombre" class="form-label colorLogo letraBold">Raza:</label>
+                            <select id="raza_nombre" class="form-control" name="mascota_raza">
+                                <option value="" disabled selected>Selecciona una raza</option>
+                                {{#each razas}}
+                                <option value="{{ID_RAZA}}">{{RAZA_NOMBRE}}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="veh_anio" class="form-label colorBlue letraBold">Año:</label>
-                            <select type="text" id="veh_anio" class="form-control fondoGradiente3" name="veh_anio">
-                                <option value="" disabled selected>Selecciona un año</option>
-                                {{#each anio}}
-                                <option value="{{ID_ANIO}}">{{ANIO}}</option>
+                            <label for="sexo_nombre" class="form-label colorLogo letraBold">Sexo:</label>
+                            <select type="text" id="sexo_nombre" class="form-control" name="mascota_sexo">
+                                <option value="" disabled selected>Selecciona un sexo</option>
+                                {{#each sexos}}
+                                <option value="{{ID_SEXO}}">{{SEXO_NOMBRE}}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="veh_patente" class="form-label colorBlue letraBold">Patente:</label>
-                            <input type="text" id="veh_patente" class="form-control fondoGradiente3" name="veh_patente"
+                            <label for="mascota_nombre" class="form-label colorLogo letraBold">Nombre:</label>
+                            <input type="text" id="mascota_nombre" class="form-control" name="mascota_nombre"
+                                placeholder="Ej: Ayudante de santa">
+                        </div>
+                        <div class="form-group my-3">
+                            <label for="mascota_fnac" class="form-label colorLogo letraBold">Fecha de Nacimiento:</label>
+                            <input type="date" id="mascota_fnac" class="form-control" name="mascota_fnac"
                                 placeholder="Ej: ABC-123">
                         </div>
                         <div class="form-group d-grid my-3">
@@ -49,28 +54,19 @@
 </div>
 
 <script>
-    document.getElementById('marc_nombre').addEventListener('change', async function() {
-        const marcaId = this.value;
-        const modeloSelect = document.getElementById('mod_nombre');
-
-        // Limpiar modelos anteriores
-        modeloSelect.innerHTML = '<option value="" disabled selected>Selecciona un modelo</option>';
-
-        if (marcaId) {
-            try {
-                const response = await fetch(`/autos/modelos/${marcaId}`);
-                const modelos = await response.json();
-
-                // Poblar los modelos en el select
-                modelos.forEach(modelo => {
-                    const option = document.createElement('option');
-                    option.value = modelo.ID_MODELO;
-                    option.textContent = modelo.MOD_NOMBRE;
-                    modeloSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error al cargar los modelos:', error);
-            }
-        }
+    document.getElementById('tipo_nombre').addEventListener('change', function () {
+    const tipoId = this.value;
+    fetch(`/mascotas/raza/${tipoId}`)
+        .then(res => res.json())
+        .then(razas => {
+            const razaSelect = document.getElementById('raza_nombre');
+            razaSelect.innerHTML = '<option value="" disabled selected>Selecciona una raza</option>';
+            razas.forEach(raza => {
+                const option = document.createElement('option');
+                option.value = raza.ID_RAZA;
+                option.textContent = raza.RAZA_NOMBRE;
+                razaSelect.appendChild(option);
+            });
+        });
     });
 </script>
