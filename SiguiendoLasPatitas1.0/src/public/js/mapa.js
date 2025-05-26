@@ -1,5 +1,5 @@
 // MAPA INTERACTIVO
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async() => {
     //INICIAR EL MAPA
     const map = L.map('map').setView([-34.6037, -58.3816], 13);
 
