@@ -1,0 +1,31 @@
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+.env
+.env.*
+*.local
+
+# === Docker ===
+docker-compose.override.yml
+*.pid
+db_data/
+*.sql
+
+# === Logs ===
+logs/
+*.log
+
+# === Sistema ===
+.DS_Store
+Thumbs.db
+
+# === VSCode ===
+.vscode/
+
+# === Archivos temporales / sesiones ===
+*.sqlite
+*.swp
+tmp/
