@@ -1,0 +1,28 @@
+<div class="container p-8">
+    <div class="row p-5">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4 colorGreen">Registra un adoptante</h3>
+                    <form action="/adoptantes/registroadoptantes" method="POST">
+                        <div class="form-group my-3">
+                            <label for="adoptante_nombre" class="form-label colorLogo letraBold">Nombre Completo:</label>
+                            <input type="text" name="adoptante_nombre" id="adoptante_nombre" class="form-control" placeholder="Homero Simpson" required>
+                        </div>
+                        <div class="form-group my-3">
+                            <label for="adoptante_direccion" class="form-label colorLogo letraBold">Dirección:</label>
+                            <input type="text" name="adoptante_direccion" id="adoptante_direccion" class="form-control" placeholder="Avenida, calle" required>
+                        </div>
+                        <div class="form-group my-3">
+                            <label for="adoptante_localidad" class="form-label colorLogo letraBold">Localidad:</label>
+                            <input type="text" name="adoptante_localidad" id="adoptante_localidad" class="form-control" placeholder="Capital, Provincia" required>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-success btn-block">Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

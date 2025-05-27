@@ -3,9 +3,9 @@
     <input
         type="text"
         id="buscador"
-        placeholder="Buscar por nombre, dirección, localidad, provincia"
+        placeholder="Buscar por nombre, dirección, localidad"
         style="width: 100%; padding-right: 40px;"
-        class="form-control fondoGradiente3"
+        class="form-control"
     />
     <i class="fas fa-search" 
        style="
@@ -27,31 +27,26 @@
             <th scope="col" class="fondoGradiente2 table-header">Nombre</th>
             <th scope="col" class="fondoGradiente2 table-header">Dirección</th>
             <th scope="col" class="fondoGradiente2 table-header">Localidad</th>
-            <th scope="col" class="fondoGradiente2 table-header">Provincia</th>
-            <th scope="col" class="fondoGradiente2 table-header">N° surtidores</th>
             <th scope="col" class="fondoGradiente2 table-header">Acción</th>
         </tr>
     </thead>
-    <tbody id="tabla-estacionesCarga">
-        {{#if estacionesCarga}}
-            {{#each estacionesCarga}}
+    <tbody id="tabla-listaradoptantes">
+        {{#if listaradoptantes}}
+            {{#each listaradoptantes}}
                 <tr>
-                    <th scope="row">{{ID_ESTC}}</th>
-                    <td>{{ESTC_NOMBRE}}</td>
-                    <td>{{ESTC_DIRECCION}}</td>
-                    <td>{{ESTC_LOCALIDAD}}</td>
-                    <td>{{PROVINCIA_NOMBRE}}</td>
-                    <td>{{ESTC_CANT_SURTIDORES}}</td>
+                    <th scope="row">{{ID_ADOPTS}}</th>
+                    <td>{{ADOPTS_NOMBRE}}</td>
+                    <td>{{ADOPTS_DIRECCION}}</td>
+                    <td>{{ADOPTS_LOCALIDAD}}</td>
                     <td>
-                        <form action="/reserva/estacion/{{ID_ESTC}}">
-                            <button class="btn btn-success">Reservar</button>
-                        </form>
+                        <a href="/reserva/estacion/{{ID_ESTC}}" class="btn btn-success btn-sm">Reservar</a>
+                        <a href="/adoptantes/eliminar/{{ID_ADOPTS}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar?')">Eliminar</a>
                     </td>
                 </tr>
             {{/each}}
         {{else}}
             <tr>
-                <td colspan="7">No hay estaciones disponibles.</td>
+                <td colspan="7">No hay adoptantes. <a href="/adoptantes/registroAdoptantes">Agrega uno.</a> </td>
             </tr>
         {{/if}}
     </tbody>
@@ -61,7 +56,7 @@
 <script>
     document.getElementById('buscador').addEventListener('input', function () {
         const filtro = this.value.toLowerCase();
-        const filas = document.querySelectorAll('#tabla-estacionesCarga tr');
+        const filas = document.querySelectorAll('#tabla-listaradoptantes tr');
 
         filas.forEach((fila) => {
             const textoFila = fila.textContent.toLowerCase();
