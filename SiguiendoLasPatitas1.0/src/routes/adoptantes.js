@@ -46,55 +46,35 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
     })(req, res, next);
 });
 
-// //PAGINA DE ADOPTANTES
-router.get('/registroadoptantes', isLoggedIn, async (req,res) => {
-    res.render('adoptantes/registroAdoptantes')
-})
-
-// Ruta para agregar un adoptante
-router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
-    const {
-        adoptante_nombre,
-        adoptante_direccion,
-        adoptante_localidad,
-    } = req.body;
-    try {
-        // Validar que todos los campos requeridos están presentes
-        if (!adoptante_nombre || !adoptante_direccion || !adoptante_localidad) {
-            req.flash('error', 'Por favor, completa todos los campos.');
-            return res.redirect('/adoptantes/registroAdoptantes');
-        }
-
-        // Insertar la estación en la base de datos
-        /* const result =  */await pool.query(
-            'INSERT INTO adopts (ADOPTS_NOMBRE, ADOPTS_DIRECCION, ADOPTS_LOCALIDAD) VALUES (?, ?, ?)', 
-            [adoptante_nombre, adoptante_direccion, adoptante_localidad]
-        );
-        req.flash('success', 'Adoptantes creado exitosamente.');
-        res.redirect('/adoptantes/listarAdoptantes');
-    }   catch (error) {
-            console.error('Error al crear un adoptante:', error);
-            req.flash('error', 'Ocurrió un error al registar un adoptante');
-            res.redirect('/adoptantes/listarAdoptantes');
-        }
-});
-
+// //PAGINA DE ESTACIONES DE CARGA
 router.get('/listaradoptantes', isLoggedIn, async (req, res) => {
-    const listaradoptantes = await pool.query(`SELECT * FROM adopts`)
-    res.render('adoptantes/listarAdoptantes', { listaradoptantes })
+//     const estacionesCarga = await pool.query(`
+//         SELECT
+//             estaciones_carga.ID_ESTC,
+//             estaciones_carga.ESTC_NOMBRE,
+//             estaciones_carga.ESTC_DIRECCION,
+//             estaciones_carga.ESTC_LOCALIDAD,
+//             provincias.PROVINCIA_NOMBRE,
+//             estaciones_carga.ESTC_CANT_SURTIDORES,
+//             estaciones_carga.ESTC_LATITUD,
+//             estaciones_carga.ESTC_LONGITUD
+//         FROM
+//             estaciones_carga
+//         JOIN
+//             provincias ON estaciones_carga.ID_PROVINCIA = provincias.ID_PROVINCIA
+//     `)
+    res.render('adoptantes/listaradoptantes', /* { estacionesCarga } */)
 })
 
-router.get('/eliminar/:ID_ADOPTS', isLoggedIn, async (req,res) => {
-    const {ID_ADOPTS} = req.params;
-    await pool.query('DELETE FROM adopts WHERE ID_ADOPTS = ?', [ID_ADOPTS]);
-    req.flash('auto_success', 'ADOPTANTE ELIMINADO')
-    res.redirect('/adoptantes/listarAdoptantes');
-});
+// router.get('/buscar', isLoggedIn, async (req, res) => {
+//     const buscar = req.query.buscar;
+//     const rows = await buscarEstacion(buscar);
+//     res.render('auth/listarestaciones', { rows });
+// });
 
 //PAGINA DEL MAPA
 router.get('/mapa', isLoggedIn, async (req, res) => {
-    const adoptantes = await pool.query(`SELECT * FROM adopts`)
-    res.render('adoptantes/mapa', {adoptantes});
+    res.render('adoptantes/mapa');
 });
 
 // router.get('/estaciones', isLoggedIn, async (req, res) => {
