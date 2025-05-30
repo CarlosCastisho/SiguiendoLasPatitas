@@ -1,178 +1,130 @@
-CREATE DATABASE  IF NOT EXISTS `energycars` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `energycars`;
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+--
+-- Host: localhost    Database: siguiendolaspatitas
+-- ------------------------------------------------------
+-- Server version	8.0.39
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP TABLE IF EXISTS `anio`;
+--
+-- Table structure for table `adopciones`
+--
+
+DROP TABLE IF EXISTS `adopciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `anio` (
-  `ID_ANIO` int NOT NULL AUTO_INCREMENT,
-  `ANIO` int NOT NULL,
-  PRIMARY KEY (`ID_ANIO`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `estaciones_carga`
---
-
-DROP TABLE IF EXISTS `estaciones_carga`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `estaciones_carga` (
-  `ID_ESTC` int NOT NULL AUTO_INCREMENT,
-  `ESTC_NOMBRE` varchar(50) NOT NULL,
-  `ESTC_DIRECCION` varchar(80) NOT NULL,
-  `ESTC_LOCALIDAD` varchar(80) NOT NULL,
-  `ID_PROVINCIA` int NOT NULL,
-  `ESTC_CANT_SURTIDORES` tinyint NOT NULL,
-  `ESTC_LATITUD` decimal(11,8) DEFAULT NULL,
-  `ESTC_LONGITUD` decimal(11,8) DEFAULT NULL,
-  PRIMARY KEY (`ID_ESTC`),
-  KEY `ID_PROVINCIA` (`ID_PROVINCIA`),
-  CONSTRAINT `estaciones_carga_ibfk_1` FOREIGN KEY (`ID_PROVINCIA`) REFERENCES `provincias` (`ID_PROVINCIA`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `estado_reservas`
---
-
-DROP TABLE IF EXISTS `estado_reservas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `estado_reservas` (
-  `ID_EST_RES` int NOT NULL AUTO_INCREMENT,
-  `EST_RES_DESCRIP` varchar(10) NOT NULL,
-  PRIMARY KEY (`ID_EST_RES`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `marca_modelo`
---
-
-DROP TABLE IF EXISTS `marca_modelo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `marca_modelo` (
-  `ID_MARCA_MODELO` int NOT NULL AUTO_INCREMENT,
-  `ID_MARCA` int NOT NULL,
-  `ID_MODELO` int NOT NULL,
-  `ID_TC` int NOT NULL,
-  PRIMARY KEY (`ID_MARCA_MODELO`),
-  KEY `ID_MARCA` (`ID_MARCA`),
-  KEY `ID_MODELO` (`ID_MODELO`),
-  KEY `ID_TC` (`ID_TC`),
-  CONSTRAINT `marca_modelo_ibfk_1` FOREIGN KEY (`ID_MARCA`) REFERENCES `marcas` (`ID_MARCA`),
-  CONSTRAINT `marca_modelo_ibfk_2` FOREIGN KEY (`ID_MODELO`) REFERENCES `modelos` (`ID_MODELO`),
-  CONSTRAINT `marca_modelo_ibfk_3` FOREIGN KEY (`ID_TC`) REFERENCES `tipos_conectores` (`ID_TC`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `marcas`
---
-
-DROP TABLE IF EXISTS `marcas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `marcas` (
-  `ID_MARCA` int NOT NULL AUTO_INCREMENT,
-  `MARC_NOMBRE` varchar(30) NOT NULL,
-  PRIMARY KEY (`ID_MARCA`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `medida`
---
-
-DROP TABLE IF EXISTS `medida`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `medida` (
-  `ID_MEDIDA` int NOT NULL AUTO_INCREMENT,
-  `MEDIDA_DESCRIPCION` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`ID_MEDIDA`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `modelos`
---
-
-DROP TABLE IF EXISTS `modelos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `modelos` (
-  `ID_MODELO` int NOT NULL AUTO_INCREMENT,
-  `MOD_NOMBRE` varchar(30) NOT NULL,
-  PRIMARY KEY (`ID_MODELO`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `precios`
---
-
-DROP TABLE IF EXISTS `precios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `precios` (
-  `ID_PRECIO` int NOT NULL AUTO_INCREMENT,
-  `PRECIO_DESCRIP` varchar(20) NOT NULL,
-  `PRECIO_TIEMPO` decimal(10,0) NOT NULL,
-  `PRECIO_KW` decimal(10,0) NOT NULL,
-  `ID_TIEMPO_CARGA` int NOT NULL,
-  `ID_ESTC` int NOT NULL,
-  PRIMARY KEY (`ID_PRECIO`),
-  KEY `ID_TIEMPO_CARGA` (`ID_TIEMPO_CARGA`),
-  KEY `ID_ESTC` (`ID_ESTC`),
-  CONSTRAINT `precios_ibfk_1` FOREIGN KEY (`ID_TIEMPO_CARGA`) REFERENCES `tiempo_carga` (`ID_TIEMPO_CARGA`),
-  CONSTRAINT `precios_ibfk_2` FOREIGN KEY (`ID_ESTC`) REFERENCES `estaciones_carga` (`ID_ESTC`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `provincias`
---
-
-DROP TABLE IF EXISTS `provincias`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `provincias` (
-  `ID_PROVINCIA` int NOT NULL AUTO_INCREMENT,
-  `PROVINCIA_NOMBRE` varchar(50) NOT NULL,
-  `PROVINCIA_DESCRIP` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID_PROVINCIA`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `reservas`
---
-
-DROP TABLE IF EXISTS `reservas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `reservas` (
-  `ID_RESERVA` int NOT NULL AUTO_INCREMENT,
-  `RESERVA_FECHA` varchar(10) NOT NULL,
-  `RESERVA_HORA_INI` varchar(5) NOT NULL,
-  `RESERVA_HORA_FIN` varchar(5) NOT NULL,
-  `RESERVA_IMPORTE` varchar(10) NOT NULL,
+CREATE TABLE `adopciones` (
+  `ID_ADOPCIONES` int NOT NULL AUTO_INCREMENT,
+  `ADOPCION_FECHA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ID_USER` int NOT NULL,
-  `ID_EST_RES` int NOT NULL,
-  `ID_SURTIDOR` int NOT NULL,
-  PRIMARY KEY (`ID_RESERVA`),
+  `ID_EST_ADOP` int NOT NULL,
+  `ID_ADOPTS` int NOT NULL,
+  `ID_MASCOTAS` int NOT NULL,
+  PRIMARY KEY (`ID_ADOPCIONES`),
   KEY `ID_USER` (`ID_USER`),
-  KEY `ID_EST_RES` (`ID_EST_RES`),
-  KEY `ID_SURTIDOR` (`ID_SURTIDOR`),
-  CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`ID_USER`) REFERENCES `usuario` (`ID_USER`),
-  CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`ID_EST_RES`) REFERENCES `estado_reservas` (`ID_EST_RES`),
-  CONSTRAINT `reservas_ibfk_3` FOREIGN KEY (`ID_SURTIDOR`) REFERENCES `surtidores` (`ID_SURTIDOR`)
+  KEY `ID_EST_ADOP` (`ID_EST_ADOP`),
+  KEY `ID_ADOPTS` (`ID_ADOPTS`),
+  KEY `ID_MASCOTAS` (`ID_MASCOTAS`),
+  CONSTRAINT `adopciones_ibfk_1` FOREIGN KEY (`ID_USER`) REFERENCES `usuario` (`ID_USER`),
+  CONSTRAINT `adopciones_ibfk_2` FOREIGN KEY (`ID_EST_ADOP`) REFERENCES `est_adop` (`ID_EST_ADOP`),
+  CONSTRAINT `adopciones_ibfk_3` FOREIGN KEY (`ID_ADOPTS`) REFERENCES `adopts` (`ID_ADOPTS`),
+  CONSTRAINT `adopciones_ibfk_4` FOREIGN KEY (`ID_MASCOTAS`) REFERENCES `mascotas` (`ID_MASCOTAS`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `adopts`
+--
+
+DROP TABLE IF EXISTS `adopts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adopts` (
+  `ID_ADOPTS` int NOT NULL AUTO_INCREMENT,
+  `ADOPTS_NOMBRE` varchar(50) NOT NULL,
+  `ADOPTS_DIRECCION` varchar(80) NOT NULL,
+  `ADOPTS_LOCALIDAD` varchar(80) NOT NULL,
+  `ID_USER` int NOT NULL,
+  PRIMARY KEY (`ID_ADOPTS`),
+  KEY `adopts_ibfk_1_idx` (`ID_USER`),
+  CONSTRAINT `adopts_ibfk_2` FOREIGN KEY (`ID_USER`) REFERENCES `usuario` (`ID_USER`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contactos`
+--
+
+DROP TABLE IF EXISTS `contactos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contactos` (
+  `idcontactos` int NOT NULL AUTO_INCREMENT,
+  `nombre_apellido` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `asunto` varchar(250) NOT NULL,
+  `mensaje` text NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idcontactos`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `est_adop`
+--
+
+DROP TABLE IF EXISTS `est_adop`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `est_adop` (
+  `ID_EST_ADOP` int NOT NULL AUTO_INCREMENT,
+  `EST_ADOP_DESCRIP` varchar(20) NOT NULL,
+  PRIMARY KEY (`ID_EST_ADOP`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `mascotas`
+--
+
+DROP TABLE IF EXISTS `mascotas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mascotas` (
+  `ID_MASCOTAS` int NOT NULL AUTO_INCREMENT,
+  `ID_TIPO_RAZA` int NOT NULL,
+  `MASCOTAS_NOMBRE` varchar(20) NOT NULL,
+  `MASCOTAS_FNAC` varchar(10) NOT NULL,
+  `ID_USER` int NOT NULL,
+  PRIMARY KEY (`ID_MASCOTAS`),
+  KEY `ID_USER` (`ID_USER`),
+  KEY `ID_TIPO_RAZA` (`ID_TIPO_RAZA`),
+  CONSTRAINT `mascotas_ibfk_1` FOREIGN KEY (`ID_TIPO_RAZA`) REFERENCES `tipo_raza` (`ID_TIPO_RAZA`),
+  CONSTRAINT `mascotas_ibfk_3` FOREIGN KEY (`ID_USER`) REFERENCES `usuario` (`ID_USER`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `raza`
+--
+
+DROP TABLE IF EXISTS `raza`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `raza` (
+  `ID_RAZA` int NOT NULL AUTO_INCREMENT,
+  `RAZA_NOMBRE` varchar(30) NOT NULL,
+  PRIMARY KEY (`ID_RAZA`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,53 +143,54 @@ CREATE TABLE `sessions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `surtidores`
+-- Table structure for table `sexo`
 --
 
-DROP TABLE IF EXISTS `surtidores`;
+DROP TABLE IF EXISTS `sexo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `surtidores` (
-  `ID_SURTIDOR` int NOT NULL AUTO_INCREMENT,
-  `SURT_ESTADO` tinyint(1) NOT NULL,
-  `ID_ESTC` int NOT NULL,
-  PRIMARY KEY (`ID_SURTIDOR`),
-  KEY `ID_TC` (`SURT_ESTADO`),
-  KEY `ID_ESTC` (`ID_ESTC`),
-  CONSTRAINT `surtidores_ibfk_2` FOREIGN KEY (`ID_ESTC`) REFERENCES `estaciones_carga` (`ID_ESTC`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `sexo` (
+  `ID_SEXO` int NOT NULL AUTO_INCREMENT,
+  `SEXO_NOMBRE` varchar(50) NOT NULL,
+  `SEXO_DESCRIP` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID_SEXO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tiempo_carga`
+-- Table structure for table `tipo`
 --
 
-DROP TABLE IF EXISTS `tiempo_carga`;
+DROP TABLE IF EXISTS `tipo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tiempo_carga` (
-  `ID_TIEMPO_CARGA` int NOT NULL AUTO_INCREMENT,
-  `TIEMPO_CARGA` int NOT NULL,
-  `ID_MEDIDA` int NOT NULL,
-  PRIMARY KEY (`ID_TIEMPO_CARGA`),
-  KEY `ID_MEDIDA` (`ID_MEDIDA`),
-  CONSTRAINT `tiempo_carga_ibfk_1` FOREIGN KEY (`ID_MEDIDA`) REFERENCES `medida` (`ID_MEDIDA`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tipo` (
+  `ID_TIPO` int NOT NULL AUTO_INCREMENT,
+  `TIPO_NOMBRE` varchar(45) NOT NULL,
+  PRIMARY KEY (`ID_TIPO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tipos_conectores`
+-- Table structure for table `tipo_raza`
 --
 
-DROP TABLE IF EXISTS `tipos_conectores`;
+DROP TABLE IF EXISTS `tipo_raza`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tipos_conectores` (
-  `ID_TC` int NOT NULL AUTO_INCREMENT,
-  `TC_NOMBRE` varchar(50) NOT NULL,
-  `TC_DESCRIP` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID_TC`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tipo_raza` (
+  `ID_TIPO_RAZA` int NOT NULL AUTO_INCREMENT,
+  `ID_TIPO` int NOT NULL,
+  `ID_SEXO` int NOT NULL,
+  `ID_RAZA` int NOT NULL,
+  PRIMARY KEY (`ID_TIPO_RAZA`),
+  KEY `ID_RAZA` (`ID_RAZA`),
+  KEY `ID_SEXO` (`ID_SEXO`),
+  KEY `tipo_raza_ibfk_3_idx` (`ID_TIPO`),
+  CONSTRAINT `tipo_raza_ibfk_1` FOREIGN KEY (`ID_RAZA`) REFERENCES `raza` (`ID_RAZA`),
+  CONSTRAINT `tipo_raza_ibfk_2` FOREIGN KEY (`ID_SEXO`) REFERENCES `sexo` (`ID_SEXO`),
+  CONSTRAINT `tipo_raza_ibfk_3` FOREIGN KEY (`ID_TIPO`) REFERENCES `tipo` (`ID_TIPO`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,43 +205,9 @@ CREATE TABLE `usuario` (
   `USER_NOMBRE` varchar(50) NOT NULL,
   `USER_APELLIDO` varchar(50) NOT NULL,
   `USER_CORREO` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `USER_CONTRASENIA` varchar(255) DEFAULT NULL,
+  `USER_CONTRASENIA` varchar(300) NOT NULL,
   `USER_TELEFONO` varchar(25) NOT NULL,
   `USER_FECHA_REGISTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID_USER`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Table structure for table `vehiculos`
---
-
-DROP TABLE IF EXISTS `vehiculos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `vehiculos` (
-  `ID_VEHICULO` int NOT NULL AUTO_INCREMENT,
-  `ID_MARCA_MODELO` int NOT NULL,
-  `ID_ANIO` int NOT NULL,
-  `VEH_PATENTE` varchar(10) NOT NULL,
-  `ID_USER` int NOT NULL,
-  PRIMARY KEY (`ID_VEHICULO`),
-  KEY `ID_ANIO` (`ID_ANIO`),
-  KEY `ID_MARCA_MODELO` (`ID_MARCA_MODELO`),
-  KEY `ID_USER` (`ID_USER`),
-  CONSTRAINT `vehiculos_ibfk_1` FOREIGN KEY (`ID_ANIO`) REFERENCES `anio` (`ID_ANIO`),
-  CONSTRAINT `vehiculos_ibfk_2` FOREIGN KEY (`ID_MARCA_MODELO`) REFERENCES `marca_modelo` (`ID_MARCA_MODELO`),
-  CONSTRAINT `vehiculos_ibfk_3` FOREIGN KEY (`ID_USER`) REFERENCES `usuario` (`ID_USER`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2025-05-26 22:46:44
