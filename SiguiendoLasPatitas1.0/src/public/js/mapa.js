@@ -7,10 +7,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    // ICONO SIGUIENDO LAS PATATITAS
+    let iconSiguiendoLasPatitas = L.icon({
+        iconUrl: '/img/marcadorSiguiendo.png',
+        iconSize: [45, 45],
+        iconAnchor: [20, 45],
+        popupAnchor: [0, -40]
+    });
+
     // Verificamos si hay datos
-    if (typeof adoptantesData !== 'undefined' && adoptantesData.length > 0) {
-        for (const adoptante of adoptantesData) {
-            const direccionCompleta = `${adoptante.ADOPTS_DIRECCION}, ${adoptante.ADOPTS_LOCALIDAD}`;
+    if (typeof adoptarMapaData !== 'undefined' && adoptarMapaData.length > 0) {
+        for (const adoptar of adoptarMapaData) {
+            const direccionCompleta = `${adoptar.ADOPTS_DIRECCION}, ${adoptar.ADOPTS_LOCALIDAD}`;
             const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`;
 
             try {
@@ -21,12 +29,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const lat = parseFloat(data[0].lat);
                     const lon = parseFloat(data[0].lon);
 
-                    L.marker([lat, lon])
+                    L.marker([lat, lon], { icon: iconSiguiendoLasPatitas })
                         .addTo(map)
                         .bindPopup(`
-                            <strong>${adoptante.ADOPTS_NOMBRE}</strong><br>
-                            ${adoptante.ADOPTS_DIRECCION}<br>
-                            ${adoptante.ADOPTS_LOCALIDAD}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title text-uppercase colorGreen">
+                                        ${adoptar.MASCOTAS_NOMBRE}
+                                    </h3>
+                                    <p>${adoptar.TIPO_NOMBRE} - ${adoptar.RAZA_NOMBRE}
+                                        Nacimiento: ${adoptar.MASCOTAS_FNAC}
+                                    </p>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                                        Fecha de adopcion: ${adoptar.ADOPCION_FECHA}
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                                        Adoptante: ${adoptar.ADOPTS_NOMBRE}
+                                    </h6>
+                                </div>
+                            </div>
                         `);
                 }
             } catch (err) {
@@ -39,29 +60,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn('No se cargaron adoptantes');
     }
 });
-
-    //AGREGAR MARCADORES.
-    // fetch('/estaciones')
-    //     .then(response => response.json())
-    //     .then(estacionesMapa => {
-    //         estacionesMapa.forEach(estacion => {
-    //             const marker = L.marker([estacion.ESTC_LATITUD, estacion.ESTC_LONGITUD], { icon: iconSiguiendoLasPatitas })
-    //                 .addTo(map)
-    //                 .bindPopup(`
-    //                     <div class = "">
-    //                         <h4 class= "colorGreen">${estacion.ESTC_NOMBRE}</h4>
-    //                         <h6>${estacion.ESTC_DIRECCION}</h6>
-    //                         <h6>${estacion.ESTC_LOCALIDAD}</h6>
-    //                         <h6>Cantidad de surtidores: ${estacion.cantidad_surtidores}</h6>
-    //                         <form action="/reserva/estacion/${estacion.ID_ESTC}"> <button class="btn btn-success">Reservar</button> </form>
-    //                     </div>
-    //                 `);
-    //         });
-    //     });
-// });
-//ICONO SIGUIENDO LAS PATATITAS
-    // let iconSiguiendoLasPatitas = L.icon({
-    //     iconUrl: '/img/marcadorSiguiendo.png',
-    //     iconSize: [60, 60],
-    //     iconAnchor: [25, 60]
-    // });

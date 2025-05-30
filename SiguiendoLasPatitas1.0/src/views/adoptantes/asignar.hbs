@@ -1,0 +1,36 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/adoptantes/asignar" method="POST">
+                        <h3 class="card-title text-center colorLogo">Asignar</h3>
+                        <div class="form-group my-3">
+                            <label for="mascota" class="form-label colorLogo letraBold">Mascota:</label>
+                            <select id="mascota" class="form-control" name="id_mascota" required>
+                                <option value="" disabled selected>Nombre - Tipo - Raza</option>
+                                {{#each mascotas}}
+                                <option value="{{ID_MASCOTAS}}">{{MASCOTAS_NOMBRE}} - {{TIPO_NOMBRE}} - {{RAZA_NOMBRE}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group my-3">
+                            <label for="adoptante" class="form-label colorLogo letraBold">Mascota:</label>
+                            <select id="adoptante" class="form-control" name="id_adopts" required>
+                                <option value="" disabled selected>Nombre - Direccion</option>
+                                {{#each adoptantes}}
+                                <option value="{{ID_ADOPTS}}">{{ADOPTS_NOMBRE}} - {{ADOPTS_DIRECCION}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group d-grid my-3">
+                            <button class="btn btn-success">Aceptar</button>
+                            <a href="/adoptantes/adoptar" class="btn btn-danger my-2">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

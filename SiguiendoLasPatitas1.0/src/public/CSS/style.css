@@ -50,14 +50,13 @@ body {
 }
 
 .leaflet-popup-content-wrapper {
-    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0); 
     border-radius: 10px;     
     padding: 10px;            
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     text-align: center;
     width: 245px;
     height: auto; 
-    color:#004aad
+    color:#03989e
 }
 
 .leaflet-popup-tip {

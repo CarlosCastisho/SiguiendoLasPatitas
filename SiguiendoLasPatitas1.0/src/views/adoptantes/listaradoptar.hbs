@@ -1,0 +1,36 @@
+<div class="container p-4">
+    <div class="row">
+            {{#each adoptar}}
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title text-uppercase colorGreen">
+                            {{MASCOTAS_NOMBRE}}
+                        </h3>
+                        <p>{{TIPO_NOMBRE}} - {{RAZA_NOMBRE}}
+                            Nacimiento: {{formatoFecha MASCOTAS_FNAC}}
+                        </p>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">
+                            Fecha de adopcion: {{formatoFecha ADOPCION_FECHA}}
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">
+                            Adoptante: {{ADOPTS_NOMBRE}}
+                        </h6>
+                        <p class="card-text">
+                            Dirección: {{ADOPTS_DIRECCION}}
+                        </p>
+                        <a href="/adoptantes/cancelar/{{ID_ADOPCIONES}}" class="btn btn-danger">Cancelar</a> {{!-- Fecha min 1:25
+                        --}}
+                    </div>
+                </div>
+            </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No hay adopciones.</p>
+                <a href="/adoptantes/asignar">Agrega una.</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

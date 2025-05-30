@@ -5,7 +5,6 @@ const passport = require('passport');
 const { isLoggedIn, isnoLoggedIn } = require('../lib/auth');
 const pool = require('../database');
 const helpers = require('../lib/helpers');
-const { verificarReserva, hacerReserva, elegirSurtidor, buscarEstacion } = require('../lib2/auth');
 
 // RENDERIZA EL FORMULRIO
 router.get('/registro', isnoLoggedIn, (req, res) => {
@@ -47,12 +46,13 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
 });
 
 // //PAGINA DE ADOPTANTES
-router.get('/registroadoptantes', isLoggedIn, async (req,res) => {
+router.get('/registroadoptantes', isLoggedIn, async (req, res) => {
     res.render('adoptantes/registroAdoptantes')
 })
 
 // Ruta para agregar un adoptante
 router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
+    const { ID_USER } = req.user;
     const {
         adoptante_nombre,
         adoptante_direccion,
@@ -65,18 +65,18 @@ router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
             return res.redirect('/adoptantes/registroAdoptantes');
         }
 
-        // Insertar la estación en la base de datos
-        /* const result =  */await pool.query(
-            'INSERT INTO adopts (ADOPTS_NOMBRE, ADOPTS_DIRECCION, ADOPTS_LOCALIDAD) VALUES (?, ?, ?)', 
-            [adoptante_nombre, adoptante_direccion, adoptante_localidad]
+        // Insertar la adoptantes en la base de datos
+        await pool.query(
+            'INSERT INTO adopts (ADOPTS_NOMBRE, ADOPTS_DIRECCION, ADOPTS_LOCALIDAD, ID_USER) VALUES (?, ?, ?, ?)',
+            [adoptante_nombre, adoptante_direccion, adoptante_localidad, ID_USER]
         );
         req.flash('success', 'Adoptantes creado exitosamente.');
         res.redirect('/adoptantes/listarAdoptantes');
-    }   catch (error) {
-            console.error('Error al crear un adoptante:', error);
-            req.flash('error', 'Ocurrió un error al registar un adoptante');
-            res.redirect('/adoptantes/listarAdoptantes');
-        }
+    } catch (error) {
+        console.error('Error al crear un adoptante:', error);
+        req.flash('error', 'Ocurrió un error al registar un adoptante');
+        res.redirect('/adoptantes/listarAdoptantes');
+    }
 });
 
 router.get('/listaradoptantes', isLoggedIn, async (req, res) => {
@@ -84,8 +84,8 @@ router.get('/listaradoptantes', isLoggedIn, async (req, res) => {
     res.render('adoptantes/listarAdoptantes', { listaradoptantes })
 })
 
-router.get('/eliminar/:ID_ADOPTS', isLoggedIn, async (req,res) => {
-    const {ID_ADOPTS} = req.params;
+router.get('/eliminar/:ID_ADOPTS', isLoggedIn, async (req, res) => {
+    const { ID_ADOPTS } = req.params;
     await pool.query('DELETE FROM adopts WHERE ID_ADOPTS = ?', [ID_ADOPTS]);
     req.flash('auto_success', 'ADOPTANTE ELIMINADO')
     res.redirect('/adoptantes/listarAdoptantes');
@@ -93,85 +93,102 @@ router.get('/eliminar/:ID_ADOPTS', isLoggedIn, async (req,res) => {
 
 //PAGINA DEL MAPA
 router.get('/mapa', isLoggedIn, async (req, res) => {
-    const adoptantes = await pool.query(`SELECT * FROM adopts`)
-    res.render('adoptantes/mapa', {adoptantes});
+    const { ID_USER } = req.user;
+    const adoptarMapa = await pool.query(`
+        SELECT 
+            adopciones.ID_ADOPCIONES,
+            DATE_FORMAT(adopciones.ADOPCION_FECHA, '%d/%m/%Y') AS ADOPCION_FECHA,
+            mascotas.MASCOTAS_NOMBRE,
+            DATE_FORMAT(mascotas.MASCOTAS_FNAC, '%d/%m/%Y') AS MASCOTAS_FNAC,
+            tipo.TIPO_NOMBRE,
+            raza.RAZA_NOMBRE,
+            adopts.ADOPTS_NOMBRE,
+            adopts.ADOPTS_DIRECCION,
+            adopts.ADOPTS_LOCALIDAD
+        FROM 
+            adopciones
+        JOIN mascotas ON adopciones.ID_MASCOTAS = mascotas.ID_MASCOTAS
+        JOIN tipo_raza ON mascotas.ID_TIPO_RAZA = tipo_raza.ID_TIPO_RAZA
+        JOIN tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
+        JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        JOIN adopts ON adopciones.ID_ADOPTS = adopts.ID_ADOPTS
+        WHERE
+            adopciones.ID_USER = ?
+    `, [ID_USER]);
+    res.render('adoptantes/mapa', { adoptarMapa });
 });
 
-// router.get('/estaciones', isLoggedIn, async (req, res) => {
-//     const estacionesMapa = await pool.query(`
-//         SELECT 
-//             estaciones_carga.ID_ESTC, 
-//             estaciones_carga.ESTC_NOMBRE, 
-//             estaciones_carga.ESTC_DIRECCION,
-//             estaciones_carga.ESTC_LOCALIDAD,
-//             estaciones_carga.ESTC_LATITUD, 
-//             estaciones_carga.ESTC_LONGITUD, 
-//             COUNT(surtidores.ID_SURTIDOR) AS cantidad_surtidores
-//         FROM 
-//             estaciones_carga
-//         LEFT JOIN
-//             surtidores ON estaciones_carga.ID_ESTC = surtidores.ID_ESTC
-//         GROUP BY 
-//             estaciones_carga.ID_ESTC
-//         `)
-//     res.json(estacionesMapa);
-// })
+// PAGINA DE ADOPTAR
 
-// // PAGINA DE RESERVAS
-// router.get('/listarReserva', isLoggedIn, async (req, res) => {
-//     const { ID_USER } = req.user;
-//     const reservas = await pool.query(`
-//         SELECT 
-//             reservas.ID_RESERVA,
-//             reservas.RESERVA_FECHA,
-//             reservas.RESERVA_HORA_INI,
-//             reservas.RESERVA_HORA_FIN,
-//             reservas.RESERVA_IMPORTE,
-//             estaciones_carga.ESTC_NOMBRE,
-//             estaciones_carga.ESTC_DIRECCION,
-//             estaciones_carga.ESTC_LOCALIDAD,
-//             estado_reservas.ID_EST_RES,
-//             estado_reservas.EST_RES_DESCRIP
-//         FROM 
-//             energycars.reservas
-//         JOIN 
-//             energycars.surtidores ON reservas.ID_SURTIDOR = surtidores.ID_SURTIDOR
-//         JOIN 
-//             energycars.estaciones_carga ON surtidores.ID_ESTC = estaciones_carga.ID_ESTC
-//         JOIN 
-//             energycars.estado_reservas ON reservas.ID_EST_RES = estado_reservas.ID_EST_RES
-//         WHERE
-//             reservas.ID_USER = ? AND estado_reservas.ID_EST_RES = 2
-//     `, [ID_USER]);
-//     res.render('auth/listarReserva', { reservas })
-// });
+router.get('/asignar', isLoggedIn, async (req, res) => {
+    const { ID_USER } = req.user;
+    const mascotas = await pool.query(`
+        SELECT
+            mascotas.ID_MASCOTAS,
+            mascotas.MASCOTAS_NOMBRE,
+            mascotas.MASCOTAS_FNAC,
+            tipo.TIPO_NOMBRE,
+            raza.RAZA_NOMBRE 
+        FROM mascotas
+        JOIN tipo_raza ON mascotas.ID_TIPO_RAZA = tipo_raza.ID_TIPO_RAZA
+        JOIN tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
+        JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        /* LEFT JOIN adopciones ON mascotas.ID_MASCOTAS = adopciones.ID_MASCOTA */
+        WHERE mascotas.ID_USER = ? /* AND adopciones.ID_MASCOTAS IS NULL */` , [ID_USER]);
+    const adoptantes = await pool.query('SELECT * FROM adopts WHERE ID_USER = ?', [ID_USER]);
+    res.render('adoptantes/asignar', { mascotas, adoptantes });
+});
 
-// router.get('/historialReserva', isLoggedIn, async (req, res) => {
-//     const { ID_USER } = req.user;
-//     const reservas = await pool.query(`
-//         SELECT 
-//             reservas.ID_RESERVA,
-//             reservas.RESERVA_FECHA,
-//             reservas.RESERVA_HORA_INI,
-//             reservas.RESERVA_HORA_FIN,
-//             reservas.RESERVA_IMPORTE,
-//             estaciones_carga.ESTC_NOMBRE,
-//             estaciones_carga.ESTC_DIRECCION,
-//             estaciones_carga.ESTC_LOCALIDAD,
-//             estado_reservas.EST_RES_DESCRIP
-//         FROM 
-//             energycars.reservas
-//         JOIN 
-//             energycars.surtidores ON reservas.ID_SURTIDOR = surtidores.ID_SURTIDOR
-//         JOIN 
-//             energycars.estaciones_carga ON surtidores.ID_ESTC = estaciones_carga.ID_ESTC
-//         JOIN 
-//             energycars.estado_reservas ON reservas.ID_EST_RES = estado_reservas.ID_EST_RES
-//         WHERE
-//             reservas.ID_USER = ?
-//     `, [ID_USER]);
-//     res.render('auth/historialReserva', { reservas })
-// });
+router.post('/asignar', isLoggedIn, async (req, res) => {
+    const { ID_USER } = req.user;
+    const { id_mascota, id_adopts } = req.body;
+
+    try {
+        await pool.query(
+            'INSERT INTO adopciones (ID_USER, ID_EST_ADOP, ID_ADOPTS, ID_MASCOTAS) VALUES (?, ?, ?,  ?)',
+            [ID_USER, 1, id_adopts, id_mascota]
+        );
+        req.flash('auto_success', 'Adopción registrada correctamente.');
+        res.redirect('/adoptantes/adoptar');
+    } catch (error) {
+        console.error(error);
+        req.flash('auto_error', 'Hubo un error al registrar la adopción.');
+        res.redirect('/adoptantes/asignar');
+    }
+});
+
+router.get('/adoptar', isLoggedIn, async (req, res) => {
+    const { ID_USER } = req.user;
+    const adoptar = await pool.query(`
+        SELECT 
+            adopciones.ID_ADOPCIONES,
+            adopciones.ADOPCION_FECHA,
+            mascotas.MASCOTAS_NOMBRE,
+            mascotas.MASCOTAS_FNAC,
+            tipo.TIPO_NOMBRE,
+            raza.RAZA_NOMBRE,
+            adopts.ADOPTS_NOMBRE,
+            adopts.ADOPTS_DIRECCION,
+            adopts.ADOPTS_LOCALIDAD
+        FROM 
+            adopciones
+        JOIN mascotas ON adopciones.ID_MASCOTAS = mascotas.ID_MASCOTAS
+        JOIN tipo_raza ON mascotas.ID_TIPO_RAZA = tipo_raza.ID_TIPO_RAZA
+        JOIN tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
+        JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        JOIN adopts ON adopciones.ID_ADOPTS = adopts.ID_ADOPTS
+        WHERE
+            adopciones.ID_USER = ?
+    `, [ID_USER]);
+    res.render('adoptantes/listaradoptar', { adoptar })
+});
+
+router.get('/cancelar/:ID_ADOPCIONES', isLoggedIn, async (req, res) => {
+    const { ID_ADOPCIONES } = req.params;
+    await pool.query('DELETE FROM adopciones WHERE ID_ADOPCIONES = ?', [ID_ADOPCIONES]);
+    req.flash('auto_success', 'ADOPCION ELIMINADA')
+    res.redirect('/adoptantes/adoptar');
+});
 
 // router.get('/eliminar/:ID_RESERVA', isLoggedIn, async (req, res) => {
 //     const { ID_RESERVA } = req.params;
@@ -180,42 +197,6 @@ router.get('/mapa', isLoggedIn, async (req, res) => {
 //     res.redirect('/auth/listarReserva');
 // });
 
-// router.get('/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) => {
-//     const { ID_RESERVA } = req.params;
-//     await pool.query('UPDATE reservas SET ID_EST_RES= 3 WHERE ID_RESERVA = ?', [ID_RESERVA]);
-//     req.flash('auto_success', 'RESERVA CANCELADA')
-//     res.redirect('/auth/listarReserva');
-// });
-
-
-// router.get('/reserva', isLoggedIn, async (req, res) => {
-//     const estacionCarga = await pool.query('SELECT * FROM estaciones_carga');
-//     const surtidor = await pool.query('SELECT * FROM surtidores');
-//     const tiempo_carga = await pool.query('SELECT * FROM tiempo_carga')
-//     res.render('auth/reserva', { estacionCarga, surtidor, tiempo_carga });
-// });
-
-
-// router.post('/reserva', isLoggedIn, async (req, res) => {
-//     console.log(req.body);
-//     const { ID_USER } = req.user;
-//     const { estc_nom_direcc, reserva_fecha, reserva_hora_ini, reserva_hora_fin, reserva_importe, ID_ESTC } = req.body;
-//     const estadoReserva = await pool.query('SELECT ID_EST_RES FROM estado_reservas WHERE ID_EST_RES = 1');
-//     const elegirSurt = await elegirSurtidor(estc_nom_direcc);
-//     try {
-//         //Verificar si hay reserva disponible
-//         const reservaDisponible = await verificarReserva(estadoReserva, elegirSurt, reserva_fecha, reserva_hora_ini, reserva_hora_fin)
-//         if (reservaDisponible) {
-//             return res.status(409).json({ message: "Este horario ya esta reservado." })
-//         }
-
-//         //Si esta la reserva disponible la creamos.
-//         await hacerReserva(reserva_fecha, reserva_hora_ini, reserva_hora_fin, reserva_importe, ID_USER, estadoReserva[0].ID_EST_RES, elegirSurt);
-//         res.redirect('/auth/listarReserva');
-//     } catch (error) {
-
-//     }
-// });
 
 // router.get('/reserva/estacion/:ID_ESTC', isLoggedIn, async (req, res) => {
 //     const { ID_ESTC } = req.params;
@@ -274,9 +255,9 @@ router.get('/perfil', isLoggedIn, (req, res) => {
 router.get('/cerrar', (req, res, next) => {
     req.logout((err) => {
         if (err) {
-            return next(err);  
+            return next(err);
         }
-        res.redirect('/acceso');  
+        res.redirect('/acceso');
     });
 });
 
