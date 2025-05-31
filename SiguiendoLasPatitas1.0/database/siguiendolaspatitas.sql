@@ -19,6 +19,11 @@
 -- Table structure for table `adopciones`
 --
 
+CREATE DATABASE siguiendolaspatitas;
+
+-- Usar la base de datos
+USE siguiendolaspatitas;
+
 DROP TABLE IF EXISTS `adopciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
