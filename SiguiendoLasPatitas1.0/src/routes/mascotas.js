@@ -31,18 +31,15 @@ router.post('/agregar', isLoggedIn, async (req, res) => {
     res.redirect('/mascotas');
 });
 
-router.get('/raza/:tipoId', isLoggedIn, async (req, res) => {
-    const { tipoId } = req.params;
-    const razas = await pool.query(`
-        SELECT DISTINCT
-            raza.ID_RAZA, 
-            raza.RAZA_NOMBRE
-        FROM 
-            tipo_raza
-        JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
-        WHERE tipo_raza.ID_TIPO = ?
-    `, [tipoId]);
-    res.json(razas);
+router.get('/sexo/:tipoId/:razaId', isLoggedIn, async (req, res) => {
+    const { tipoId, razaId } = req.params;
+    const sexos = await pool.query(`
+        SELECT DISTINCT sexo.ID_SEXO, sexo.SEXO_NOMBRE
+        FROM tipo_raza
+        JOIN sexo ON tipo_raza.ID_SEXO = sexo.ID_SEXO
+        WHERE tipo_raza.ID_TIPO = ? AND tipo_raza.ID_RAZA = ?
+    `, [tipoId, razaId]);
+    res.json(sexos);
 });
 
 router.get('/', isLoggedIn, async (req, res) => {

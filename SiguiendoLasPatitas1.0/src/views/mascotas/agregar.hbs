@@ -54,8 +54,13 @@
 </div>
 
 <script>
-    document.getElementById('tipo_nombre').addEventListener('change', function () {
-    const tipoId = this.value;
+document.getElementById('tipo_nombre').addEventListener('change', actualizarRazasYSexos);
+document.getElementById('raza_nombre').addEventListener('change', actualizarSexos);
+
+function actualizarRazasYSexos() {
+    const tipoId = document.getElementById('tipo_nombre').value;
+
+    // Actualizar razas
     fetch(`/mascotas/raza/${tipoId}`)
         .then(res => res.json())
         .then(razas => {
@@ -67,6 +72,29 @@
                 option.textContent = raza.RAZA_NOMBRE;
                 razaSelect.appendChild(option);
             });
+
+            // Limpia sexos hasta que se seleccione la raza
+            document.getElementById('sexo_nombre').innerHTML = '<option value="" disabled selected>Selecciona un sexo</option>';
         });
-    });
+}
+
+function actualizarSexos() {
+    const tipoId = document.getElementById('tipo_nombre').value;
+    const razaId = document.getElementById('raza_nombre').value;
+
+    if (tipoId && razaId) {
+        fetch(`/mascotas/sexo/${tipoId}/${razaId}`)
+            .then(res => res.json())
+            .then(sexos => {
+                const sexoSelect = document.getElementById('sexo_nombre');
+                sexoSelect.innerHTML = '<option value="" disabled selected>Selecciona un sexo</option>';
+                sexos.forEach(sexo => {
+                    const option = document.createElement('option');
+                    option.value = sexo.ID_SEXO;
+                    option.textContent = sexo.SEXO_NOMBRE;
+                    sexoSelect.appendChild(option);
+                });
+            });
+    }
+}
 </script>
