@@ -29,18 +29,38 @@ passport.use('local.registro', new LocalStrategy({
     passwordField: 'user_contrasenia',
     passReqToCallback: true
 }, async (req, user_correo, user_contrasenia, done) => {
+    const { user_nombre, user_apellido, user_telefono } = req.body;
 
-    const {user_nombre, user_apellido, user_telefono} = req.body;
+    // VALIDAR CORREO REPETIDO
+    const correoExistente = await pool.query('SELECT * FROM usuario WHERE user_correo = ?', [user_correo]);
+    if (correoExistente.length > 0) {
+        return done(null, false, req.flash('auto_error', 'El correo ya está registrado.'));
+    }
+
+    // VALIDAR NOMBRE Y APELLIDO (solo letras y espacios)
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    if (!soloLetras.test(user_nombre) || !soloLetras.test(user_apellido)) {
+        return done(null, false, req.flash('auto_error', 'El nombre y apellido deben contener solo letras.'));
+    }
+
+    // VALIDAR CONTRASEÑA (mínimo 8 caracteres, una mayúscula, una minúscula, un número)
+    const regexContrasenia = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!regexContrasenia.test(user_contrasenia)) {
+        return done(null, false, req.flash('auto_error', 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.'));
+    }
+
+    // TODO OK → crear usuario
     let nuevoUsuario = {
         user_nombre,
         user_apellido,
         user_correo,
         user_telefono,
-        user_contrasenia
+        user_contrasenia: await helpers.encryptContrasenia(user_contrasenia)
     };
-    nuevoUsuario.user_contrasenia = await helpers.encryptContrasenia(user_contrasenia);
+
     const resultado = await pool.query('INSERT INTO usuario SET ?', [nuevoUsuario]);
-    nuevoUsuario.ID_USER = resultado.insertId;  
+    nuevoUsuario.ID_USER = resultado.insertId;
+
     return done(null, nuevoUsuario);
 }));
 
