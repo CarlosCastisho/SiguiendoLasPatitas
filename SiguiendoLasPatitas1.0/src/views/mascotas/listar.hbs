@@ -1,11 +1,12 @@
-<div class="container p-4">
+<div class="container p-1">
+    <h2 class="colorLogo">Listado de Mascotas</h2>
+    <a href="/mascotas/agregar" class="btn btn-success  mb-3" style="background-color: #03989e;">AGREGAR <i class="fa-solid fa-plus fa-sm" style="color: #ffffff;"></i></a>
     <div class="row">
-
         {{#each mascotas}}
             <div class="col-md-3">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h3 class="card-title text-uppercase colorGreen">
+                        <h3 class="card-title text-uppercase colorLogo">
                             {{MASCOTAS_NOMBRE}}
                         </h3>
                         <h6 class="card-subtitle mb-2 text-body-secondary">
@@ -27,6 +28,5 @@
                 </div>
             </div>
         {{/each}}
-
     </div>
 </div>
