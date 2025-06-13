@@ -1,32 +1,39 @@
 <div class="container p-1">
     <h2 class="colorLogo">Listado de Mascotas</h2>
-    <a href="/mascotas/agregar" class="btn btn-success  mb-3" style="background-color: #03989e;">AGREGAR <i class="fa-solid fa-plus fa-sm" style="color: #ffffff;"></i></a>
+    <a href="/mascotas/agregar" class="btn btn-success  mb-3" style="background-color: #03989e;">AGREGAR <i
+            class="fa-solid fa-plus fa-sm" style="color: #ffffff;"></i></a>
     <div class="row">
         {{#each mascotas}}
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h3 class="card-title text-uppercase colorLogo">
-                            {{MASCOTAS_NOMBRE}}
-                        </h3>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">
-                            {{TIPO_NOMBRE}} - {{RAZA_NOMBRE}} - {{SEXO_NOMBRE}}
-                        </h6>
-                        <p class="card-text">
-                            Fecha de Nacimiento: {{MASCOTAS_FNAC}}
-                        </p>
-                        <a href="/mascotas/eliminar/{{ID_MASCOTAS}}" class="btn btn-danger">Eliminar</a>
-                        <a href="/mascotas/editar/{{ID_MASCOTAS}}" class="btn btn-success">Editar</a>
-                    </div>
+        <div class="col-md-3">
+            <div class="card text-center position-relative">
+                <div class="position-absolute top-0 end-0 m-2 d-flex gap-1">
+                    <a href="/mascotas/editar/{{ID_MASCOTAS}}" class="text-success" title="Editar">
+                        <i class="fa-solid fa-pen" style="color: #B197FC;"></i>
+                    </a>
+                    <a href="/mascotas/eliminar/{{ID_MASCOTAS}}" class="text-danger" title="Eliminar">
+                        <i class="fa-solid fa-xmark fa-xl" style="color: #a5acb9;"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title text-uppercase colorLogo mt-3">
+                        {{MASCOTAS_NOMBRE}}
+                    </h3>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                        {{TIPO_NOMBRE}} - {{RAZA_NOMBRE}} - {{SEXO_NOMBRE}}
+                    </h6>
+                    <p class="card-text">
+                        Fecha de Nacimiento: {{MASCOTAS_FNAC}}
+                    </p>
                 </div>
             </div>
+        </div>
         {{else}}
-            <div class="col-md-4 mx-auto">
-                <div class="card card-body text-center">
-                    <p>No hay mascotas agregadas.</p>
-                    <a href="/mascotas/agregar">Agrega una.</a>
-                </div>
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No hay mascotas agregadas.</p>
+                <a href="/mascotas/agregar">Agrega una.</a>
             </div>
+        </div>
         {{/each}}
     </div>
 </div>

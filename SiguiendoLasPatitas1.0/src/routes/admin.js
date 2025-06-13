@@ -5,7 +5,6 @@ const pool =  require('../database');
 const {isLoggedIn} = require('../lib/auth');
 const helpers = require('../lib/helpers');
 
-
 router.get('/', isLoggedIn, async (req, res) => {
     const adminuser = await pool.query('SELECT * FROM usuario WHERE ID_USER > 1 ');
     res.render('admin/gestionUser', { adminuser });
