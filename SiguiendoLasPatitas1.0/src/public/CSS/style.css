@@ -1,4 +1,4 @@
-body {
+body {  /* Color del fondo */
     background-color: #03989e;
     background-attachment: fixed;
 }
@@ -7,12 +7,18 @@ body {
     background-color: #f9ffff  !important;
 }
 
-.barUser a {
-    color: #03989e;
+/* .barUser a {
+    color: #f9ffff;
+} */
+
+.titulos {
+    color: #F9FFFF;
+    margin: 10px 0 10px;
 }
 
-.colorLogo {
-    color: #03989e;
+.subtitulosMenu {
+    color: #03989E;
+    margin: 10px 0 10px;
 }
 
 .colorBlue {    
@@ -59,4 +65,156 @@ body {
 .leaflet-popup-tip {
     background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0); 
 }
+.seccion-info {
+  /* ESTA LÍNEA ES LA CLAVE: crea un espacio grande debajo de cada sección */
+  margin-bottom: 5rem; /* Ajusta este valor según el espacio que desees */
+}
 
+.letras{
+    
+    padding: 10px; /* Añade un poco de espacio alrededor del texto */
+    margin: auto;
+    color: #C8F4F6; 
+    font-weight: bold; 
+    font-size: 1.3rem; 
+    line-height: 1.6; /* Aumenta el espacio entre líneas, crucial para la legibilidad */
+    max-width: 80ch; /* Limita el ancho del párrafo a unos 80 caracteres, el ideal para leer */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Añade una sombra sutil para que el texto resalte más del fondo */
+}
+
+.card-container {
+  
+  display: flex;
+  flex-wrap: wrap; /* Permite que las tarjetas pasen a la siguiente línea en pantallas pequeñas */
+  justify-content: center; /* Centra las tarjetas en la página */
+  gap: 5rem; /* Espacio uniforme entre las tarjetas (moderno y recomendado) */
+  padding: 2rem; /* Espacio alrededor del contenedor */
+}
+
+/* --- Estilo Principal de la Tarjeta --- */
+.card {
+  width: 320px; 
+  background-color: #ffffff;
+  border-radius: 16px; 
+  border: 1px solid #e9ecef;
+  overflow: hidden;
+}
+/* --- Estilo para la Imagen Superior --- */
+.card-img-top {
+  width: 100%;
+  height: 200px; 
+  object-fit: cover; /* Asegura que la imagen llene el espacio sin deformarse */
+}
+
+/* --- Estilo para el Cuerpo de la Tarjeta --- */
+.card-body {
+  padding: 1.5rem;
+}
+
+/* --- Estilos para el texto y título --- */
+.card-title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-text {
+  margin-bottom: 1rem;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* --- Contenedor Principal de la Sección Hero --- */
+.hero-album-section {
+  position: relative; /* ¡Esencial! Sirve de ancla para las imágenes posicionadas absolutamente. */
+  min-height: 85vh; /* Altura mínima de la sección */
+  background-color: #7EC4C0; /* ESTE ES EL COLOR DE FONDO QUE SE VERÁ EN EL CENTRO */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* ¡Muy importante! Evita que las imágenes rotadas generen scrollbars. */
+}
+
+/* --- Estilo base para cada foto del álbum --- */
+.album-photo {
+  position: absolute; /* Permite colocar cada foto donde queramos. */
+  width: 18vw; /* Ancho relativo a la pantalla. */
+  max-width: 220px; /* Ancho máximo para no ser demasiado grande. */
+  height: auto;
+  border: 8px solid rgb(255, 255, 255); /* Borde blanco tipo foto instantánea. */
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 1; /* Las fotos están en una capa inferior. */
+}
+
+/* --- Posicionamiento y rotación individual de cada foto --- */
+.photo-1 { top: 10%; left: 5%; transform: rotate(-15deg); }
+.photo-2 { top: 15%; right: 8%; transform: rotate(10deg); }
+.photo-3 { bottom: 12%; left: 15%; transform: rotate(8deg); }
+.photo-4 { bottom: 10%; right: 12%; transform: rotate(-12deg); }
+.photo-5 { top: 55%; left: 2%; transform: rotate(12deg); }
+.photo-6 { top: 60%; right: 5%; transform: rotate(-5deg); }
+
+
+/* --- Contenido Central (Títulos y Botón) --- */
+.hero-content-center {
+  position: relative; /* Se posiciona de forma normal, pero con un z-index alto. */
+  z-index: 10; /* Se asegura de que el texto SIEMPRE esté por encima de las fotos. */
+  color: #F9FFFF;
+  padding: 2rem;
+}
+
+/* Sombra para el texto para mejorar legibilidad */
+.hero-content-center h1,
+.hero-content-center .lead {
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Contenedor del Menú --- */
+.menu-elegante {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  width: 300px; /* Ancho del menú */
+  padding: 0.75rem; /* Un poco de espacio interior */
+}
+
+/* --- Reseteo de estilos de la lista --- */
+.menu-elegante ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Estilo Base para cada enlace <a> --- */
+.menu-elegante a {
+  display: block;
+  text-decoration: none;
+  border-radius: 8px; /* Un redondeo sutil para el fondo del hover */
+  
+  /* Estado por defecto: tipografía legible pero no protagónica */
+  font-size: 1.1rem;
+  font-weight: 500; /* Grosor normal/medio */
+  color: #03989E; /* Un gris oscuro en lugar de negro puro */
+  
+  /* Transición suave para todos los cambios */
+  transition: all 0.25s ease-in-out;
+}
+
+/* --- Efecto al pasar el cursor (HOVER) --- */
+.menu-elegante a:hover {
+  /* Al pasar el cursor, el texto toma el color principal y aparece un fondo muy sutil */
+  color: #0d6efd; 
+  background-color: rgba(13, 110, 253, 0.07); /* Fondo casi imperceptible */
+}
+
+/* --- ¡AQUÍ ESTÁ LO QUE PEDISTE! --- */
+/* Estilo para el enlace de la página ACTUAL (el <li> con la clase .active) */
+.menu-elegante li.active a {
+  color: #0d6efd; /* El color principal de tu marca */
+  font-weight: 700; /* Más grueso, como pediste */
+}
+.btn-cta {
+
+  background-color: #03989E;
+}

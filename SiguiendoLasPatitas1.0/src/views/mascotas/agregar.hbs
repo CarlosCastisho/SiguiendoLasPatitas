@@ -3,10 +3,10 @@
         <div class="col-md-4 mx-auto">
             <div class="card">                
                 <div class="card-body">
-                    <h3 class="colorLogo">Registra tu mascota</h3>
+                    <h3 class="subtitulosMenu">Registra tu mascota</h3>
                     <form action="/mascotas/agregar" method="POST">
                         <div class="form-group my-3">
-                            <label for="tipo_nombre" class="form-label colorLogo letraBold">Tipo:</label>
+                            <label for="tipo_nombre" class="form-label subtitulosMenu letraBold">Tipo:</label>
                             <select id="tipo_nombre" class="form-control" name="mascota_tipo" required>
                                 <option value="" disabled selected>Mascota</option>
                                 {{#each tipos}}
@@ -16,7 +16,7 @@
                         </div>
 
                         <div class="form-group my-3">
-                            <label for="raza_nombre" class="form-label colorLogo letraBold">Raza:</label>
+                            <label for="raza_nombre" class="form-label subtitulosMenu letraBold">Raza:</label>
                             <select id="raza_nombre" class="form-control" name="mascota_raza">
                                 <option value="" disabled selected>Selecciona una raza</option>
                                 {{#each razas}}
@@ -25,7 +25,7 @@
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="sexo_nombre" class="form-label colorLogo letraBold">Sexo:</label>
+                            <label for="sexo_nombre" class="form-label subtitulosMenu letraBold">Sexo:</label>
                             <select type="text" id="sexo_nombre" class="form-control" name="mascota_sexo">
                                 <option value="" disabled selected>Selecciona un sexo</option>
                                 {{#each sexos}}
@@ -34,12 +34,12 @@
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="mascota_nombre" class="form-label colorLogo letraBold">Nombre:</label>
+                            <label for="mascota_nombre" class="form-label subtitulosMenu letraBold">Nombre:</label>
                             <input type="text" id="mascota_nombre" class="form-control" name="mascota_nombre"
                                 placeholder="Ej: Ayudante de santa">
                         </div>
                         <div class="form-group my-3">
-                            <label for="mascota_fnac" class="form-label colorLogo letraBold">Fecha de Nacimiento:</label>
+                            <label for="mascota_fnac" class="form-label subtitulosMenu letraBold">Fecha de Nacimiento:</label>
                             <input type="date" id="mascota_fnac" class="form-control" name="mascota_fnac"
                                 placeholder="Ej: ABC-123">
                         </div>

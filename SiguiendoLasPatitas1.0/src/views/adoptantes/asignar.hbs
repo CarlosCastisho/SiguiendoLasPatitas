@@ -4,9 +4,9 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/adoptantes/asignar" method="POST">
-                        <h3 class="card-title text-center colorLogo">Asignar</h3>
+                        <h3 class="card-title text-center subtitulosMenu">Asignar</h3>
                         <div class="form-group my-3">
-                            <label for="mascota" class="form-label colorLogo letraBold">Mascota:</label>
+                            <label for="mascota" class="form-label subtitulosMenu letraBold">Mascota:</label>
                             <select id="mascota" class="form-control" name="id_mascota" required>
                                 <option value="" disabled selected>Nombre - Tipo - Raza</option>
                                 {{#each mascotas}}
@@ -15,7 +15,7 @@
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="adoptante" class="form-label colorLogo letraBold">Adoptante:</label>
+                            <label for="adoptante" class="form-label subtitulosMenu letraBold">Adoptante:</label>
                             <select id="adoptante" class="form-control" name="id_adopts" required>
                                 <option value="" disabled selected>Nombre - Direccion</option>
                                 {{#each adoptantes}}
