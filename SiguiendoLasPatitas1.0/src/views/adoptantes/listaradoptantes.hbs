@@ -27,7 +27,6 @@
             <th scope="col" class="fondoGradiente2 table-header">#</th>
             <th scope="col" class="fondoGradiente2 table-header">Nombre</th>
             <th scope="col" class="fondoGradiente2 table-header">Dirección</th>
-            <th scope="col" class="fondoGradiente2 table-header">Localidad</th>
             <th scope="col" class="fondoGradiente2 table-header">Acción</th>
         </tr>
     </thead>
@@ -38,7 +37,6 @@
                     <th scope="row">{{ID_ADOPTS}}</th>
                     <td>{{ADOPTS_NOMBRE}}</td>
                     <td>{{ADOPTS_DIRECCION}}</td>
-                    <td>{{ADOPTS_LOCALIDAD}}</td>
                     <td>
                         <a href="/reserva/estacion/{{ID_ESTC}}" class="btn btn-success btn-sm">Reservar</a>
                         <a href="/adoptantes/eliminar/{{ID_ADOPTS}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar?')">Eliminar</a>

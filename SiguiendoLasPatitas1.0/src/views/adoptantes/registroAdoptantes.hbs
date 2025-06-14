@@ -6,16 +6,16 @@
                     <h3 class="card-title text-center mb-4 colorLogo">Registra un adoptante</h3>
                     <form action="/adoptantes/registroadoptantes" method="POST">
                         <div class="form-group my-3">
-                            <label for="adoptante_nombre" class="form-label colorLogo letraBold">Nombre Completo:</label>
-                            <input type="text" name="adoptante_nombre" id="adoptante_nombre" class="form-control" placeholder="Homero Simpson" required>
+                            <label for="adoptante_nombre" class="form-label colorLogo letraBold">Nombre
+                                Completo:</label>
+                            <input type="text" name="adoptante_nombre" id="adoptante_nombre" class="form-control"
+                                placeholder="Homero Simpson" required>
                         </div>
-                        <div class="form-group my-3">
+                        <div class="form-group my-3 position-relative">
                             <label for="adoptante_direccion" class="form-label colorLogo letraBold">Dirección:</label>
-                            <input type="text" name="adoptante_direccion" id="adoptante_direccion" class="form-control" placeholder="Avenida, calle" required>
-                        </div>
-                        <div class="form-group my-3">
-                            <label for="adoptante_localidad" class="form-label colorLogo letraBold">Localidad:</label>
-                            <input type="text" name="adoptante_localidad" id="adoptante_localidad" class="form-control" placeholder="Capital, Provincia" required>
+                            <input type="text" name="adoptante_direccion" id="adoptante_direccion" class="form-control"
+                                placeholder="Avenida, calle" autocomplete="off" required>
+                            <ul id="sugerencias" class="list-group position-absolute w-100" style="z-index: 999;"></ul>
                         </div>
                         <div class="d-grid">
                             <button class="btn btn-success btn-block">Aceptar</button>
@@ -26,3 +26,41 @@
         </div>
     </div>
 </div>
+
+<script>
+let marcadorTemporal, mapaInicializado = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('adoptante_direccion');
+    const sugerencias = document.getElementById('sugerencias');
+
+    input.addEventListener('input', async function () {
+        const query = this.value.trim();
+        sugerencias.innerHTML = '';
+
+        if (query.length < 3) return;
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=5`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        data.forEach(lugar => {
+            const li = document.createElement('li');
+            li.classList.add('list-group-item', 'list-group-item-action');
+            li.textContent = lugar.display_name;
+
+            li.addEventListener('click', () => {
+                input.value = lugar.display_name;
+                sugerencias.innerHTML = '';
+
+                const lat = parseFloat(lugar.lat);
+                const lon = parseFloat(lugar.lon);
+
+                document.getElementById('lat').value = lat;
+                document.getElementById('lon').value = lon;
+            });
+
+            sugerencias.appendChild(li);
+        });
+    });
+});
+</script>

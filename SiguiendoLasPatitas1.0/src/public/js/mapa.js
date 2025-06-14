@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Verificamos si hay datos
     if (typeof adoptarMapaData !== 'undefined' && adoptarMapaData.length > 0) {
         for (const adoptar of adoptarMapaData) {
-            const direccionCompleta = `${adoptar.ADOPTS_DIRECCION}, ${adoptar.ADOPTS_LOCALIDAD}`;
+            const direccionCompleta = `${adoptar.ADOPTS_DIRECCION}`;
+            console.log('Buscando dirección:', direccionCompleta);
             const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`;
 
             try {

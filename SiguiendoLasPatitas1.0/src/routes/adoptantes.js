@@ -55,20 +55,19 @@ router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
     const { ID_USER } = req.user;
     const {
         adoptante_nombre,
-        adoptante_direccion,
-        adoptante_localidad,
+        adoptante_direccion
     } = req.body;
     try {
         // Validar que todos los campos requeridos están presentes
-        if (!adoptante_nombre || !adoptante_direccion || !adoptante_localidad) {
+        if (!adoptante_nombre || !adoptante_direccion) {
             req.flash('error', 'Por favor, completa todos los campos.');
             return res.redirect('/adoptantes/registroAdoptantes');
         }
 
         // Insertar la adoptantes en la base de datos
         await pool.query(
-            'INSERT INTO adopts (ADOPTS_NOMBRE, ADOPTS_DIRECCION, ADOPTS_LOCALIDAD, ID_USER) VALUES (?, ?, ?, ?)',
-            [adoptante_nombre, adoptante_direccion, adoptante_localidad, ID_USER]
+            'INSERT INTO adopts (ADOPTS_NOMBRE, ADOPTS_DIRECCION, ID_USER) VALUES (?, ?, ?)',
+            [adoptante_nombre, adoptante_direccion, ID_USER]
         );
         req.flash('success', 'Adoptantes creado exitosamente.');
         res.redirect('/adoptantes/listarAdoptantes');
@@ -103,8 +102,7 @@ router.get('/mapa', isLoggedIn, async (req, res) => {
             tipo.TIPO_NOMBRE,
             raza.RAZA_NOMBRE,
             adopts.ADOPTS_NOMBRE,
-            adopts.ADOPTS_DIRECCION,
-            adopts.ADOPTS_LOCALIDAD
+            adopts.ADOPTS_DIRECCION
         FROM 
             adopciones
         JOIN mascotas ON adopciones.ID_MASCOTAS = mascotas.ID_MASCOTAS
@@ -115,6 +113,8 @@ router.get('/mapa', isLoggedIn, async (req, res) => {
         WHERE
             adopciones.ID_USER = ?
     `, [ID_USER]);
+
+    console.log(adoptarMapa);
     res.render('adoptantes/mapa', { adoptarMapa });
 });
 
@@ -168,8 +168,7 @@ router.get('/adoptar', isLoggedIn, async (req, res) => {
             tipo.TIPO_NOMBRE,
             raza.RAZA_NOMBRE,
             adopts.ADOPTS_NOMBRE,
-            adopts.ADOPTS_DIRECCION,
-            adopts.ADOPTS_LOCALIDAD
+            adopts.ADOPTS_DIRECCION
         FROM 
             adopciones
         JOIN mascotas ON adopciones.ID_MASCOTAS = mascotas.ID_MASCOTAS
