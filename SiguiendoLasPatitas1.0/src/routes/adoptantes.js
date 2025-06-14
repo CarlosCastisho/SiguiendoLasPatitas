@@ -24,12 +24,15 @@ router.get('/acceso', isnoLoggedIn, (req, res) => {
 })
 
 router.post('/acceso', isnoLoggedIn, (req, res, next) => {
+    const { user_correo } = req.body;
     passport.authenticate('local.acceso', (err, user, info) => {
         if (err) {
             return next(err);
         }
         if (!user) {
-            return res.redirect('/acceso')
+            return res.render('adoptantes/acceso', {
+                user_correo,
+            });
         }
         req.logIn(user, (err) => {
             if (err) {

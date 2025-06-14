@@ -1,36 +1,33 @@
-<!-- views/partials/messages.hbs -->
+{{#if auto_error}}
+<div class="container p-2">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="flashAlert">
+                {{auto_error}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}
 
 {{#if auto_success}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Toastify({
-            text: "{{auto_success}}",
-            duration: 3000,
-            close: true,
-            gravity: "top", // `top` o `bottom`
-            position: "right", // `left`, `center` o `right`
-            stopOnFocus: true, // Evita que se cierre si el usuario tiene el cursor sobre el toast
-            style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)",
-            },
-        }).showToast();
-    });
-</script>
+<div class="container p-2">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="flashAlert">
+                {{auto_success}}
+            </div>
+        </div>
+    </div>
+</div>
 {{/if}}
 
-{{#if auto_error}}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Toastify({
-            text: "{{auto_error}}",
-            duration: 5000, // Los errores duran un poco más
-            close: true,
-            gravity: "top",
-            position: "right",
-            style: {
-                background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-            },
-        }).showToast();
+    document.addEventListener('click', function () {
+    document.querySelectorAll('.alert').forEach(alert => {
+        alert.classList.remove('show');
+        alert.classList.add('hide');
+        setTimeout(() => alert.remove(), 300);
     });
+});
 </script>
-{{/if}}

@@ -17,10 +17,10 @@ passport.use('local.acceso', new LocalStrategy({
         if (validarContrasenia) {
             done(null, user, req.flash('auto_success','Bienvenido ' + user.user_nombre + ' ' + user.user_apellido));
         } else {
-            done(null, false, req.flash('auto_error','Contraseña Incorrecta'));
+            done(null, false, req.flash('auto_error','El usuario o la contraseña incorrectas'));
         }
     } else {
-        done(null, false, req.flash('auto_error','El usuario y la contraseña no existe'));
+        done(null, false, req.flash('auto_error','El usuario o la contraseña incorrectas'));
     }
 }));
 
