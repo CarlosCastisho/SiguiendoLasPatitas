@@ -1,10 +1,10 @@
 body {
-    background-image: linear-gradient(#fafcff, #98f6a0);
+    background-color: #03989e;
     background-attachment: fixed;
 }
 
 .barUser {
-    background-color: #ffffff !important;
+    background-color: #f9ffff  !important;
 }
 
 .barUser a {
