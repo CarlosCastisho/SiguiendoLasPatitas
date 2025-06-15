@@ -1,117 +1,186 @@
-body {  /* Color del fondo */
-    background-color: #03989e;
-    background-attachment: fixed;
+/* ============================================== */
+/* 1. CONFIGURACIÓN GLOBAL Y VARIABLES            */
+/* ============================================== */
+
+:root {
+  /* Paleta de Colores Principal */
+  --color-principal: #03989e;
+  --color-principal-hover: #2EB4B8;
+  --color-texto-claro: #F9FFFF;
+  --color-fondo-claro: #F9FFFF;
+  --color-texto-cian-claro: #C8F4F6;
+
+  /* Paleta de Colores Secundaria y de Acento */
+  --color-acento-link: #0d6efd;
+  --color-azul-secundario: #004aad;
+  --color-texto-gris: #6c757d;
+  --color-borde-claro: #e9ecef;
+  --color-hover-sutil: rgba(13, 110, 253, 0.07);
+
+  /* Gradientes */
+  --gradiente-1: linear-gradient(#fafcff, #aaccf7, #98f6a0);
+  --gradiente-2: linear-gradient(#fafcff, #98f6a0);
+  --gradiente-3: linear-gradient(#aaccf7, #fafcff, #98f6a0);
+  --gradiente-4: radial-gradient(#aaccf7, #fafcff, #98f6a0);
 }
 
-.barUser {
-    background-color: #f9ffff  !important;
+
+/* ============================================== */
+/* 2. ESTILOS GENERALES Y UTILIDADES              */
+/* ============================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* .barUser a {
-    color: #f9ffff;
-} */
-
-.titulos {
-    color: #F9FFFF;
-    margin: 10px 0 10px;
+body {
+  background-color: var(--color-principal);
+  background-attachment: fixed;
 }
 
-.subtitulosMenu {
-    color: #03989E;
-    margin: 10px 0 10px;
-}
-
-.colorBlue {    
-    color:#004aad;
-}
-
-.fondoGradiente {
-    background-image: linear-gradient(#fafcff, #aaccf7, #98f6a0);
-    color:#03989e !important;
-}
-
-.fondoGradiente2 {
-    background-image: linear-gradient(#fafcff, #98f6a0);
-    color:#03989e !important;
-}
-
-.fondoGradiente3 {
-    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0);
-}
-
-.fondoGradiente4 {
-    background-image: radial-gradient(#aaccf7,#fafcff, #98f6a0);
-}
-
-.letraBold{
-    font-weight: bold;
+.letraBold {
+  font-weight: bold;
+  color: var(--color-principal-hover);
 }
 
 .table-header {
-    text-align: center; 
-    vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.leaflet-popup-content-wrapper {
-    border-radius: 10px;     
-    padding: 10px;            
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    text-align: center;
-    width: 245px;
-    height: auto; 
-    color:#03989e
+
+/* ============================================== */
+/* 3. COMPONENTES                                 */
+/* ============================================== */
+
+/* --- Componente: Barra de Navegación (Navbar) --- */
+.barUser {
+  /* Nota: Trata de evitar !important. Es mejor aumentar la especificidad del selector si es necesario. */
+  background-color: var(--color-fondo-claro) !important;
 }
 
-.leaflet-popup-tip {
-    background-image: linear-gradient(#aaccf7,#fafcff, #98f6a0); 
-}
-.seccion-info {
-  /* ESTA LÍNEA ES LA CLAVE: crea un espacio grande debajo de cada sección */
-  margin-bottom: 5rem; /* Ajusta este valor según el espacio que desees */
-}
-
-.letras{
-    
-    padding: 10px; /* Añade un poco de espacio alrededor del texto */
-    margin: auto;
-    color: #C8F4F6; 
-    font-weight: bold; 
-    font-size: 1.3rem; 
-    line-height: 1.6; /* Aumenta el espacio entre líneas, crucial para la legibilidad */
-    max-width: 80ch; /* Limita el ancho del párrafo a unos 80 caracteres, el ideal para leer */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Añade una sombra sutil para que el texto resalte más del fondo */
+.btn-navbar {
+  color: var(--color-principal);
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 0 5px;
 }
 
-.card-container {
-  
+.fondoNavbar {
+  background-color: var(--color-fondo-claro);
+}
+
+.btn-cta {
+  background-color: var(--color-fondo-claro);
+  color: var(--color-principal);
+  font-weight: bold;
+}
+
+.btn-cta:hover {
+  background-color: var(--color-texto-cian-claro);
+  color: var(--color-principal);
+}
+
+
+/* --- Componente: Textos y Títulos --- */
+.titulos {
+  color: var(--color-texto-claro);
+  margin: 10px 0 10px;
+}
+
+.subtitulosMenu {
+  color: var(--color-principal);
+  margin: 10px 0 10px;
+}
+
+.letras {
+  padding: 10px;
+  margin: auto;
+  color: var(--color-texto-cian-claro);
+  font-weight: bold;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  max-width: 80ch;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+
+/* --- Componente: Hero Section (Álbum) --- */
+.hero-album-section {
+  position: relative;
+  min-height: 85vh;
+  background-color: var(--color-principal);
   display: flex;
-  flex-wrap: wrap; /* Permite que las tarjetas pasen a la siguiente línea en pantallas pequeñas */
-  justify-content: center; /* Centra las tarjetas en la página */
-  gap: 5rem; /* Espacio uniforme entre las tarjetas (moderno y recomendado) */
-  padding: 2rem; /* Espacio alrededor del contenedor */
-}
-
-/* --- Estilo Principal de la Tarjeta --- */
-.card {
-  width: 320px; 
-  background-color: #ffffff;
-  border-radius: 16px; 
-  border: 1px solid #e9ecef;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-/* --- Estilo para la Imagen Superior --- */
-.card-img-top {
-  width: 100%;
-  height: 200px; 
-  object-fit: cover; /* Asegura que la imagen llene el espacio sin deformarse */
+
+.album-photo {
+  position: absolute;
+  width: 18vw;
+  max-width: 220px;
+  height: auto;
+  border: 8px solid var(--color-fondo-claro);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 1;
 }
 
-/* --- Estilo para el Cuerpo de la Tarjeta --- */
+/* Posicionamiento individual de fotos */
+.photo-1 { top: 10%; left: 5%; transform: rotate(-15deg); }
+.photo-2 { top: 15%; right: 8%; transform: rotate(10deg); }
+.photo-3 { bottom: 12%; left: 15%; transform: rotate(8deg); }
+.photo-4 { bottom: 10%; right: 12%; transform: rotate(-12deg); }
+.photo-5 { top: 55%; left: 2%; transform: rotate(12deg); }
+.photo-6 { top: 60%; right: 5%; transform: rotate(-5deg); }
+
+.hero-content-center {
+  position: relative;
+  z-index: 10;
+  color: var(--color-texto-claro);
+  padding: 2rem;
+}
+
+.hero-content-center h1,
+.hero-content-center .lead {
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+/* --- Componente: Tarjeta (Card) --- */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5rem;
+  padding: 2rem;
+}
+.tarjeta-proyecto {
+    width: 400px;
+}
+
+.card {
+  width: 320px;
+  background-color: #f9ffff; /* Blanco puro es una excepción común a las variables */
+  border-radius: 16px;
+  border: 1px solid var(--color-borde-claro);
+  overflow: hidden;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
 .card-body {
   padding: 1.5rem;
 }
 
-/* --- Estilos para el texto y título --- */
 .card-title {
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -121,100 +190,255 @@ body {  /* Color del fondo */
 
 .card-text {
   margin-bottom: 1rem;
-  color: #6c757d;
+  color: var(--color-texto-gris);
   line-height: 1.6;
 }
 
-/* --- Contenedor Principal de la Sección Hero --- */
-.hero-album-section {
-  position: relative; /* ¡Esencial! Sirve de ancla para las imágenes posicionadas absolutamente. */
-  min-height: 85vh; /* Altura mínima de la sección */
-  background-color: #7EC4C0; /* ESTE ES EL COLOR DE FONDO QUE SE VERÁ EN EL CENTRO */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden; /* ¡Muy importante! Evita que las imágenes rotadas generen scrollbars. */
-}
 
-/* --- Estilo base para cada foto del álbum --- */
-.album-photo {
-  position: absolute; /* Permite colocar cada foto donde queramos. */
-  width: 18vw; /* Ancho relativo a la pantalla. */
-  max-width: 220px; /* Ancho máximo para no ser demasiado grande. */
-  height: auto;
-  border: 8px solid rgb(255, 255, 255); /* Borde blanco tipo foto instantánea. */
-  border-radius: 4px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  z-index: 1; /* Las fotos están en una capa inferior. */
-}
-
-/* --- Posicionamiento y rotación individual de cada foto --- */
-.photo-1 { top: 10%; left: 5%; transform: rotate(-15deg); }
-.photo-2 { top: 15%; right: 8%; transform: rotate(10deg); }
-.photo-3 { bottom: 12%; left: 15%; transform: rotate(8deg); }
-.photo-4 { bottom: 10%; right: 12%; transform: rotate(-12deg); }
-.photo-5 { top: 55%; left: 2%; transform: rotate(12deg); }
-.photo-6 { top: 60%; right: 5%; transform: rotate(-5deg); }
-
-
-/* --- Contenido Central (Títulos y Botón) --- */
-.hero-content-center {
-  position: relative; /* Se posiciona de forma normal, pero con un z-index alto. */
-  z-index: 10; /* Se asegura de que el texto SIEMPRE esté por encima de las fotos. */
-  color: #F9FFFF;
-  padding: 2rem;
-}
-
-/* Sombra para el texto para mejorar legibilidad */
-.hero-content-center h1,
-.hero-content-center .lead {
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* --- Contenedor del Menú --- */
+/* --- Componente: Menú de Navegación Lateral --- */
 .menu-elegante {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  width: 300px; /* Ancho del menú */
-  padding: 0.75rem; /* Un poco de espacio interior */
+  width: 300px;
+  padding: 0.75rem;
 }
 
-/* --- Reseteo de estilos de la lista --- */
 .menu-elegante ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* --- Estilo Base para cada enlace <a> --- */
 .menu-elegante a {
   display: block;
   text-decoration: none;
-  border-radius: 8px; /* Un redondeo sutil para el fondo del hover */
-  
-  /* Estado por defecto: tipografía legible pero no protagónica */
+  border-radius: 8px;
   font-size: 1.1rem;
-  font-weight: 500; /* Grosor normal/medio */
-  color: #03989E; /* Un gris oscuro en lugar de negro puro */
-  
-  /* Transición suave para todos los cambios */
+  font-weight: 500;
+  color: var(--color-principal);
   transition: all 0.25s ease-in-out;
 }
 
-/* --- Efecto al pasar el cursor (HOVER) --- */
 .menu-elegante a:hover {
-  /* Al pasar el cursor, el texto toma el color principal y aparece un fondo muy sutil */
-  color: #0d6efd; 
-  background-color: rgba(13, 110, 253, 0.07); /* Fondo casi imperceptible */
+  color: var(--color-acento-link);
+  background-color: var(--color-hover-sutil);
 }
 
-/* --- ¡AQUÍ ESTÁ LO QUE PEDISTE! --- */
-/* Estilo para el enlace de la página ACTUAL (el <li> con la clase .active) */
 .menu-elegante li.active a {
-  color: #0d6efd; /* El color principal de tu marca */
-  font-weight: 700; /* Más grueso, como pediste */
+  color: var(--color-acento-link);
+  font-weight: 700;
 }
-.btn-cta {
 
-  background-color: #03989E;
+.contacto-container {
+  height: 90vh;
+}
+
+
+/* --- Componente: Formulario de Login --- */
+.login-container {
+  max-height: 88vh;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-card-moderno {
+  background-color: #f9ffff; /* Blanco puro es una excepción común a las variables */
+  border-radius: 16px;
+  border: 1px solid var(--color-borde-claro);
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), 0 5px 15px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+.login-card-moderno .card-header {
+  background-color: transparent;
+  border-bottom: none;
+}
+
+.login-card-moderno .card-header h2 {
+  color: var(--color-principal-hover);
+}
+
+.login-card-moderno .card-header a {
+  color: var(--color-acento-link);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-card-moderno .card-header a:hover {
+  text-decoration: underline;
+}
+
+.login-card-moderno .form-control {
+  background-color: var(--color-fondo-claro);
+  border: 1px solid #dee2e6; /* Mantengo este gris para el borde del input */
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-card-moderno .form-control:focus {
+  background-color: #fff;
+  border-color: var(--color-principal-hover);
+  box-shadow: 0 0 0 3px rgba(46, 180, 184, 0.2);
+}
+
+.login-card-moderno .btn-primary {
+  background-color: var(--color-principal);
+  color: var(--color-texto-claro);
+  padding: 0.8rem;
+  border-color: var(--color-texto-claro);
+  border-radius: 0.5rem;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-card-moderno .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(3, 152, 158, 0.25);
+}
+
+/* --- Clases de gradientes y otras utilidades --- */
+.colorBlue {
+  color: var(--color-azul-secundario);
+}
+
+.fondoGradiente {
+  background-image: var(--gradiente-1);
+  color: var(--color-principal) !important;
+}
+
+.fondoGradiente2 {
+  background-image: var(--gradiente-2);
+  color: var(--color-principal) !important;
+}
+
+.fondoGradiente3 {
+  background-image: var(--gradiente-3);
+}
+
+.fondoGradiente4 {
+  background-image: var(--gradiente-4);
+}
+
+/* --- Estilos específicos para Leaflet (Mapas) --- */
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 245px;
+  height: auto;
+  color: var(--color-principal);
+}
+
+.leaflet-popup-tip {
+  background-image: var(--gradiente-3);
+}
+
+.seccion-info {
+  margin-bottom: 5rem;
+}
+
+/* --- Seccion sobre nosotros --- */
+
+.seccionSobreNosotros {
+  margin-top: 6rem;
+}
+
+.fondoLogin {
+  margin-left: 70px;
+}
+
+/* --- Ajuste específico para el Textarea dentro de nuestras tarjetas modernas --- */
+.login-card-moderno textarea.form-control {
+  resize: vertical; /* Permite al usuario solo cambiar la altura, no el ancho (más limpio) */
+  min-height: 120px; /* Le damos una altura mínima para que se vea bien desde el principio */
+}
+
+.contacto h1,h6 {
+  color: var(--color-principal-hover);
+}
+
+/* --- Estilos para la Validación de Formularios --- */
+
+/* Cambia el color del borde y añade un ícono cuando el input es inválido */
+.form-control.is-invalid {
+  border-color: #dc3545; /* Rojo de error de Bootstrap */
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-valid {
+    border-color: #198754; /* Verde de éxito de Bootstrap */
+}
+
+.invalid-feedback {
+  font-weight: 500;
+}
+
+/* --- Estilo para el ícono del ojo en los campos de contraseña --- */
+.password-icon {
+  position: absolute;
+  top: 50%;
+  right: 2rem; /* Lo separamos un poco más del borde */
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-texto-gris);
+  z-index: 10;
+}
+
+.password-icon:hover {
+  color: var(--color-principal);
+}
+
+/* --- Estilos específicos para la Tarjeta de Perfil --- */
+
+/* Contenedor del Header (para alinear ícono y título) */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espacio entre el ícono y el título */
+  padding-bottom: 1.5rem !important; /* Más espacio abajo */
+  /* El !important es para sobreescribir el padding:0 del .card-header del login */
+}
+
+/* Estilo del avatar/ícono de usuario */
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; /* Lo hacemos perfectamente redondo */
+  border: 3px solid var(--color-principal-hover);
+  padding: 4px;
+}
+
+/* Contenedor para cada fila de datos (Nombre, Apellido, etc.) */
+.profile-field {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0; /* Línea divisoria sutil */
+}
+
+/* Cuando es el último campo, no queremos la línea de abajo */
+.profile-field:last-child {
+  border-bottom: none;
+}
+
+/* Estilo para las etiquetas (Nombre:, Apellido:) */
+.profile-field .form-label {
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: var(--color-texto-gris);
+  font-size: 0.9rem;
+}
+
+/* Estilo para los datos del usuario */
+.profile-field p {
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #212529; /* Un negro suave para el texto principal */
+  word-wrap: break-word; /* Para que correos largos no rompan el diseño */
 }

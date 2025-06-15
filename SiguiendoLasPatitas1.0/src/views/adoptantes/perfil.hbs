@@ -1,37 +1,41 @@
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-4 mx-auto">
-            <div class="card fondoGradiente3">
-                <div class="card-body">
-                    <h3 class="card-title text-center colorGreen">Mis Datos
-                        <img src="/img/usuarioperfil.png" class="card-img-top" style="width: 60px;" alt="">
-                    </h3>                    
-                    <!-- Contenedor para los datos -->
-                    <div class="form-group my-3">
-                        <div class="p-2 mb-2 border rounded bg-light fondoGradiente3">
-                            <label for="nombre" class="form-label fw- colorBlue letraBold">Nombre:</label>
-                            <h6>{{user.USER_NOMBRE}}</h6>
-                        </div>
+<div class="d-flex justify-content-center align-items-center vh-100 login-container">
 
-                        <div class="p-2 mb-2 border rounded bg-light fondoGradiente3">
-                            <label for="apellido" class="form-label fw- colorBlue letraBold">Apellido:</label>
-                            <h6>{{user.USER_APELLIDO}}</h6>
-                        </div>
+    <div class="col-md-6 col-lg-5 col-xl-4">
 
-                        <div class="p-2 mb-2 border rounded bg-light fondoGradiente3">
-                            <label for="correo" class="form-label fw- colorBlue letraBold">Correo:</label>
-                            <h6>{{user.USER_CORREO}}</h6>
-                        </div>
+        <div class="card login-card-moderno">
 
-                        <div class="p-2 mb-2 border rounded bg-light fondoGradiente3">
-                            <label for="telefono" class="form-label fw- colorBlue letraBold">Teléfono:</label>
-                            <h6>{{user.USER_TELEFONO}}</h6>
-                        </div>
+            <div class="card-header profile-header">
+                <img src="/img/usuarioperfil.png" class="profile-avatar" alt="Avatar de usuario">
+                <h2 class="fw-bold m-0">Mis Datos</h2>
+            </div>
 
-                        <div class="container text-center mt-4">
-                            <a href="/auth/editarUser/{{user.ID_USER}}" class="btn btn-success btn-block">Editar perfil</a>
-                        </div>
+            <div class="card-body">
+                <div class="profile-data-container">
+                    
+                    <div class="profile-field">
+                        <label class="form-label">Nombre</label>
+                        <p>{{user.USER_NOMBRE}}</p>
                     </div>
+
+                    <div class="profile-field">
+                        <label class="form-label">Apellido</label>
+                        <p>{{user.USER_APELLIDO}}</p>
+                    </div>
+
+                    <div class="profile-field">
+                        <label class="form-label">Correo</label>
+                        <p>{{user.USER_CORREO}}</p>
+                    </div>
+
+                    <div class="profile-field">
+                        <label class="form-label">Teléfono</label>
+                        <p>{{user.USER_TELEFONO}}</p>
+                    </div>
+
+                </div>
+
+                <div class="d-grid mt-4">
+                    <a href="/auth/editarUser/{{user.ID_USER}}" class="btn btn-primary btn-block fw-bold">Editar perfil</a>
                 </div>
             </div>
         </div>

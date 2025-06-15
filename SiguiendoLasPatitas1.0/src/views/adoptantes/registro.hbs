@@ -1,52 +1,72 @@
-<div class="row p-4">
-    <div class="col-md-4 mx-auto">
-        <div class="">
+<div class="d-flex justify-content-center align-items-center py-5">
+    
+    <div class="col-md-6 col-lg-5">
+
+        <div class="h-auto login-card-moderno">
+
+            <div class="card-header text-center">
+                <h3 class="letraBold">Crea una cuenta</h3>
+            </div>
+
             <div class="card-body">
-                <h3 class="card-title text-center titulos">Crea una cuenta</h3>
-                <form id="form-registro" action="/registro" method="post" novalidate>
+                <form id="form-registro" action="/registro" method="post" class="needs-validation" novalidate>
+
                     <div class="form-group my-3">
                         <input type="text" id="user_nombre" name="user_nombre" placeholder="Nombre" class="form-control"
-                            pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}" required>
+                               pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}" required>
                         <div class="invalid-feedback">
-                            Solo letras y al menos 2 caracteres
+                            Solo letras, al menos 2 caracteres.
                         </div>
                     </div>
+
                     <div class="form-group my-3">
                         <input type="text" id="user_apellido" name="user_apellido" placeholder="Apellido"
-                            class="form-control" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}"required>
+                               class="form-control" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,}" required>
                         <div class="invalid-feedback">
-                            Solo letras y al menos 2 caracteres
+                            Solo letras, al menos 2 caracteres.
                         </div>
                     </div>
+
                     <div class="form-group my-3">
                         <input type="email" id="user_correo" name="user_correo" placeholder="Correo electrónico"
-                            class="form-control" required>
-                    </div>
-                    <div class="form-group my-3">
-                        <input type="tel" id="user_telefono" name="user_telefono" placeholder="Número de celular"
-                            class="form-control" pattern="[0-9]{10}" required>
+                               class="form-control" required>
                         <div class="invalid-feedback">
-                            Mínimo 10 números
+                            Por favor, ingresa un correo válido.
                         </div>
                     </div>
+
+                    <div class="form-group my-3">
+                        <input type="tel" id="user_telefono" name="user_telefono" placeholder="Número de celular"
+                               class="form-control" pattern="[0-9]{10,}" required>
+                        <div class="invalid-feedback">
+                            Debe contener al menos 10 números.
+                        </div>
+                    </div>
+
                     <div class="form-group my-3 position-relative">
                         <input type="password" id="user_contrasenia" name="user_contrasenia" placeholder="Contraseña"
-                            class="form-control" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$" required>
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;"
-                            onclick="togglePassword('user_contrasenia', this)">
-                            <i class="fas fa-eye" id="icono-ojo"></i>
+                               class="form-control" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$" required>
+                        <span class="password-icon" onclick="togglePassword('user_contrasenia', this)">
+                            <i class="fas fa-eye"></i>
                         </span>
+                        <div class="invalid-feedback">
+                            Mínimo 8 caracteres, una mayúscula y un número.
+                        </div>
                     </div>
+
                     <div class="form-group my-3 position-relative">
-                        <input type="password" id="confirmar_contrasenia" placeholder="Repite tu contraseña"
-                            class="form-control" required>
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;"
-                            onclick="togglePassword('confirmar_contrasenia', this)">
-                            <i class="fas fa-eye" id="icono-ojo"></i>
+                        <input type="password" id="confirmar_contrasenia" name="confirmar_contrasenia" placeholder="Repite tu contraseña"
+                               class="form-control" required>
+                        <span class="password-icon" onclick="togglePassword('confirmar_contrasenia', this)">
+                            <i class="fas fa-eye"></i>
                         </span>
+                        <div class="invalid-feedback">
+                            Las contraseñas no coinciden o el campo está vacío.
+                        </div>
                     </div>
-                    <div class="form-group text-center">
-                        <button class="btn btn-success btn-block">Registrarse</button>
+                    
+                    <div class="form-group text-center d-grid gap-2 mt-4">
+                        <button class="btn btn-primary btn-block fw-bold">Registrarse</button>
                     </div>
                 </form>
             </div>
@@ -55,44 +75,42 @@
 </div>
 
 <script>
-function togglePassword(inputId, iconElement) {
-    const input = document.getElementById(inputId);
-    const icon = iconElement.querySelector('i');
-    const isHidden = input.type === 'password';
+    // Tu función togglePassword está perfecta, no necesita cambios.
+    function togglePassword(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        const icon = iconElement.querySelector('i');
+        const isHidden = input.type === 'password';
 
-    input.type = isHidden ? 'text' : 'password';
-    icon.classList.toggle('fa-eye');
-    icon.classList.toggle('fa-eye-slash');
-}
+        input.type = isHidden ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    }
 
-document.getElementById('form-registro').addEventListener('submit', function (e) {
-    e.preventDefault(); // Previene envío hasta validar
-    const form = this;
-    let valido = true;
 
-    // Reset
-    form.querySelectorAll('.form-control').forEach(input => {
-        input.classList.remove('is-invalid');
+    document.getElementById('form-registro').addEventListener('submit', function (e) {
+        const form = this;
+        const pass = document.getElementById('user_contrasenia');
+        const confirm = document.getElementById('confirmar_contrasenia');
+
+        // --- MEJORA: Lógica de validación de contraseñas ---
+        // Esto le dice al navegador si las contraseñas coinciden o no.
+        if (pass.value !== confirm.value) {
+            // Si no coinciden, le ponemos un mensaje de error personalizado.
+            // Esto hará que form.checkValidity() falle automáticamente.
+            confirm.setCustomValidity('Las contraseñas no coinciden.');
+        } else {
+            // Si coinciden, es MUY IMPORTANTE limpiar el mensaje de error.
+            confirm.setCustomValidity('');
+        }
+        // --- FIN DE LA MEJORA ---
+
+
+        // Tu lógica de validación ahora funciona aún mejor
+        if (!form.checkValidity()) {
+            e.preventDefault(); // Previene el envío solo si algo es inválido
+            e.stopPropagation();
+        }
+
+        form.classList.add('was-validated'); // Esta es la clase estándar de Bootstrap para mostrar los mensajes
     });
-
-    // Validar HTML5 nativo
-    if (!form.checkValidity()) {
-        form.querySelectorAll(':invalid').forEach(el => {
-            el.classList.add('is-invalid');
-        });
-        valido = false;
-    }
-
-    // Validar coincidencia de contraseñas
-    const pass = document.getElementById('user_contrasenia');
-    const confirm = document.getElementById('confirmar_contrasenia');
-
-    if (pass.value !== confirm.value) {
-        confirm.classList.add('is-invalid');
-        valido = false;
-    }
-
-    // Si todo es válido, enviar
-    if (valido) form.submit();
-});
 </script>

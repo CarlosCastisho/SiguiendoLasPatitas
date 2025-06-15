@@ -1,36 +1,37 @@
-<div class="d-flex justify-content-center align-items-center vh-100" style="margin-top: -50px;">
-    <div class="col-md-4">
+<div class="d-flex justify-content-center align-items-center contacto-container">
+    
+    <div class="col-md-8 col-lg-6">
 
-        <div class="text-center">    
-            <h1 class="titulos">Envíanos tu mensaje</h1>
-            <h6 class="titulos">Nuestro equipo se pondrá en contacto contigo</h6>
-        </div>
-        <div class="container p-4">
-            <div class="row">
-                <div class="col mx-auto">
-                    <div class="">
-                        <div class="card-body">
-                            <form action="/negocio/contacto" method="POST">
-                                <div class="form-group">                            
-                                    <input type="text" id="nombre-apellido" class="form-control" name="nombre-apellido" placeholder="Nombre y apellido">
-                                </div>                            
-                                <div class="form-group my-3">
-                                    <input type="text" id="e-mail" class="form-control" name="e-mail" placeholder="E-mail">
-                                    </select>
-                                </div>
-                                <div class="form-group my-3">
-                                    <input type="text" id="asunto" class="form-control" name="asunto" placeholder="Asunto">
-                                </div>
-                                <div class="form-group my-3">
-                                    <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Mensaje" rows="4" cols="40"></textarea>
-                                </div>
-                                <div class="form-group d-grid my-3">
-                                    <button class="btn btn-success">Enviar</button>
-                                </div>                        
-                            </form>
-                        </div>
+        <div class=" login-card-moderno">
+
+            <div class="card-header text-center contacto">
+                <h1 class="fw-bold">Envíanos tu mensaje</h1>
+                <h6 class="">Nuestro equipo se pondrá en contacto contigo</h6>
+            </div>
+
+            <div class="card-body">
+                <form action="/negocio/contacto" method="POST">
+                    
+                    <div class="form-group my-3">
+                        <input type="text" id="nombre-apellido" name="nombre-apellido" placeholder="Nombre y apellido" class="form-control" required>
                     </div>
-                </div>
+                    
+                    <div class="form-group my-3">
+                        <input type="email" id="e-mail" name="e-mail" placeholder="E-mail" class="form-control" required>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <input type="text" id="asunto" name="asunto" placeholder="Asunto" class="form-control" required>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Escribe tu mensaje aquí..." rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group d-grid my-3">
+                        <button class="btn btn-primary btn-block fw-bold">Enviar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
