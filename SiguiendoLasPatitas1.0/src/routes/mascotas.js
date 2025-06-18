@@ -70,10 +70,19 @@ router.get('/', isLoggedIn, async (req, res) => {
 
 router.get('/eliminar/:ID_MASCOTAS', isLoggedIn, async (req, res) => {
     const { ID_MASCOTAS } = req.params;
+
+    const adopciones = await pool.query('SELECT * FROM adopciones WHERE ID_MASCOTAS = ?', [ID_MASCOTAS]);
+
+    if (adopciones.length > 0) {
+        req.flash('auto_error', 'No podés eliminar esta mascota porque está asignada a una adopción.');
+        return res.redirect('/mascotas');
+    }
+
     await pool.query('DELETE FROM mascotas WHERE ID_MASCOTAS = ?', [ID_MASCOTAS]);
-    req.flash('auto_success', 'MASCOTA ELIMINADA')
+    req.flash('auto_success', 'Mascota eliminada correctamente.');
     res.redirect('/mascotas');
 });
+
 
 router.get('/editar/:ID_MASCOTAS', isLoggedIn, async (req, res) => {
     const { ID_MASCOTAS } = req.params;

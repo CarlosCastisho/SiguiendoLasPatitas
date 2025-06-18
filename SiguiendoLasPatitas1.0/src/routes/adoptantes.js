@@ -82,15 +82,24 @@ router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
 });
 
 router.get('/listaradoptantes', isLoggedIn, async (req, res) => {
-    const listaradoptantes = await pool.query(`SELECT * FROM adopts`)
+    const { ID_USER } = req.user;
+    const listaradoptantes = await pool.query('SELECT * FROM adopts WHERE ID_USER = ?', [ID_USER]);
     res.render('adoptantes/listarAdoptantes', { listaradoptantes })
 })
 
 router.get('/eliminar/:ID_ADOPTS', isLoggedIn, async (req, res) => {
     const { ID_ADOPTS } = req.params;
+
+    const adopciones = await pool.query('SELECT * FROM adopciones WHERE ID_ADOPTS = ?', [ID_ADOPTS]);
+
+    if (adopciones.length > 0) {
+        req.flash('auto_error', 'No podés eliminar este adoptante porque tiene una adopción asignada.');
+        return res.redirect('/adoptantes/listaradoptantes');
+    }
+
     await pool.query('DELETE FROM adopts WHERE ID_ADOPTS = ?', [ID_ADOPTS]);
-    req.flash('auto_success', 'ADOPTANTE ELIMINADO')
-    res.redirect('/adoptantes/listarAdoptantes');
+    req.flash('auto_success', 'Adoptante eliminado correctamente.');
+    res.redirect('/adoptantes/listaradoptantes');
 });
 
 //PAGINA DEL MAPA
@@ -123,8 +132,9 @@ router.get('/mapa', isLoggedIn, async (req, res) => {
 
 // PAGINA DE ADOPTAR
 
-router.get('/asignar', isLoggedIn, async (req, res) => {
+router.get('/asignar/:ID_ADOPTS', isLoggedIn, async (req, res) => {
     const { ID_USER } = req.user;
+    const { ID_ADOPTS } = req.params;
     const mascotas = await pool.query(`
         SELECT
             mascotas.ID_MASCOTAS,
@@ -138,8 +148,8 @@ router.get('/asignar', isLoggedIn, async (req, res) => {
         JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
         /* LEFT JOIN adopciones ON mascotas.ID_MASCOTAS = adopciones.ID_MASCOTA */
         WHERE mascotas.ID_USER = ? /* AND adopciones.ID_MASCOTAS IS NULL */` , [ID_USER]);
-    const adoptantes = await pool.query('SELECT * FROM adopts WHERE ID_USER = ?', [ID_USER]);
-    res.render('adoptantes/asignar', { mascotas, adoptantes });
+    const adoptantes = await pool.query('SELECT * FROM adopts WHERE ID_USER = ? AND ID_ADOPTS = ?', [ID_USER, ID_ADOPTS]);
+    res.render('adoptantes/asignar', { mascotas, adoptantes});
 });
 
 router.post('/asignar', isLoggedIn, async (req, res) => {

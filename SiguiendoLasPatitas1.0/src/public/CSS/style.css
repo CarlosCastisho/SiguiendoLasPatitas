@@ -85,7 +85,7 @@ body {
 
 
 /* --- Componente: Textos y Títulos --- */
-.titulos {
+.titulos, .subtitulos {
   color: var(--color-texto-claro);
   margin: 10px 0 10px;
 }
@@ -164,11 +164,11 @@ body {
 }
 
 .card {
-  width: 320px;
+  /* width: 300px; */
   background-color: #f9ffff; /* Blanco puro es una excepción común a las variables */
-  border-radius: 16px;
+  /* border-radius: 16px; */
   border: 1px solid var(--color-borde-claro);
-  overflow: hidden;
+  /* overflow: hidden; No es necesario si no hay contenido que desborde */
 }
 
 .card-img-top {
@@ -196,17 +196,17 @@ body {
 
 
 /* --- Componente: Menú de Navegación Lateral --- */
-.menu-elegante {
+/* .menu-elegante {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   width: 300px;
   padding: 0.75rem;
-}
+} */
 
-.menu-elegante ul {
+/* .menu-elegante ul {
   list-style: none;
   margin: 0;
   padding: 0;
-}
+} */
 
 .menu-elegante a {
   display: block;
@@ -299,8 +299,23 @@ body {
 }
 
 /* --- Clases de gradientes y otras utilidades --- */
+.colorPrincipal {
+  color: var(--color-principal) !important;
+}
+
 .colorBlue {
   color: var(--color-azul-secundario);
+}
+
+.btnAgregar{
+  color:var(--color-principal); 
+  background-color: var(--color-texto-cian-claro); 
+  font-weight: bold;
+}
+
+.btnAgregar:hover {
+  color: var(--color-principal-hover);
+  background-color: var(--color-texto-cian-claro);
 }
 
 .fondoGradiente {
@@ -342,9 +357,9 @@ body {
 
 /* --- Seccion sobre nosotros --- */
 
-.seccionSobreNosotros {
+/* .seccionSobreNosotros {
   margin-top: 6rem;
-}
+} */
 
 .fondoLogin {
   margin-left: 70px;

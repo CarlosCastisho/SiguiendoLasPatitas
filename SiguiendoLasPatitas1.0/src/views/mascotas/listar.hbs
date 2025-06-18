@@ -1,17 +1,20 @@
 <div class="container p-1">
-    <h2 class="" style="color:  #f9ffff ;">Listado de Mascotas</h2>
-    <a href="/mascotas/agregar" class="btn btn-success  mb-3" style="color: #03989e; background-color: #c8f4f6; font-weight: bold">AGREGAR <i
-            class="fa-solid fa-plus fa-sm" style="color: #03989e;"></i></a>
+    <div class="container text-center">
+        <h2 class="titulos">Mis mascotas</h2>
+        <h6 class="subtitulos">Aquí podrás ver todas tus mascotas registradas.</h6>
+    </div>
+    <a href="/mascotas/agregar" class="btn mb-3 btnAgregar">AGREGAR <i
+            class="fa-solid fa-plus fa-sm colorPrincipal" ></i></a>
     <div class="row">
         {{#each mascotas}}
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card text-center position-relative">
                 <div class="position-absolute top-0 end-0 m-2 d-flex gap-1">
                     <a href="/mascotas/editar/{{ID_MASCOTAS}}" class="text-success" title="Editar">
-                        <i class="fa-solid fa-pen" style="color: #03989e;"></i>
+                        <i class="fa-solid fa-pen colorPrincipal" ></i>
                     </a>
-                    <a href="/mascotas/eliminar/{{ID_MASCOTAS}}" class="text-danger" title="Eliminar">
-                        <i class="fa-solid fa-xmark fa-xl" style="color: #03989e;"></i>
+                    <a href="/mascotas/eliminar/{{ID_MASCOTAS}}" class="text-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar?')">
+                        <i class="fa-solid fa-xmark fa-xl colorPrincipal" ></i>
                     </a>
                 </div>
                 <div class="card-body">

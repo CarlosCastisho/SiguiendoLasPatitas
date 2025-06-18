@@ -1,10 +1,20 @@
-<div class="container p-4">
-    <div class="row">
+<div class="container p-1">
+    <div class="container text-center">
+        <h2 class="titulos">Adopciones</h2>
+        <h6 class="subtitulos">Aquí podrás ver todas las adopciones registradas.</h6>
+    </div>
+    <div class="row py-3">
             {{#each adoptar}}
-            <div class="col-md-3">
-                <div class="card text-center">
+            <div class="col-md-4">
+                {{!-- ID_ADOPCIONES, MASCOTAS_NOMBRE, TIPO_NOMBRE, RAZA_NOMBRE, MASCOTAS_FNAC, ADOPCION_FECHA, ADOPTS_NOMBRE, ADOPTS_DIRECCION --}}
+                <div class="card text-center position-relative">
+                    <div class="position-absolute top-0 end-0 m-2 d-flex gap-1">
+                        <a href="/adoptantes/cancelar/{{ID_ADOPCIONES}}" class="text-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar?')">
+                            <i class="fa-solid fa-xmark fa-xl colorPrincipal" ></i>
+                        </a>
+                    </div>
                     <div class="card-body">
-                        <h3 class="card-title text-uppercase colorGreen">
+                        <h3 class="card-title text-uppercase subtitulosMenu mt-3">
                             {{MASCOTAS_NOMBRE}}
                         </h3>
                         <p>{{TIPO_NOMBRE}} - {{RAZA_NOMBRE}}
@@ -19,8 +29,6 @@
                         <p class="card-text">
                             Dirección: {{ADOPTS_DIRECCION}}
                         </p>
-                        <a href="/adoptantes/cancelar/{{ID_ADOPCIONES}}" class="btn btn-danger">Cancelar</a> {{!-- Fecha min 1:25
-                        --}}
                     </div>
                 </div>
             </div>

@@ -47,7 +47,7 @@
     <div class="container-fluid">
         <div class="row vh-100">
             <!-- Menú Lateral -->
-            <div class="col-md-3 bg-light border-end barUser">
+            <div class="col-md-2 bg-light border-end barUser d-flex flex-column justify-content-between">
                 <div class="p-4">
                     <div class="container">
                         <a class="navbar-brand" href="#">
@@ -55,45 +55,38 @@
                         </a>
                     </div>
                     <nav class="menu-elegante">
-                        <ul class="nav flex-column m-5">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/mascotas">Mis mascotas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/adoptantes/listaradoptantes">Adoptantes</a>
-                        </li>
-                        {{!-- <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Adoptantes
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/adoptantes/listaradoptantes">Adoptantes</a></li>
-                                <li><a class="dropdown-item" href="/adoptantes/registroAdoptantes">Agregar</a></li>
-                            </ul>
-                        </li> --}}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Adoptar
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/adoptantes/adoptar">Adoptar</a></li>
-                                <li><a class="dropdown-item" href="/adoptantes/asignar">Asignar</a></li>
-                                <li><a class="dropdown-item" href="/adoptantes/mapa">Mapa</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/perfil">Perfil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cerrar">Cerrar sesión</a>
-                        </li>
-                    </ul>
+                        <ul class="nav flex-column my-5">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mascotas">Mis mascotas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adoptantes/listaradoptantes">Adoptantes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adoptantes/adoptar">Adopciones</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adoptantes/mapa">Mapa</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/perfil">Perfil</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="menu-elegante p-4">
+                    <nav class="menu-elegante">
+                        <ul class="nav flex-column my-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/cerrar">Cerrar sesión</a>
+                            </li>
+                        </ul>
                     </nav>
                 </div>
             </div>
 
             <!-- Contenido Principal -->
-            <div class="col-md-9">
+            <div class="col-md">
                 <div class="d-flex flex-row-reverse">
                     <div class="p-2 h6" style="color:  #f9ffff ;">Hola, {{user.USER_NOMBRE}} {{user.USER_APELLIDO}} </div>
                 </div>

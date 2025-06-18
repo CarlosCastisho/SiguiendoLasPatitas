@@ -15,13 +15,13 @@
                             </select>
                         </div>
                         <div class="form-group my-3">
-                            <label for="adoptante" class="form-label subtitulosMenu letraBold">Adoptante:</label>
-                            <select id="adoptante" class="form-control" name="id_adopts" required>
-                                <option value="" disabled selected>Nombre - Direccion</option>
-                                {{#each adoptantes}}
-                                <option value="{{ID_ADOPTS}}">{{ADOPTS_NOMBRE}} - {{ADOPTS_DIRECCION}}</option>
-                                {{/each}}
-                            </select>
+                            {{#each adoptantes}}
+                                <label for="adoptante" class="form-label subtitulosMenu letraBold">Nombre de Adoptante:</label>
+                                <input type="hidden" value="{{ID_ADOPTS}}" id="adoptante" name="id_adopts" class="form-control" required>
+                                <input type="text" value="{{ADOPTS_NOMBRE}}" class="form-control" disabled>
+                                <label class="form-label subtitulosMenu letraBold">Direccion:</label>
+                                <textarea class="form-control" aria-label="With textarea" style="height: 130px" disabled>{{ADOPTS_DIRECCION}}</textarea>
+                            {{/each}}
                         </div>
                         
                         <div class="form-group d-grid my-3">
