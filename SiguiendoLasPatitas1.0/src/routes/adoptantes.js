@@ -73,11 +73,11 @@ router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
             [adoptante_nombre, adoptante_direccion, ID_USER]
         );
         req.flash('success', 'Adoptantes creado exitosamente.');
-        res.redirect('/adoptantes/listarAdoptantes');
+        res.redirect('/adoptantes/listaradoptantes');
     } catch (error) {
         console.error('Error al crear un adoptante:', error);
         req.flash('error', 'Ocurrió un error al registar un adoptante');
-        res.redirect('/adoptantes/listarAdoptantes');
+        res.redirect('/adoptantes/listaradoptantes');
     }
 });
 
