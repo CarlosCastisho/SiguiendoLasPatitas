@@ -84,7 +84,7 @@ router.post('/registroadoptantes', isLoggedIn, async (req, res) => {
 router.get('/listaradoptantes', isLoggedIn, async (req, res) => {
     const { ID_USER } = req.user;
     const listaradoptantes = await pool.query('SELECT * FROM adopts WHERE ID_USER = ?', [ID_USER]);
-    res.render('adoptantes/listarAdoptantes', { listaradoptantes })
+    res.render('adoptantes/listaradoptantes', { listaradoptantes })
 })
 
 router.get('/eliminar/:ID_ADOPTS', isLoggedIn, async (req, res) => {
