@@ -30,3 +30,6 @@ services:
 
 volumes:
   db_data:
+
+
+# mysql://root:peMhLnBLtSifgHuLdHEsRblZGmsLbPcq@nozomi.proxy.rlwy.net:29506/railway

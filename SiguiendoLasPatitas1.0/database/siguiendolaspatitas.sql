@@ -57,7 +57,6 @@ CREATE TABLE `adopts` (
   `ID_ADOPTS` int NOT NULL AUTO_INCREMENT,
   `ADOPTS_NOMBRE` varchar(50) NOT NULL,
   `ADOPTS_DIRECCION` varchar(80) NOT NULL,
-  `ADOPTS_LOCALIDAD` varchar(80) NOT NULL,
   `ID_USER` int NOT NULL,
   PRIMARY KEY (`ID_ADOPTS`),
   KEY `adopts_ibfk_1_idx` (`ID_USER`),
