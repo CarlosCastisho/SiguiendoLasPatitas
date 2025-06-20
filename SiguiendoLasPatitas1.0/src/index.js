@@ -41,7 +41,7 @@ hbs.registerHelper('ifCond', function(v1, v2, options){
 
 //Middlewares
 app.use(session({
-    secret: 'EnergyCarssqlnodesession',
+    secret: process.env.SESSION_SECRET || 'siguiendo_las_patitas',
     resave: false,
     saveUninitialized: false,
     store: new MySQLStore(database)
