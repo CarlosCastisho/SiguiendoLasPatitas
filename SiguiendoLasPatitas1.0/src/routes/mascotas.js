@@ -18,7 +18,7 @@ router.post('/agregar', isLoggedIn, async (req, res) => {
         SELECT 
             ID_TIPO_RAZA 
         FROM 
-            TIPO_RAZA
+            tipo_raza
         WHERE 
             ID_TIPO = ? AND ID_RAZA = ? AND ID_SEXO = ?
         `, [ mascota_tipo, mascota_raza, mascota_sexo]);
@@ -29,6 +29,17 @@ router.post('/agregar', isLoggedIn, async (req, res) => {
     `, [tipo_raza, mascota_nombre, mascota_fnac, ID_USER]);
     req.flash('auto_success', 'MASCOTA AGREGADA CORRECTAMENTE');
     res.redirect('/mascotas');
+});
+
+router.get('/raza/:tipoId', isLoggedIn, async (req, res) => {
+    const { tipoId } = req.params;
+    const razas = await pool.query(`
+        SELECT DISTINCT raza.ID_RAZA, raza.RAZA_NOMBRE
+        FROM tipo_raza
+        JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
+        WHERE tipo_raza.ID_TIPO = ?
+    `, [tipoId]);
+    res.json(razas);
 });
 
 router.get('/sexo/:tipoId/:razaId', isLoggedIn, async (req, res) => {
