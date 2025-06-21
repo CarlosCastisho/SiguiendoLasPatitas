@@ -16,6 +16,13 @@ router.get('/contacto', isnoLoggedIn, async (req, res) => {
 router.post('/contacto', async (req, res) => {
     const { 'nombre-apellido': nombreApellido, 'e-mail': email, asunto, mensaje } = req.body;
 
+    // Validación básica de entrada
+    if (!nombreApellido || !email || !asunto || !mensaje) {
+        return res.render('negocio/contacto', {
+            errorMessage: 'Por favor, completa todos los campos del formulario.'
+        });
+    }
+
     try {
         // Guardar en la base de datos
         await pool.query(
@@ -67,6 +74,14 @@ router.post('/contacto', async (req, res) => {
 
     } catch (error) {
         console.error('Error al guardar o enviar el mail:', error);
+        // Verificar si el error es de la base de datos o de nodemailer
+        if (error.code) { // Código de error de MySQL por ejemplo
+            req.flash('auto_error', 'Ocurrió un error al guardar tu mensaje en nuestra base de datos.');
+        } else if (error.name === 'Error' && error.message.includes('No recipients defined')) {
+            req.flash('auto_error', 'Error al enviar el email: destinatario no válido. Por favor, verifica tu dirección de correo.');
+        } else {
+            req.flash('auto_error', 'Ocurrió un error al enviar el mail. Por favor, intentá de nuevo más tarde.');
+        }
         res.render('negocio/contacto', {
             errorMessage: 'Ocurrió un error al procesar tu contacto. Por favor, intentá de nuevo.'
         });

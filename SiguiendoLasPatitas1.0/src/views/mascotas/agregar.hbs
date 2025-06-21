@@ -97,4 +97,19 @@ function actualizarSexos() {
             });
     }
 }
+
+// --- Nuevo script para restringir la fecha de nacimiento ---
+document.addEventListener('DOMContentLoaded', function() {
+    const fechaNacimientoInput = document.getElementById('mascota_fnac');
+    const hoy = new Date();
+
+    // Formatear la fecha a YYYY-MM-DD
+    const year = hoy.getFullYear();
+    const month = (hoy.getMonth() + 1).toString().padStart(2, '0'); // getMonth() es base 0
+    const day = hoy.getDate().toString().padStart(2, '0');
+    const fechaMaxima = `${year}-${month}-${day}`;
+    
+    // Establecer el atributo max para que no se puedan seleccionar fechas futuras
+    fechaNacimientoInput.setAttribute('max', fechaMaxima);
+});
 </script>

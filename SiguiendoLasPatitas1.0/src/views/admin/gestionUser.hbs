@@ -1,15 +1,17 @@
-<h2 class="colorGreen">Listado de Usuarios</h2> 
-
+<div class="container text-center">
+    <h2 class="titulos">Usuarios Registrados</h2>
+    <h6 class="subtitulos">Aquí podrás ver todos los usuarios registrados en el sistema.</h6>
+</div>
 <div style="position: relative; width: 100%; max-width: 400px;">
     <input
         type="text"
         id="buscador"
         placeholder="Buscar por nombre, correo o teléfono"
         style="width: 100%; padding-right: 40px;"
-        class="form-control fondoGradiente3"
+        class="form-control my-3"
     />
     <i class="fas fa-search" 
-       style="
+        style="
             position: absolute; 
             right: 10px; 
             top: 50%; 
@@ -20,28 +22,31 @@
     </i>
 </div>
 <br>
-<table class="table table table-bordered table-header">
+<table class="table table-bordered table-header table-hover w-100">
     <thead class="thead-dark">
         <tr>
-            <th class="fondoGradiente2">ID</th>
-            <th class="fondoGradiente2">Nombre</th>
-            <th class="fondoGradiente2">Apellido</th>
-            <th class="fondoGradiente2">Correo</th>
-            <th class="fondoGradiente2">Teléfono</th>
-            <th class="fondoGradiente2">Acción</th>
+            <th scope="col" class="table-header colorPrincipal"></th>
+            <th scope="col" class="table-header colorPrincipal">Nombre</th>
+            <th scope="col" class="table-header colorPrincipal">Apellido</th>
+            <th scope="col" class="table-header colorPrincipal">Correo</th>
+            <th scope="col" class="table-header colorPrincipal">Teléfono</th>
+            <th scope="col" class="table-header colorPrincipal">Acción</th>
         </tr>
     </thead>
     <tbody id="tabla-usuarios">
         {{#each adminuser}}
         <tr>
-            <td>{{this.ID_USER}}</td>
+            <td scope="row">
+                <a href="/adoptantes/eliminar/{{this.ID_USER}}" class="text-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar?')">
+                    <i class="fa-solid fa-xmark fa-xl colorPrincipal" ></i>
+                </a>
+            </td>
             <td>{{this.USER_NOMBRE}}</td>
             <td>{{this.USER_APELLIDO}}</td>
             <td>{{this.USER_CORREO}}</td>
             <td>{{this.USER_TELEFONO}}</td>
             <td>
-                <a href="/admin/eliminar/{{this.ID_USER}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</a>
-                <a href="/admin/editarAdminUser/{{this.ID_USER}}" class="btn btn-success btn-sm">Restablecer contraseña</a>
+                <a href="/admin/editarAdminUser/{{this.ID_USER}}" class="btn btnAgregar btn-sm">Restablecer contraseña</a>
             </td>
         </tr>
         {{/each}}

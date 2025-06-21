@@ -171,6 +171,12 @@ body {
   /* overflow: hidden; No es necesario si no hay contenido que desborde */
 }
 
+.card-admin {
+     border-color: var(--color-principal); /* Cambia el color a rojo */
+     border-width: 1px; /* Opcional: ajusta el ancho del borde */
+     border-style: solid; /* Opcional: tipo de borde (solid, dashed, dotted, etc.) */
+}
+
 .card-img-top {
   width: 100%;
   height: 200px;
