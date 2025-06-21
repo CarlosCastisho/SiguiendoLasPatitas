@@ -50,7 +50,7 @@ router.post('/acceso', isnoLoggedIn, (req, res, next) => {
 
 // //PAGINA DE ADOPTANTES
 router.get('/registroadoptantes', isLoggedIn, async (req, res) => {
-    res.render('adoptantes/registroadoptantes')
+    res.render('adoptantes/registroAdoptantes')
 })
 
 // Ruta para agregar un adoptante
