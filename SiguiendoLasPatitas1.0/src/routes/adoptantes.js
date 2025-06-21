@@ -146,8 +146,8 @@ router.get('/asignar/:ID_ADOPTS', isLoggedIn, async (req, res) => {
         JOIN tipo_raza ON mascotas.ID_TIPO_RAZA = tipo_raza.ID_TIPO_RAZA
         JOIN tipo ON tipo_raza.ID_TIPO = tipo.ID_TIPO
         JOIN raza ON tipo_raza.ID_RAZA = raza.ID_RAZA
-        /* LEFT JOIN adopciones ON mascotas.ID_MASCOTAS = adopciones.ID_MASCOTA */
-        WHERE mascotas.ID_USER = ? /* AND adopciones.ID_MASCOTAS IS NULL */` , [ID_USER]);
+        LEFT JOIN adopciones ON mascotas.ID_MASCOTAS = adopciones.ID_MASCOTAS
+        WHERE mascotas.ID_USER = ? AND adopciones.ID_MASCOTAS IS NULL` , [ID_USER]);
     const adoptantes = await pool.query('SELECT * FROM adopts WHERE ID_USER = ? AND ID_ADOPTS = ?', [ID_USER, ID_ADOPTS]);
     res.render('adoptantes/asignar', { mascotas, adoptantes});
 });
