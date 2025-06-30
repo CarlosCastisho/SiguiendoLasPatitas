@@ -25,15 +25,15 @@
 </div>
 
 <!-- Tabla de resultados -->
-<table class="table table-bordered table-header" id="tablaUsuarios">
+<table class="table table-bordered table-header table-hover w-100" id="tablaUsuarios">
     <thead class="thead-dark">
         <tr>
-            <th class="fondoGradiente2">Año</th>
-            <th class="fondoGradiente2">Mes</th>
-            <th class="fondoGradiente2">Día</th>
-            <th class="fondoGradiente2">Nombre</th>
-            <th class="fondoGradiente2">Apellido</th>
-            <th class="fondoGradiente2">Correo</th>
+            <th scope="col" class="table-header colorPrincipal">Año</th>
+            <th scope="col" class="table-header colorPrincipal">Mes</th>
+            <th scope="col" class="table-header colorPrincipal">Día</th>
+            <th scope="col" class="table-header colorPrincipal">Nombre</th>
+            <th scope="col" class="table-header colorPrincipal">Apellido</th>
+            <th scope="col" class="table-header colorPrincipal">Correo</th>
         </tr>
     </thead>
     <tbody>
@@ -50,9 +50,19 @@
     </tbody>
 </table>
 
-<h3 id="totalRegistros" class="colorGreen">
-    Total de registros: {{totalRegistros}}
+<h3 id="totalRegistros" class="titulos">
+    {{#if totalRegistros}}
+        Total de registros: {{totalRegistros}}
+    {{else}}
+        No hay registros disponibles.
+    {{/if}}
 </h3>
+
+<div 
+    class="form-group text-center">
+    <a href="/admin/gestiontransacciones" class="btn btnAgregar"> <i class="fa-solid fa-arrow-left colorPrincipal"></i> Volver</a>
+</div>
+
 <script>
         function filtrarTabla() {
         const filtroAnio = document.getElementById('buscadorAnio').value.toLowerCase();
@@ -87,10 +97,7 @@
     document.getElementById('buscadorMes').addEventListener('input', filtrarTabla);
     document.getElementById('buscadorDia').addEventListener('input', filtrarTabla);
 </script>
-<div 
-    class="form-group text-center">
-    <a href="/admin/gestiontransacciones" class="btn btn-success btn-block">Volver</a>
-</div>
+
 
 
 

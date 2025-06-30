@@ -275,27 +275,6 @@ router.get('/perfil', isLoggedIn, (req, res) => {
     res.render('adoptantes/perfil');
 });
 
-// router.get('/editarUser/:ID_USER', isLoggedIn, async (req, res) => {
-//     const { ID_USER } = req.params;
-//     const editarUser = await pool.query('SELECT * FROM usuario WHERE ID_USER = ?', [ID_USER]);
-//     res.render('adoptantes/editarUser', { editarUser: editarUser[0] });
-// });
-
-// router.post('/editarUser/:ID_USER', isLoggedIn, async (req, res) => {
-//     const { ID_USER } = req.params;
-//     const { user_nombre, user_apellido, user_telefono, user_contrasenia } = req.body;
-//     const editarUser = {
-//         user_nombre,
-//         user_apellido,
-//         user_telefono,
-//         user_contrasenia: await helpers.encryptContrasenia(user_contrasenia)
-//     };
-//     await pool.query('UPDATE usuario set ? WHERE ID_USER = ?', [editarUser, ID_USER]);
-//     req.flash('auto_success', 'Usuario actualizado con éxito');
-//     res.redirect('/perfil');
-// })
-
-
 router.get('/cerrar', (req, res, next) => {
     req.logout((err) => {
         if (err) {

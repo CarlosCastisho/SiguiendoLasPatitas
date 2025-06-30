@@ -1,0 +1,75 @@
+<div class="container text-center">
+    <h2 class="titulos">Adopciones</h2>
+    <h6 class="subtitulos">Aquí podrás ver todas las adopciones realizadas</h6>
+</div>
+
+</div>
+<div class="">
+    <!-- Adopciones por Día -->
+    <div class="card-body">
+        <h3 class="card-title my-1 subtitulos">Adopciones por día</h3>
+        <table class="table table-bordered table-header table-hover w-100">
+            <thead>
+                <tr>
+                    <th scope="col" class="table-header colorPrincipal">Día</th>
+                    <th scope="col" class="table-header colorPrincipal">Cantidad de adopciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each adopcionesPorDia}}
+                <tr>
+                    <td>{{this.dia}}</td>
+                    <td>{{this.cantidad_adopciones}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Reservas por Mes -->
+    <div class="card-body">
+        <h3 class="card-title my-1 subtitulos">Adopciones por mes</h3>
+        <table class="table table-bordered table-header table-hover w-100">
+            <thead>
+                <tr>
+                    <th scope="col" class="table-header colorPrincipal">Mes</th>
+                    <th scope="col" class="table-header colorPrincipal">Cantidad de adopciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each adopcionesPorMes}}
+                <tr>
+                    <td>{{this.mes}}</td>
+                    <td>{{this.cantidad_adopciones}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Reservas por Año -->
+    <div class="card-body">
+        <h3 class="card-title my-1 subtitulos">Adopciones por año</h3>
+        <table class="table table-bordered table-header table-hover w-100">
+            <thead>
+                <tr>
+                    <th scope="col" class="table-header colorPrincipal">Año</th>
+                    <th scope="col" class="table-header colorPrincipal">Cantidad de adopciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each adopcionesPorAno}}
+                <tr>
+                    <td>{{this.anio}}</td>
+                    <td>{{this.cantidad_adopciones}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div 
+    class="form-group text-center">
+    <a href="/admin/gestiontransacciones" class="btn btnAgregar"> <i class="fa-solid fa-arrow-left colorPrincipal"></i> Volver</a>
+</div>

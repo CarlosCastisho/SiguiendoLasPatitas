@@ -75,7 +75,6 @@
 </div>
 
 <script>
-    // Tu función togglePassword está perfecta, no necesita cambios.
     function togglePassword(inputId, iconElement) {
         const input = document.getElementById(inputId);
         const icon = iconElement.querySelector('i');
@@ -92,7 +91,6 @@
         const pass = document.getElementById('user_contrasenia');
         const confirm = document.getElementById('confirmar_contrasenia');
 
-        // --- MEJORA: Lógica de validación de contraseñas ---
         // Esto le dice al navegador si las contraseñas coinciden o no.
         if (pass.value !== confirm.value) {
             // Si no coinciden, le ponemos un mensaje de error personalizado.
@@ -102,7 +100,6 @@
             // Si coinciden, es MUY IMPORTANTE limpiar el mensaje de error.
             confirm.setCustomValidity('');
         }
-        // --- FIN DE LA MEJORA ---
 
 
         // Tu lógica de validación ahora funciona aún mejor

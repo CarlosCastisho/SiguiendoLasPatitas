@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const pool =  require('../database');
-const {isLoggedIn} = require('../lib/auth');
+const pool = require('../database');
+const { isLoggedIn } = require('../lib/auth');
 const helpers = require('../lib/helpers');
 
 router.get('/', isLoggedIn, async (req, res) => {
@@ -16,9 +16,9 @@ router.get('/', isLoggedIn, async (req, res) => {
     }
 });
 
-router.get('/eliminar/:ID_USER', isLoggedIn, async (req,res) => {
+router.get('/eliminar/:ID_USER', isLoggedIn, async (req, res) => {
     try {
-        const {ID_USER} = req.params;
+        const { ID_USER } = req.params;
         // Considerar añadir una verificación para evitar eliminar al propio admin logueado si ID_USER es de admin.
         // También verificar si el usuario tiene mascotas o adopciones asignadas para evitar errores de FK.
         const userMascotas = await pool.query('SELECT ID_MASCOTAS FROM mascotas WHERE ID_USER = ?', [ID_USER]);
@@ -40,17 +40,17 @@ router.get('/eliminar/:ID_USER', isLoggedIn, async (req,res) => {
     }
 });
 
-router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
+router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req, res) => {
     try {
-        const {ID_USER} = req.params;
+        const { ID_USER } = req.params;
         const editarAdminUser = await pool.query('SELECT * FROM usuario WHERE ID_USER = ?', [ID_USER]);
-        
+
         if (editarAdminUser.length === 0) {
             req.flash('auto_error', 'Usuario no encontrado para editar.');
             return res.redirect('/admin');
         }
 
-        res.render('admin/editarAdminUser', {editarAdminUser: editarAdminUser[0]});
+        res.render('admin/editarAdminUser', { editarAdminUser: editarAdminUser[0] });
     } catch (error) {
         console.error('Error al cargar la página de edición de usuario admin:', error);
         req.flash('auto_error', 'Ocurrió un error al cargar la información del usuario.');
@@ -59,7 +59,7 @@ router.get('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
 });
 
 
-router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
+router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req, res) => {
     try {
         const { ID_USER } = req.params;
         const { user_contrasenia } = req.body;
@@ -83,48 +83,54 @@ router.post('/editarAdminUser/:ID_USER', isLoggedIn, async (req,res) => {
 });
 
 
-router.get('/gestionReservas', isLoggedIn, async (req, res) => {
-    /* try { */
-//         const reservas = await pool.query(`
-//             SELECT 
-//                 reservas.ID_RESERVA,
-//                 reservas.RESERVA_FECHA,
-//                 reservas.RESERVA_HORA_INI,
-//                 reservas.RESERVA_HORA_FIN,
-//                 reservas.RESERVA_IMPORTE,
-//                 estaciones_carga.ESTC_NOMBRE,
-//                 estaciones_carga.ESTC_DIRECCION,
-//                 estaciones_carga.ESTC_LOCALIDAD,
-//                 estado_reservas.EST_RES_DESCRIP,
-//                 usuarios.USER_CORREO
-//             FROM 
-//                 reservas
-//             JOIN 
-//                 surtidores ON reservas.ID_SURTIDOR = surtidores.ID_SURTIDOR
-//             JOIN 
-//                 estaciones_carga ON surtidores.ID_ESTC = estaciones_carga.ID_ESTC
-//             JOIN 
-//                 estado_reservas ON reservas.ID_EST_RES = estado_reservas.ID_EST_RES
-//             JOIN 
-//                 usuario usuarios ON reservas.ID_USER = usuarios.ID_USER
-//         `);
+router.get('/gestionAdopciones', isLoggedIn, async (req, res) => {
+    try {
+        const todasAdopciones = await pool.query(`
+            SELECT
+                usuario.USER_NOMBRE,
+                usuario.USER_APELLIDO,
+                adopciones.ID_ADOPCIONES,
+                DATE_FORMAT(adopciones.ADOPCION_FECHA, '%d/%m/%Y') AS ADOPCION_FECHA,
+                mascotas.MASCOTAS_NOMBRE,
+                adopts.ADOPTS_NOMBRE,
+                adopts.ADOPTS_DIRECCION,
+                est_adop.EST_ADOP_DESCRIP
+            FROM
+                usuario
+            JOIN
+                adopciones ON usuario.ID_USER = adopciones.ID_USER
+            JOIN
+                mascotas ON adopciones.ID_MASCOTAS = mascotas.ID_MASCOTAS
+            JOIN
+                adopts ON adopciones.ID_ADOPTS = adopts.ID_ADOPTS
+            JOIN
+                est_adop ON adopciones.ID_EST_ADOP = est_adop.ID_EST_ADOP
+            ORDER BY
+                usuario.USER_NOMBRE, usuario.USER_APELLIDO, adopciones.ADOPCION_FECHA;
+        `);
 
-        res.render('admin/gestionReservas', /* { reservas } */);
-    // } catch (error) {
-    //     console.error('Error al obtener las reservas:', error);
-    //     res.status(500).send('Error al obtener las reservas.');
-    // }
+        res.render('admin/gestionAdopciones', { todasAdopciones });
+    } catch (error) {
+            console.error('Error al obtener las reservas:', error);
+            res.status(500).send('Error al obtener las reservas.');
+    }
 });
 
-// router.get('/gestionReservas/cancelar/:ID_RESERVA', isLoggedIn, async (req, res) =>{
-//     const {ID_RESERVA} = req.params;
-//     await pool.query(`UPDATE reservas SET ID_EST_RES = 3 WHERE ID_RESERVA = ?`,[ID_RESERVA]);
-//     res.redirect('/admin/gestionReservas');
-// });
-
+router.get('/cancelarAdopciones/:ID_ADOPCIONES', isLoggedIn, async (req, res) => {
+    try {
+        const { ID_ADOPCIONES } = req.params;
+        await pool.query('DELETE FROM adopciones WHERE ID_ADOPCIONES = ?', [ID_ADOPCIONES]);
+        req.flash('auto_success', 'ADOPCION ELIMINADA');
+        res.redirect('/admin/gestionAdopciones');
+    } catch (error) {
+        console.error('Error al cancelar adopción:', error);
+        req.flash('auto_error', 'Ocurrió un error al eliminar la adopción.');
+        res.redirect('/admin/gestionAdopciones');
+    }
+});
 
 router.get('/adminmascotas', isLoggedIn, async (req, res) => {
-     try {
+    try {
         const mascotas = await pool.query('SELECT * FROM mascotas');
         const tipo = await pool.query('SELECT * FROM tipo');
         const raza = await pool.query('SELECT * FROM raza');
@@ -147,10 +153,10 @@ router.get('/adminmascotas', isLoggedIn, async (req, res) => {
         res.redirect('/admin'); // Redirigir a una página de error o al dashboard de admin
     }
 });
-            
+
 // //Ruta para agregar relación entre marca, modelo y tipo de conector
 router.post('/adminmascotas', isLoggedIn, async (req, res) => {
-     const { id_tipo, id_raza, id_sexo } = req.body;
+    const { id_tipo, id_raza, id_sexo } = req.body;
     try {
         if (!id_tipo || !id_raza || !id_sexo) {
             req.flash('auto_error', 'Por favor, selecciona un tipo, raza y sexo para la relación.');
@@ -179,7 +185,7 @@ router.post('/adminmascotas/tipo', isLoggedIn, async (req, res) => {
             req.flash('auto_error', 'El nombre del tipo no puede estar vacío.');
             return res.redirect('/admin/adminmascotas');
         }
-        const nuevo_tipo_nombre = {tipo_nombre}
+        const nuevo_tipo_nombre = { tipo_nombre }
         await pool.query('INSERT INTO tipo set ?', [nuevo_tipo_nombre]);
         req.flash('auto_success', 'TIPO AGREGADO CORRECTAMENTE');
         res.redirect('/admin/adminmascotas');
@@ -246,8 +252,7 @@ router.post('/adminmascotas/eliminar', isLoggedIn, async (req, res) => {
             req.flash('auto_error', 'ID de relación no proporcionado.');
             return res.redirect('/admin/adminmascotas');
         }
-        // Considerar verificar si esta relación tipo_raza está en uso por alguna mascota
-        // Si hay mascotas que dependen de esta relación, la eliminación fallará debido a restricciones de clave foránea.
+
         const mascotasDependientes = await pool.query('SELECT ID_MASCOTAS FROM mascotas WHERE ID_TIPO_RAZA = ?', [ID_TIPO_RAZA]);
         if (mascotasDependientes.length > 0) {
             req.flash('auto_error', 'No se puede eliminar la relación porque hay mascotas que dependen de ella. Elimina primero las mascotas relacionadas.');
@@ -264,226 +269,99 @@ router.post('/adminmascotas/eliminar', isLoggedIn, async (req, res) => {
     }
 });
 
-router.get('/gestionEstaciones', async (req, res) => {
-//     try {
-//         const estaciones = await pool.query(`
-//         SELECT
-//             estaciones_carga.ID_ESTC,
-//             estaciones_carga.ESTC_NOMBRE,
-//             estaciones_carga.ESTC_DIRECCION,
-//             estaciones_carga.ESTC_LOCALIDAD,
-//             provincias.PROVINCIA_NOMBRE,
-//             estaciones_carga.ESTC_CANT_SURTIDORES,
-//             estaciones_carga.ESTC_LATITUD,
-//             estaciones_carga.ESTC_LONGITUD
-//         FROM
-//             estaciones_carga
-//         JOIN
-//             provincias ON estaciones_carga.ID_PROVINCIA = provincias.ID_PROVINCIA
-//         `);
-//         const provincias = await pool.query('SELECT * FROM provincias');
-        res.render('admin/gestionEstaciones', /* { estaciones, provincias } */); 
-//     } catch (error) {
-//         console.error('Error al obtener las estaciones o provincias:', error);
-//         res.status(500).send('Error al cargar las estaciones');
-//     }
-});
-
-// // Ruta para crear una estación de carga
-// router.post('/gestionEstaciones', async (req, res) => {
-//     console.log(req.body);
-//     const {
-//         estc_nombre,
-//         estc_direccion,
-//         estc_localidad,
-//         estc_cant_surtidores,
-//         id_provincia,
-//         estc_latitud,
-//         estc_longitud
-//     } = req.body;
-
-//     try {
-//         // Validar que todos los campos requeridos están presentes
-//         if (!estc_nombre || !estc_direccion || !estc_localidad || !estc_cant_surtidores || !id_provincia || !estc_latitud || !estc_longitud) {
-//             req.flash('error', 'Por favor, completa todos los campos.');
-//             return res.redirect('/admin/gestionEstaciones');
-//         }
-
-//         // Insertar la estación en la base de datos
-//         const result = await pool.query(
-//             'INSERT INTO estaciones_carga (ESTC_NOMBRE, ESTC_DIRECCION, ESTC_LOCALIDAD, ESTC_CANT_SURTIDORES, ID_PROVINCIA, ESTC_LATITUD, ESTC_LONGITUD) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-//             [estc_nombre, estc_direccion, estc_localidad, estc_cant_surtidores, id_provincia, estc_latitud, estc_longitud]
-//         );
-
-//         // Obtener el ID de la estación recién creada
-//         const idEstacion = result.insertId;
-
-//         // Insertar los surtidores en la tabla surtidores
-//         for (let i = 0; i < estc_cant_surtidores; i++) {
-//             await pool.query(
-//                 'INSERT INTO surtidores (SURT_ESTADO, ID_ESTC) VALUES (?, ?)', 
-//                 [1, idEstacion]  
-//             );
-//         }
-
-//         req.flash('success', 'Estación de carga y surtidores creados exitosamente.');
-//         res.redirect('/admin/gestionEstaciones');
-//     } catch (error) {
-//         console.error('Error al crear estación de carga o surtidores:', error);
-//         req.flash('error', 'Ocurrió un error al crear la estación de carga y los surtidores.');
-//         res.redirect('/admin/gestionEstaciones');
-//     }
-// });
-
-// router.get('/gestionEstaciones/eliminar/:ID_ESTC', isLoggedIn, async (req,res) => {
-//     const {ID_ESTC} = req.params;
-//     await pool.query('DELETE FROM surtidores WHERE ID_ESTC = ?', [ID_ESTC]);
-//     await pool.query('DELETE FROM estaciones_carga WHERE ID_ESTC = ?', [ID_ESTC]);
-//     req.flash('auto_success', 'ESTACION ELIMINADA')
-//     res.redirect('/admin/gestionEstaciones');
-// });
 
 //Ruta para gestionar transacciones
-router.get('/gestiontransacciones', async(req, res)=>{
+router.get('/gestiontransacciones', async (req, res) => {
     res.render('admin/gestiontransacciones');
 });
 
 // //Ruta ver usuarios
 router.get('/verusuarios', isLoggedIn, async (req, res) => {
-//     const { nombre, apellido, correo } = req.query;
-    
-//     let query = `
-//         SELECT 
-//             YEAR(USER_FECHA_REGISTRO) AS anio,
-//             MONTH(USER_FECHA_REGISTRO) AS mes,
-//             DAY(USER_FECHA_REGISTRO) AS dia,
-//             USER_NOMBRE,
-//             USER_APELLIDO,
-//             USER_CORREO
-//         FROM usuario
-//         WHERE USER_CORREO <> 'admin@gmail.com'
-//     `;
+        const { nombre, apellido, correo } = req.query;
 
-//     const params = [];
+        let query = `
+            SELECT 
+                YEAR(USER_FECHA_REGISTRO) AS anio,
+                MONTH(USER_FECHA_REGISTRO) AS mes,
+                DAY(USER_FECHA_REGISTRO) AS dia,
+                USER_NOMBRE,
+                USER_APELLIDO,
+                USER_CORREO
+            FROM usuario
+            WHERE USER_CORREO <> 'admin@gmail.com'
+        `;
 
-//     if (nombre) {
-//         query += ` AND USER_NOMBRE LIKE ?`;
-//         params.push(`%${nombre}%`);
-//     }
-//     if (apellido) {
-//         query += ` AND USER_APELLIDO LIKE ?`;
-//         params.push(`%${apellido}%`);
-//     }
-//     if (correo) {
-//         query += ` AND USER_CORREO LIKE ?`;
-//         params.push(`%${correo}%`);
-//     }
+        const params = [];
 
-//     const usuarios = await pool.query(query, params);
+        if (nombre) {
+            query += ` AND USER_NOMBRE LIKE ?`;
+            params.push(`%${nombre}%`);
+        }
+        if (apellido) {
+            query += ` AND USER_APELLIDO LIKE ?`;
+            params.push(`%${apellido}%`);
+        }
+        if (correo) {
+            query += ` AND USER_CORREO LIKE ?`;
+            params.push(`%${correo}%`);
+        }
 
-//     const totalRegistros = usuarios.length;
+        const usuarios = await pool.query(query, params);
 
-//     if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-//         return res.json({ usuarios, totalRegistros });
-//     }
+        const totalRegistros = usuarios.length;
 
-    res.render('admin/verusuarios',/*  {
+        if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+            return res.json({ usuarios, totalRegistros });
+        }
+
+    res.render('admin/verusuarios', {
         usuarios,
         totalRegistros
-    } */);
+    });
 });
 
 
-//Ver Reservas
-router.get('/verReservas', async (req, res) => {
-//     const reservasPorDia = await pool.query(`
-//         SELECT RESERVA_FECHA AS dia, COUNT(*) AS cantidad_reservas
-//         FROM reservas
-//         GROUP BY dia
-//         ORDER BY dia
-//     `);
+//Ver Adopciones
+router.get('/verAdopciones', async (req, res) => {
+        const adopcionesPorDia = await pool.query(`
+            SELECT ADOPCION_FECHA AS dia, COUNT(*) AS cantidad_adopciones
+            FROM adopciones
+            GROUP BY dia
+            ORDER BY dia
+        `);
 
-//     const reservasPorMes = await pool.query(`
-//         SELECT DATE_FORMAT(RESERVA_FECHA, '%Y-%m') AS mes, COUNT(*) AS cantidad_reservas
-//         FROM reservas
-//         GROUP BY mes
-//         ORDER BY mes
-//     `);
+        const adopcionesPorMes = await pool.query(`
+            SELECT DATE_FORMAT(ADOPCION_FECHA, '%m-%Y') AS mes, COUNT(*) AS cantidad_adopciones
+            FROM adopciones
+            GROUP BY mes
+            ORDER BY mes
+        `);
 
-//     const reservasPorAno = await pool.query(`
-//         SELECT YEAR(RESERVA_FECHA) AS anio, COUNT(*) AS cantidad_reservas
-//         FROM reservas
-//         GROUP BY anio
-//         ORDER BY anio
-//     `);
+        const adopcionesPorAno = await pool.query(`
+            SELECT YEAR(ADOPCION_FECHA) AS anio, COUNT(*) AS cantidad_adopciones
+            FROM adopciones
+            GROUP BY anio
+            ORDER BY anio
+        `);
 
-    res.render('admin/verReservas', /* {
-        reservasPorDia,
-        reservasPorMes,
-        reservasPorAno
-    } */);
+    res.render('admin/verAdopciones',  {
+        adopcionesPorDia,
+        adopcionesPorMes,
+        adopcionesPorAno
+    } );
 });
 
-// Ver Estaciones
-router.get('/verEstaciones', async (req, res) => {
-//     const { estacion } = req.query;
-
-//     let filtroEstacion = estacion ? `WHERE EC.ESTC_NOMBRE LIKE ${pool.escape(`%${estacion}%`)}` : '';
-//     let indicadores = {};
-
-//     // Consultas para los diferentes indicadores
-//     indicadores.reservasPorDia = await pool.query(`
-//         SELECT 
-//             EC.ESTC_NOMBRE AS estacion,
-//             R.RESERVA_FECHA AS dia,
-//             COUNT(*) AS total_reservas
-//         FROM reservas R
-//         JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
-//         JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
-//         ${filtroEstacion}
-//         GROUP BY EC.ESTC_NOMBRE, R.RESERVA_FECHA
-//         ORDER BY EC.ESTC_NOMBRE, R.RESERVA_FECHA;
-//     `);
-
-//     indicadores.reservasPorMes = await pool.query(`
-//         SELECT 
-//             EC.ESTC_NOMBRE AS estacion,
-//             DATE_FORMAT(R.RESERVA_FECHA, '%Y-%m') AS mes,
-//             COUNT(*) AS total_reservas
-//         FROM reservas R
-//         JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
-//         JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
-//         ${filtroEstacion}
-//         GROUP BY EC.ESTC_NOMBRE, mes
-//         ORDER BY EC.ESTC_NOMBRE, mes;
-//     `);
-
-//     indicadores.reservasPorAno = await pool.query(`
-//         SELECT 
-//             EC.ESTC_NOMBRE AS estacion,
-//             YEAR(R.RESERVA_FECHA) AS anio,
-//             COUNT(*) AS total_reservas
-//         FROM reservas R
-//         JOIN surtidores S ON R.ID_SURTIDOR = S.ID_SURTIDOR
-//         JOIN estaciones_carga EC ON S.ID_ESTC = EC.ID_ESTC
-//         ${filtroEstacion}
-//         GROUP BY EC.ESTC_NOMBRE, anio
-//         ORDER BY EC.ESTC_NOMBRE, anio;
-//     `);
-
-    res.render('admin/verEstaciones', /* { indicadores, estacion } */);
-});
 
 //Botónes Volver 
-router.get('/verusuarios', isLoggedIn, async(req, res) => {
+router.get('/verusuarios', isLoggedIn, async (req, res) => {
     res.render('admin/gestiontransacciones');
 });
 
-router.get('/verReservas', isLoggedIn, async(req, res) => {
+router.get('/verReservas', isLoggedIn, async (req, res) => {
     res.render('admin/gestiontransacciones');
 });
 
-router.get('/verEstaciones', isLoggedIn, async(req, res) => {
+router.get('/verEstaciones', isLoggedIn, async (req, res) => {
     res.render('admin/gestiontransacciones');
 });
 

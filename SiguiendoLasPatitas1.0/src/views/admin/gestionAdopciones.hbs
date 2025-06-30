@@ -1,0 +1,71 @@
+<div class="container text-center">
+    <h2 class="titulos">Adopciones</h2>
+    <h6 class="subtitulos">Aqui podras ver todas las adopciones realizadas</h6>
+</div>
+<div style="position: relative; width: 100%; max-width: 400px;">
+    <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar por usuario o n° de reserva"
+        style="width: 100%; padding-right: 40px;"
+        class="form-control my-3"
+    />
+    <i class="fas fa-search" 
+        style="
+            position: absolute; 
+            right: 10px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: #6c757d; 
+            font-size: 1.2rem; 
+            cursor: pointer;">
+    </i>
+</div>
+<br>
+{{#if todasAdopciones.length}}
+<table id="tabla-adopciones" class="table table-bordered table-header table-hover w-100">
+    <thead>
+        <tr>
+            <th scope="col" class="table-header colorPrincipal"></th>
+            <th scope="col" class="table-header colorPrincipal">Nombre de usuario</th>
+            <th scope="col" class="table-header colorPrincipal">Apellido de usuario</th>
+            <th scope="col" class="table-header colorPrincipal">Fecha de adopción</th>
+            <th scope="col" class="table-header colorPrincipal">Nombre de mascotas</th>
+            <th scope="col" class="table-header colorPrincipal">Nombre de adoptante</th>
+            <th scope="col" class="table-header colorPrincipal">Dirección de adoptante</th>
+            <th scope="col" class="table-header colorPrincipal">Estado de adopción</th>
+    </thead>
+    <tbody>
+        {{#each todasAdopciones}}
+        <tr>
+            <td scope="row">
+                <a href="/admin/cancelarAdopciones/{{ID_ADOPCIONES}}" class="text-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar?')">
+                    <i class="fa-solid fa-xmark fa-xl colorPrincipal"></i>
+                </a>
+            </td>
+            <td>{{USER_NOMBRE}}</td>
+            <td>{{USER_APELLIDO}}</td>
+            <td>{{ADOPCION_FECHA}}</td>
+            <td>{{MASCOTAS_NOMBRE}}</td>
+            <td>{{ADOPTS_NOMBRE}}</td>
+            <td>{{ADOPTS_DIRECCION}}</td>
+            <td>{{EST_ADOP_DESCRIP}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p class="titulos">No se encontraron adopciones registradas.</p>
+{{/if}}
+
+<script>
+    document.getElementById('buscador').addEventListener('input', function () {
+        const filtro = this.value.toLowerCase();
+        const filas = document.querySelectorAll('#tabla-adopciones tbody tr'); 
+
+        filas.forEach((fila) => {
+            const textoFila = fila.textContent.toLowerCase();
+            fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+        });
+    });
+</script>
